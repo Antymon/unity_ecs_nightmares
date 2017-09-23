@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-//using interface as a method of hiding specifics of implementation
+//using interface as a method of hiding specifics of the implementation
 public interface IEntityDeserializer
 {
     void DeserializeEnitity(Entity entity);
 }
 
 //deserialization is bound to data set on GameObjects
-//interface inverts the dependency though so that entitas side remains uware of dependency
-//whenever agnostic implementation is required - new implementation needs to be provided
+//interface inverts the dependency though so that entitas side remains uaware of dependency
+//whenever agnostic execution is required - new implementation of the deserialization needs to be provided
 public class EntityDeserializerViaBinding : IEntityDeserializer
 {
     private IPool pool;
