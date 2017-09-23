@@ -20,10 +20,10 @@ public class GameController : MonoBehaviour {
 
         entityDeserializer = new EntityDeserializerViaBinding(pool);
         
-        /*
+        
         var contexts = Contexts.sharedInstance;
         systems = new Feature("Systems");
-        
+        /*
         systems.Add(new BallSpawnerSystem(contexts.ball, entityDeserializer));
         systems.Add(new BallMovementSystem());
         systems.Add(new PadCollisionSystem(entityDeserializer));
@@ -31,8 +31,9 @@ public class GameController : MonoBehaviour {
         systems.Add(new BackgroundSystem(entityDeserializer));
         systems.Add(new BlockCollisionSystem(entityDeserializer));
         systems.Add(new InputCollisionSystem());
-        systems.Initialize();
          */
+        systems.Initialize();
+         
 	}
 
     private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)

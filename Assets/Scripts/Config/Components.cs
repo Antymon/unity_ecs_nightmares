@@ -32,6 +32,7 @@ public class EffectComponent : IComponent
     public IEffect effect;
 }
 
+[Input]
 public class CollisionComponent : IComponent
 {
     public Entity self;

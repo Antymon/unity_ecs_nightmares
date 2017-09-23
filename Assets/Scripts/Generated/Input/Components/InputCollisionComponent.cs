@@ -6,13 +6,13 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-public partial class GameEntity {
+public partial class InputEntity {
 
-    public CollisionComponent collision { get { return (CollisionComponent)GetComponent(GameComponentsLookup.Collision); } }
-    public bool hasCollision { get { return HasComponent(GameComponentsLookup.Collision); } }
+    public CollisionComponent collision { get { return (CollisionComponent)GetComponent(InputComponentsLookup.Collision); } }
+    public bool hasCollision { get { return HasComponent(InputComponentsLookup.Collision); } }
 
     public void AddCollision(Entitas.Entity newSelf, Entitas.Entity newOther) {
-        var index = GameComponentsLookup.Collision;
+        var index = InputComponentsLookup.Collision;
         var component = CreateComponent<CollisionComponent>(index);
         component.self = newSelf;
         component.other = newOther;
@@ -20,7 +20,7 @@ public partial class GameEntity {
     }
 
     public void ReplaceCollision(Entitas.Entity newSelf, Entitas.Entity newOther) {
-        var index = GameComponentsLookup.Collision;
+        var index = InputComponentsLookup.Collision;
         var component = CreateComponent<CollisionComponent>(index);
         component.self = newSelf;
         component.other = newOther;
@@ -28,7 +28,7 @@ public partial class GameEntity {
     }
 
     public void RemoveCollision() {
-        RemoveComponent(GameComponentsLookup.Collision);
+        RemoveComponent(InputComponentsLookup.Collision);
     }
 }
 
@@ -40,15 +40,15 @@ public partial class GameEntity {
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-public sealed partial class GameMatcher {
+public sealed partial class InputMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherCollision;
+    static Entitas.IMatcher<InputEntity> _matcherCollision;
 
-    public static Entitas.IMatcher<GameEntity> Collision {
+    public static Entitas.IMatcher<InputEntity> Collision {
         get {
             if (_matcherCollision == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Collision);
-                matcher.componentNames = GameComponentsLookup.componentNames;
+                var matcher = (Entitas.Matcher<InputEntity>)Entitas.Matcher<InputEntity>.AllOf(InputComponentsLookup.Collision);
+                matcher.componentNames = InputComponentsLookup.componentNames;
                 _matcherCollision = matcher;
             }
 

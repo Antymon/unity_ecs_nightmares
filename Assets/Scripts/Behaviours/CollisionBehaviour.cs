@@ -16,7 +16,7 @@ public class CollisionBehaviour : MonoBehaviour, IEntityDeserializer
             return;
         }
 
-        //Contexts.sharedInstance.input.CreateEntity().ReplaceCollision(entity, otherEntity);
+        Contexts.sharedInstance.input.CreateEntity().ReplaceCollision(entity, entitasBinding.GetEntity());
     }
 
     public void DeserializeEnitity(Entity entity)
