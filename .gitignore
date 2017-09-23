@@ -1,0 +1,10 @@
+Library/
+Temp/
+obj/
+*.sln
+*.suo
+*.csproj
+*.userprefs
+*.apk
+*.cache
+*Assembly*
