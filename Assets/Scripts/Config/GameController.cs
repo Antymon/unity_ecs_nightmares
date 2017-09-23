@@ -7,34 +7,30 @@ public class GameController : MonoBehaviour {
 
     public Transform displayRoot;
 
-    Systems systems;
+    protected IEntityDeserializer entityDeserializer;
 
-    IEntityDeserializer entityDeserializer;
+    private Systems systems;
 
 	void Start () {
         Application.targetFrameRate = 60;
 
-        IPool pool = new BindableGameObjectPool(new Factory(displayRoot));
+        IFactory factory = new Factory(displayRoot);
+        IPool pool = new BindableGameObjectPool(factory);
 
         ReclaimInstatiatedPrefabs(displayRoot, pool);
 
         entityDeserializer = new EntityDeserializerViaBinding(pool);
         
-        
-        var contexts = Contexts.sharedInstance;
         systems = new Feature("Systems");
-        /*
-        systems.Add(new BallSpawnerSystem(contexts.ball, entityDeserializer));
-        systems.Add(new BallMovementSystem());
-        systems.Add(new PadCollisionSystem(entityDeserializer));
-        systems.Add(new KeyInputSystem());
-        systems.Add(new BackgroundSystem(entityDeserializer));
-        systems.Add(new BlockCollisionSystem(entityDeserializer));
-        systems.Add(new InputCollisionSystem());
-         */
+        AddSystems(Contexts.sharedInstance, systems);
         systems.Initialize();
          
 	}
+
+    private void AddSystems(Contexts contexts, Systems systems)
+    {
+        systems.Add(new PlayerInitSystem(contexts.game, entityDeserializer));
+    }
 
     private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)
     {

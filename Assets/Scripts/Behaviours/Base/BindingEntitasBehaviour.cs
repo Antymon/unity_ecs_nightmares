@@ -37,7 +37,7 @@ public class BindingEntitasBehaviour : MonoBehaviour, IEntitasBinding
         pool = null;
     }
 
-    public Entitas.Entity GetEntity()
+    public GameEntity GetEntity()
     {
         return entity;
     }

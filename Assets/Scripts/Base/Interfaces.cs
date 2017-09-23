@@ -11,5 +11,5 @@ public interface IPrefabIdentifier
 public interface IEntitasBinding : IPrefabIdentifier, IPooledObject, IEntityDeserializer
 {
     //returns entity associated with game object
-    Entity GetEntity();
+    GameEntity GetEntity();
 }
