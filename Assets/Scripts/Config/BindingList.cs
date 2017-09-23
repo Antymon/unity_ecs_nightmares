@@ -13,6 +13,8 @@ public class EntityPrefabNameBinding
 	Output:    public static readonly EntityPrefabNameBinding NAME_BINDING = new EntityPrefabNameBinding(typeof(NameEntity), "Name");
     */
 
+    public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(typeof(PlayerEntity), "Player");
+
     public System.Type entityType;
     public string prefabName;
     

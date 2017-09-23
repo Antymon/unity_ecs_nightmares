@@ -2877,7 +2877,7 @@ GameObject:
   - component: {fileID: 1434239554}
   - component: {fileID: 1434239553}
   m_Layer: 8
-  m_Name: Floor
+  m_Name: FloorPointerCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
