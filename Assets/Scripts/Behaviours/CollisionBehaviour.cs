@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CollisionBehaviour : MonoBehaviour, IEntityDeserializer
 {
-    Entity entity;
+    GameEntity entity;
 
     void OnCollisionEnter(Collision coll)
     {
@@ -19,7 +19,7 @@ public class CollisionBehaviour : MonoBehaviour, IEntityDeserializer
         Contexts.sharedInstance.input.CreateEntity().ReplaceCollision(entity, entitasBinding.GetEntity());
     }
 
-    public void DeserializeEnitity(Entity entity)
+    public void DeserializeEnitity(GameEntity entity)
     {
         this.entity = entity;
     }

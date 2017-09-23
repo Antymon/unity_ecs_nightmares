@@ -1,25 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 
+/*
+ * Purpose of this class is to eliminate magic values for prefab names
+ * and provide mapping to enum type which is more easy to use for instance
+ * when assigning values in inspector
+ * 
+ * Bindings generation:
+	Input:PLAYER Player
+	Match:(.*) (.*)
+	Replace:    public static readonly EntityPrefabNameBinding $1_BINDING = new EntityPrefabNameBinding\(Type.$1, "$2"\);
+	Output:    public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
+ * 
+ */
+
 public class EntityPrefabNameBinding
 {
-    public static Dictionary<System.Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<System.Type, EntityPrefabNameBinding>();
+    public enum Type
+    {
+        PLAYER = 1,
+    }
 
-    /*
-    Regex bindings generation:
-	Input:NAME Name
-	Match:(.*) (.*)
-	Replace:    public static readonly EntityPrefabNameBinding $1_BINDING = new EntityPrefabNameBinding\(typeof\($2Entity\), "$2"\);
-	Output:    public static readonly EntityPrefabNameBinding NAME_BINDING = new EntityPrefabNameBinding(typeof(NameEntity), "Name");
-    */
+    public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
 
-    public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(typeof(PlayerEntity), "Player");
+    public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
 
-    public System.Type entityType;
+    public Type entityType;
     public string prefabName;
-    
 
-    private EntityPrefabNameBinding(System.Type entityType, string prefabName)
+
+    private EntityPrefabNameBinding(Type entityType, string prefabName)
     {
 
         entityTypeToPrefabName.Add(entityType, this);
@@ -27,4 +37,6 @@ public class EntityPrefabNameBinding
         this.entityType = entityType;
         this.prefabName = prefabName;
     }
+
+
 }

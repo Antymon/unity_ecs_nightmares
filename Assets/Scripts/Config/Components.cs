@@ -4,12 +4,16 @@ using UnityEngine;
 using Entitas;
 using Entitas.CodeGeneration.Attributes;
 
+public class EntityBinding : IComponent
+{
+    public EntityPrefabNameBinding entitasBinding;
+}
+
 public class PositionComponent : IComponent {
 
     public Vector3 position;
 }
 
-[Player]
 public class AgentComponent : IComponent
 {
     public int id;
@@ -45,20 +49,17 @@ public interface HealthChangedListener
     void HealthChanged(Entity entity);
 }
 
-[Player]
 public class HealthChangedListenerComponent : IComponent
 {
     public HealthChangedListener listener;
 }
 
-[Player]
 public class HealthComponent : IComponent
 {
     public int healthPoints;
     public int healthPointsCap;
 }
 
-[Player]
 public class DamageComponent : IComponent
 {
     public int healthPointsDamaged;

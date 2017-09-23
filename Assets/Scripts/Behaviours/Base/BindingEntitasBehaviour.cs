@@ -1,12 +1,14 @@
 ﻿using Entitas;
 using UnityEngine;
 
-public abstract class AbstractEntitasBehaviour : MonoBehaviour, IEntitasBinding
+public class BindingEntitasBehaviour : MonoBehaviour, IEntitasBinding
 {
-    protected IPool pool;
-    protected Entitas.Entity entity;
+    public EntityPrefabNameBinding.Type entityPrefabNameBinding;
 
-    public virtual void DeserializeEnitity(Entitas.Entity entity)
+    protected IPool pool;
+    protected GameEntity entity;
+
+    public virtual void DeserializeEnitity(GameEntity entity)
     {
         this.entity = entity;
         entity.OnDestroyEntity += OnDestroyHandler;
@@ -19,7 +21,10 @@ public abstract class AbstractEntitasBehaviour : MonoBehaviour, IEntitasBinding
         pool.Return(this.gameObject);
     }
 
-    public abstract EntityPrefabNameBinding GetPrefabBinding();
+    public EntityPrefabNameBinding GetPrefabBinding()
+    {
+        return EntityPrefabNameBinding.entityTypeToPrefabName[entityPrefabNameBinding];
+    }
 
     public void SetPool(IPool pool)
     {

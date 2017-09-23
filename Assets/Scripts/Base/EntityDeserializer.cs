@@ -6,7 +6,7 @@ using UnityEngine;
 //using interface as a method of hiding specifics of the implementation
 public interface IEntityDeserializer
 {
-    void DeserializeEnitity(Entity entity);
+    void DeserializeEnitity(GameEntity entity);
 }
 
 //this deserializer supports entities instances with data set on corresponding GameObjects
@@ -21,9 +21,9 @@ public class EntityDeserializerViaBinding : IEntityDeserializer
         this.pool = pool;
     }
 
-    public void DeserializeEnitity(Entity entity)
+    public void DeserializeEnitity(GameEntity entity)
     {
-        var entityType = entity.GetType();
+        var entityType = entity.entityBinding.entitasBinding.entityType;
 
         var prefabName = EntityPrefabNameBinding.entityTypeToPrefabName[entityType].prefabName;
 
