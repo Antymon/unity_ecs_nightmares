@@ -15,6 +15,8 @@ public interface IPool
     void Return(GameObject poolItem);
 }
 
+//pool for game objects bound to entities
+//binding itself is expected to be overwritten when reusing game object
 public class BindableGameObjectPool : IPool
 {
     private Dictionary<string, Stack<GameObject>> pools;
@@ -76,8 +78,6 @@ public class BindableGameObjectPool : IPool
         pooledObject.Reset();
 
         poolItem.SetActive(false);
-        
-
 
         var prefabName = prefabIdentifier.GetPrefabBinding().prefabName;
 
@@ -89,7 +89,5 @@ public class BindableGameObjectPool : IPool
         var pool = pools[prefabName];
 
         pool.Push(poolItem);
-
-        
     }
 }

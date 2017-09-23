@@ -1,80 +1,115 @@
-﻿using Assets.Scripts.Components;
-using Entitas;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
+using Entitas;
+using Entitas.CodeGeneration.Attributes;
 
-[Ball,Pad,Block]
-public sealed class PositionComponent : IComponent {
+public class PositionComponent : IComponent {
 
-    public float x;
-    public float y;
+    public Vector3 position;
 }
 
-[Background]
-public class TriggerComponent : IComponent
-{
-    public Entity other;
-}
-
-[Pad]
-public class PlayerComponent : IComponent
+public class AgentComponent : IComponent
 {
     public int id;
+    public string name;
+    public IEnumerable<IEffect> effects;
 }
 
-[Pad]
-public class KeyInputComponent : IComponent
+public class AggressorComponent : IComponent
 {
-    public KeyCode leftKeyCode;
-    public KeyCode rightKeyCode;
+    public Entity target;
 }
 
-[Ball, Pad]
-public sealed class MovableComponent : IComponent
+public interface IEffect
 {
-    
+
 }
 
-[Input,Pad, Block]
+//for spawner boosters
+public class EffectComponent : IComponent
+{
+    public IEffect effect;
+}
+
 public class CollisionComponent : IComponent
 {
-    public Collision2D collision;
-    public Vector2 velocity;
     public Entity self;
     public Entity other;
 }
 
-[Ball]
-public class ProcessedCollisionComponent : IComponent
+public interface HealthChangedListener
 {
-    public ICollisionInfo collision;
+    void HealthChanged(Entity entity);
 }
 
-public interface BallChangedDirectionListener
+public class HealthChangedListenerComponent : IComponent
 {
-    void DirectionChanged(Vector2 direction);
+    public HealthChangedListener listener;
 }
 
-[Ball,Pad]
-public class BallChangedDirectionListenerComponent : IComponent
+public class HealthComponent : IComponent
 {
-    public BallChangedDirectionListener listener;
+    public int healthPoints;
+    public int healthPointsCap;
 }
 
-[Ball,Pad]
-public class PositionTrackerComponent : IComponent
+public class DamageComponent : IComponent
 {
-    public SinkingQueue<Vector2> trackedPositions;
+    public int healthPointsDamaged;
 }
 
-[Input]
-public class KeyPressedComponent : IComponent
+public class SpawnerComponent : IComponent
 {
-    public KeyCode keyCode;
+    public int roundCap;
+    public float chanceOfSpawning; //normalized
 }
 
-[Ball]
-public class BallOutComponent : IComponent
+public class ProjectileComponent : IComponent
+{
+    public long cooldownTime; //ticks, time betweent consecutive shots
+}
+
+[Unique]
+public class LevelComponent : IComponent
+{
+    public int numberRounds;
+    public int spawnersCap;
+    public int currentRound;
+    public int wonByPlayer;
+    public long roundTime; //ticks
+}
+
+[Unique]
+public class TickComponent : IComponent
+{
+    public long currentTick;
+}
+
+public class HealthBarComponent : IComponent
+{
+    public int actorId;
+}
+
+[Unique]
+public class JoystickComponent : IComponent
+{
+}
+
+[Unique]
+public class PauseComponent : IComponent 
+{ 
+
+}
+
+[Unique]
+public class RoundCounterComponent : IComponent
+{
+    public int round;
+}
+
+[Unique]
+public class HealthDecreaseOverlayComponent : IComponent
 {
 
 }

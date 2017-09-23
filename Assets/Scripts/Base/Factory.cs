@@ -12,6 +12,7 @@ public class Factory : IFactory
     private Dictionary<string, GameObject> resources;
     private Transform defaultTransform;
 
+    //transform will be used as a parent for spawning game objects
     public Factory(Transform defaultTransform)
     {
         resources = new Dictionary<string, GameObject>();

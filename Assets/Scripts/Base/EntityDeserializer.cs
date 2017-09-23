@@ -9,8 +9,8 @@ public interface IEntityDeserializer
     void DeserializeEnitity(Entity entity);
 }
 
-//deserialization is bound to data set on GameObjects
-//interface inverts the dependency though so that entitas side remains uaware of dependency
+//this deserializer supports entities instances with data set on corresponding GameObjects
+//interface inverts the dependency so that Entitas side remains uaware of dependency on Unity APIs
 //whenever agnostic execution is required - new implementation of the deserialization needs to be provided
 public class EntityDeserializerViaBinding : IEntityDeserializer
 {
