@@ -68,17 +68,15 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     private void ShowJoypad(Touch touch)
     {
-        Debug.Log("ShowJoypad");
-
         joypadEntity.ReplacePosition(touch.position);
         joypadEntity.ReplaceJoystick(true, touch.fingerId);
-
-        
     }
 
     private void MoveJoypad(Vector2 touchPosition)
     {
         Vector2 joypadDirection = touchPosition - (Vector2)joypadEntity.position.position;
+
+        joypadEntity.joypadBinding.listener.JoypadMoved(joypadDirection);
     }
 
     public static float GetAngleFromDirection(Vector2 direction)
@@ -88,8 +86,6 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     private void HideJoypad()
     {
-        Debug.Log("HideJoypad");
-
         joypadEntity.ReplaceJoystick(false, -1);
     }
 

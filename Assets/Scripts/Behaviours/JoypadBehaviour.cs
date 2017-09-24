@@ -4,6 +4,9 @@ using Entitas;
 
 public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJoypadMovedListener
 {
+    public Transform outerCircle;
+    public Transform innerCircle;
+
     override public void DeserializeEnitity(GameEntity entity)
     {
         base.DeserializeEnitity(entity);
@@ -27,6 +30,25 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
     public void JoypadMoved(Vector2 joypadDirection)
     {
         float joypadAngle = JoypadSystem.GetAngleFromDirection(joypadDirection);
+
+        UpdateShape(joypadAngle, joypadDirection);
+    }
+
+    float outerRadius;
+
+    void Start()
+    {   
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        outerRadius = rectTransform.rect.width / 2f;
+    }
+
+    void UpdateShape(float angle, Vector2 direction)
+    {
+        outerCircle.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        Vector3 stickpos = innerCircle.localPosition;
+        stickpos.y = Mathf.Clamp(direction.magnitude, 0, outerRadius);
+        innerCircle.localPosition = stickpos;
     }
 }
 

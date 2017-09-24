@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222456111695144824}
   - component: {fileID: 114278835120402042}
   m_Layer: 5
-  m_Name: ShootingCircle
+  m_Name: InnerCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224375300386628346}
   m_Layer: 5
-  m_Name: ShootingCircleContainer
+  m_Name: OuterCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1989665656327006}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7002232d78060944a663e2ab51c7f3b, type: 3}
   m_Name: 
@@ -113,6 +113,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityPrefabNameBinding: 2
+  outerCircle: {fileID: 224375300386628346}
+  innerCircle: {fileID: 224330244452022410}
 --- !u!114 &114703584168714314
 MonoBehaviour:
   m_ObjectHideFlags: 1
