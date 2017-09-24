@@ -7,12 +7,14 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
     public float speed = 6f;            // The speed that the player will move at.
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
-    Animator anim;                      // Reference to the animator component.
-    Rigidbody playerRigidbody;          // Reference to the player's rigidbody.
+    Animator playerAnimation;                      // Reference to the animator component.
+    Rigidbody playerRigidbody; 
 
     //used for animation toggling
     int framesCountSinceLastMovement = 0;
     const int MAX_FRAMES_SINCE_LAST_MOVEMENT = 5;
+
+    const string WALKING_ANIMATION_LABEL = "IsWalking";
 
     public void DeserializeEnitity(GameEntity entity)
     {
@@ -24,7 +26,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
         Move(direction.x, direction.y);
         
         framesCountSinceLastMovement = 0;
-        anim.SetBool("IsWalking", true);
+        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, true);
     }
 
     public void OnOrientationChanged(Vector2 direction)
@@ -35,8 +37,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     void Awake()
     {
-        // Set up references.
-        anim = GetComponent<Animator>();
+        playerAnimation = GetComponent<Animator>();
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
@@ -48,7 +49,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
         }
         else
         {
-            anim.SetBool("IsWalking", false);
+            playerAnimation.SetBool(WALKING_ANIMATION_LABEL, false);
         }
     }
 
