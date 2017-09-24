@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
     private void AddSystems(Contexts contexts, Systems systems)
     {
         systems.Add(new PlayerInitSystem(contexts.game, entityDeserializer));
+        systems.Add(new JoypadSystem(contexts.input,contexts.game, entityDeserializer));
     }
 
     private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)

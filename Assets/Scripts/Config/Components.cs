@@ -38,6 +38,13 @@ public class EffectComponent : IComponent
 }
 
 [Input]
+public class TouchesComponent : IComponent
+{
+    public Touch[] touches;
+}
+
+
+[Input]
 public class CollisionComponent : IComponent
 {
     public Entity self;
@@ -100,6 +107,8 @@ public class HealthBarComponent : IComponent
 [Unique]
 public class JoystickComponent : IComponent
 {
+    public bool enabled;
+    public int touchId;
 }
 
 [Unique]
@@ -112,6 +121,12 @@ public class PauseComponent : IComponent
 public class RoundCounterComponent : IComponent
 {
     public int round;
+}
+
+[Unique]
+public class ScoreCounterComponent : IComponent
+{
+    public int score;
 }
 
 [Unique]

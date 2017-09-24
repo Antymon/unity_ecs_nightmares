@@ -9,19 +9,30 @@
 public partial class GameContext {
 
     public GameEntity joystickEntity { get { return GetGroup(GameMatcher.Joystick).GetSingleEntity(); } }
+    public JoystickComponent joystick { get { return joystickEntity.joystick; } }
+    public bool hasJoystick { get { return joystickEntity != null; } }
 
-    public bool isJoystick {
-        get { return joystickEntity != null; }
-        set {
-            var entity = joystickEntity;
-            if (value != (entity != null)) {
-                if (value) {
-                    CreateEntity().isJoystick = true;
-                } else {
-                    entity.Destroy();
-                }
-            }
+    public GameEntity SetJoystick(bool newEnabled, int newTouchId) {
+        if (hasJoystick) {
+            throw new Entitas.EntitasException("Could not set Joystick!\n" + this + " already has an entity with JoystickComponent!",
+                "You should check if the context already has a joystickEntity before setting it or use context.ReplaceJoystick().");
         }
+        var entity = CreateEntity();
+        entity.AddJoystick(newEnabled, newTouchId);
+        return entity;
+    }
+
+    public void ReplaceJoystick(bool newEnabled, int newTouchId) {
+        var entity = joystickEntity;
+        if (entity == null) {
+            entity = SetJoystick(newEnabled, newTouchId);
+        } else {
+            entity.ReplaceJoystick(newEnabled, newTouchId);
+        }
+    }
+
+    public void RemoveJoystick() {
+        joystickEntity.Destroy();
     }
 }
 
@@ -35,19 +46,27 @@ public partial class GameContext {
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly JoystickComponent joystickComponent = new JoystickComponent();
+    public JoystickComponent joystick { get { return (JoystickComponent)GetComponent(GameComponentsLookup.Joystick); } }
+    public bool hasJoystick { get { return HasComponent(GameComponentsLookup.Joystick); } }
 
-    public bool isJoystick {
-        get { return HasComponent(GameComponentsLookup.Joystick); }
-        set {
-            if (value != isJoystick) {
-                if (value) {
-                    AddComponent(GameComponentsLookup.Joystick, joystickComponent);
-                } else {
-                    RemoveComponent(GameComponentsLookup.Joystick);
-                }
-            }
-        }
+    public void AddJoystick(bool newEnabled, int newTouchId) {
+        var index = GameComponentsLookup.Joystick;
+        var component = CreateComponent<JoystickComponent>(index);
+        component.enabled = newEnabled;
+        component.touchId = newTouchId;
+        AddComponent(index, component);
+    }
+
+    public void ReplaceJoystick(bool newEnabled, int newTouchId) {
+        var index = GameComponentsLookup.Joystick;
+        var component = CreateComponent<JoystickComponent>(index);
+        component.enabled = newEnabled;
+        component.touchId = newTouchId;
+        ReplaceComponent(index, component);
+    }
+
+    public void RemoveJoystick() {
+        RemoveComponent(GameComponentsLookup.Joystick);
     }
 }
 

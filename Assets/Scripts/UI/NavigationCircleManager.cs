@@ -52,9 +52,9 @@ public class NavigationCircleManager : MonoBehaviour
 		    if (Input.GetMouseButtonDown(0))
 		    {
 			    EvaluateDifferenceBetweenTouchPointAndCircleCenter(Input.mousePosition);
-                dragging = true; // (lastNavigationTouchPoint.magnitude < outerRadius);
+                dragging = (lastNavigationTouchPoint.magnitude < outerRadius);
 
-                //Debug.Log(lastNavigationTouchPoint.magnitude+" "+outerRadius);
+                Debug.Log(lastNavigationTouchPoint.magnitude+" "+outerRadius);
 		    }
 		    else if (Input.GetMouseButton(0))
 		    {
@@ -87,7 +87,7 @@ public class NavigationCircleManager : MonoBehaviour
 				
 				    EvaluateDifferenceBetweenTouchPointAndCircleCenter(touchPosition);
 				
-				    //if (lastNavigationTouchPoint.magnitude < outerRadius)
+				    if (lastNavigationTouchPoint.magnitude < outerRadius)
 				    {
 					    dragging = true;
 					    fingerId = Input.GetTouch(closest).fingerId;
@@ -137,7 +137,7 @@ public class NavigationCircleManager : MonoBehaviour
 
 		if(dragging) {
 			Vector3 stickpos = GameObject.Find("ShootingCircle").transform.localPosition;
-			stickpos.y = Mathf.Clamp(lastNavigationTouchPoint.magnitude/innerCircleTransform.localScale.x , 0, outerRadius);
+			stickpos.y = Mathf.Clamp(lastNavigationTouchPoint.magnitude, 0, outerRadius);
 			GameObject.Find("ShootingCircle").transform.localPosition = stickpos;
 		}
 		else {
