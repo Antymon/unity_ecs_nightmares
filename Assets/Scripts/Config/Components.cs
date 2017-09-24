@@ -104,11 +104,22 @@ public class HealthBarComponent : IComponent
     public int actorId;
 }
 
-[Unique]
+
 public class JoystickComponent : IComponent
 {
     public bool enabled;
     public int touchId;
+}
+
+public class JoypadBindingComponent : IComponent
+{
+    public float radius;
+    public IJoypadMovedListener listener;
+}
+
+public interface IJoypadMovedListener
+{
+    void JoypadMoved(Vector2 direction);
 }
 
 [Unique]

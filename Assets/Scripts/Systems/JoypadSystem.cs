@@ -29,9 +29,11 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
         foreach (var entity in entities)
         {
+            var touches = entity.touches.touches;
+
             if (joypadEnabled) //joypad is visible so valid actions are move or disable
             {
-                foreach (var touch in entity.touches.touches)
+                foreach (var touch in touches)
                 {
                     if(touch.fingerId == joypadTouchId)
                     {
@@ -50,7 +52,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
             }
             else
             {
-                foreach (var touch in entity.touches.touches)
+                foreach (var touch in touches)
                 {
                     if(touch.phase == TouchPhase.Began)
                     {
@@ -74,13 +76,14 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
         
     }
 
-    private void MoveJoypad(Vector2 vector2)
+    private void MoveJoypad(Vector2 touchPosition)
     {
-        Debug.Log("JoypadMoved");
+        Vector2 joypadDirection = touchPosition - (Vector2)joypadEntity.position.position;
+    }
 
-        
-
-
+    public static float GetAngleFromDirection(Vector2 direction)
+    {
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
     }
 
     private void HideJoypad()

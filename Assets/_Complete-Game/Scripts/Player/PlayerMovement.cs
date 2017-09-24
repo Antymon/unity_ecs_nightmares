@@ -72,6 +72,8 @@ namespace CompleteProject
             playerToMouse.x = navigationCircle.lastNavigationTouchPoint.x;
             playerToMouse.z = navigationCircle.lastNavigationTouchPoint.y;
 
+            if (playerToMouse.Equals(Vector3.zero)) return;
+
             // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
             Quaternion newRotatation = Quaternion.LookRotation (playerToMouse);
 

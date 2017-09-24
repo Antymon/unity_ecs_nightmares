@@ -17,17 +17,18 @@ public static class GameComponentsLookup {
     public const int HealthChangedListener = 6;
     public const int Health = 7;
     public const int HealthDecreaseOverlay = 8;
-    public const int Joystick = 9;
-    public const int Level = 10;
-    public const int Pause = 11;
-    public const int Position = 12;
-    public const int Projectile = 13;
-    public const int RoundCounter = 14;
-    public const int ScoreCounter = 15;
-    public const int Spawner = 16;
-    public const int Tick = 17;
+    public const int JoypadBinding = 9;
+    public const int Joystick = 10;
+    public const int Level = 11;
+    public const int Pause = 12;
+    public const int Position = 13;
+    public const int Projectile = 14;
+    public const int RoundCounter = 15;
+    public const int ScoreCounter = 16;
+    public const int Spawner = 17;
+    public const int Tick = 18;
 
-    public const int TotalComponents = 18;
+    public const int TotalComponents = 19;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -39,6 +40,7 @@ public static class GameComponentsLookup {
         "HealthChangedListener",
         "Health",
         "HealthDecreaseOverlay",
+        "JoypadBinding",
         "Joystick",
         "Level",
         "Pause",
@@ -60,6 +62,7 @@ public static class GameComponentsLookup {
         typeof(HealthChangedListenerComponent),
         typeof(HealthComponent),
         typeof(HealthDecreaseOverlayComponent),
+        typeof(JoypadBindingComponent),
         typeof(JoystickComponent),
         typeof(LevelComponent),
         typeof(PauseComponent),
