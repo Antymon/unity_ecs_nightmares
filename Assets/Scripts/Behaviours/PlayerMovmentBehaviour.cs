@@ -4,6 +4,7 @@ using Entitas;
 
 public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
 {
+
     public void DeserializeEnitity(GameEntity entity)
     {
         entity.AddMovementDirectionChangedListener(this) ;
@@ -11,9 +12,10 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     public void OnMovementDirectionChanged(Vector2 direction)
     {
+        Move(direction.x, direction.y);
+        Turning(direction);
+        Animating(direction.x, direction.y);
     }
-
-    public NavigationCircleManager navigationCircle;
 
     public float speed = 6f;            // The speed that the player will move at.
 
@@ -29,24 +31,6 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
         playerRigidbody = GetComponent<Rigidbody>();
     }
 
-
-    void FixedUpdate()
-    {
-        // Move the player around the scene.
-
-        if (navigationCircle.IsPointDraggedAndInsideOfACircle())
-        {
-            Move(navigationCircle.lastNavigationTouchPoint.x, navigationCircle.lastNavigationTouchPoint.y);
-        }
-
-        // Turn the player to face the mouse cursor.
-        Turning();
-
-        // Animate the player.
-        Animating(1, 1);
-    }
-
-
     void Move(float h, float v)
     {
         // Set the movement vector based on the axis input.
@@ -60,12 +44,12 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
     }
 
 
-    void Turning()
+    void Turning(Vector2 direction)
     {
         // Create a vector from the player to the point on the floor the raycast from the mouse hit.
         Vector3 playerToMouse = Vector3.zero;
-        playerToMouse.x = navigationCircle.lastNavigationTouchPoint.x;
-        playerToMouse.z = navigationCircle.lastNavigationTouchPoint.y;
+        playerToMouse.x = direction.x;
+        playerToMouse.z = direction.y;
 
         if (playerToMouse.Equals(Vector3.zero)) return;
 

@@ -2,12 +2,11 @@
 
 public class PlayerMovementSystem : ReactiveSystem<GameEntity>
 {
-    private IEntityDeserializer entityDeserializer;
 
-    public PlayerMovementSystem(GameContext context, IEntityDeserializer deserializer)
+    public PlayerMovementSystem(GameContext context)
         : base(context)
     {
-        this.entityDeserializer = deserializer;
+
     }
 
     protected override void Execute(System.Collections.Generic.List<GameEntity> entities)

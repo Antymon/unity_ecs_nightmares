@@ -51,7 +51,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                         {
                             HideJoypad();
                         }
-                        else if (touch.phase == TouchPhase.Moved)
+                        else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                         {
                             MoveJoypad(touch.position);
                         }
