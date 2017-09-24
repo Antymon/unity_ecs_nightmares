@@ -13,7 +13,7 @@ public class NavigationCircleManager : MonoBehaviour
 	bool dragging;
 
 	//RectTransform navigationCircleTransform;
-	RectTransform innerCircleTransform;
+	//RectTransform innerCircleTransform;
 
 	int fingerId;
 
@@ -29,7 +29,7 @@ public class NavigationCircleManager : MonoBehaviour
 	void Start () 
 	{
         Reset();
-		innerCircleTransform = GameObject.Find("ShootingCircle").GetComponent<RectTransform>();
+		//innerCircleTransform = GameObject.Find("ShootingCircle").GetComponent<RectTransform>();
         RectTransform rectTransform = GetComponent<RectTransform>();
 		outerRadius = rectTransform.rect.width / 2f;
 

@@ -20,15 +20,18 @@ public static class GameComponentsLookup {
     public const int JoypadBinding = 9;
     public const int Joystick = 10;
     public const int Level = 11;
-    public const int Pause = 12;
-    public const int Position = 13;
-    public const int Projectile = 14;
-    public const int RoundCounter = 15;
-    public const int ScoreCounter = 16;
-    public const int Spawner = 17;
-    public const int Tick = 18;
+    public const int MovementDirectionChangedListener = 12;
+    public const int MovementDirection = 13;
+    public const int Pause = 14;
+    public const int Player = 15;
+    public const int Position = 16;
+    public const int Projectile = 17;
+    public const int RoundCounter = 18;
+    public const int ScoreCounter = 19;
+    public const int Spawner = 20;
+    public const int Tick = 21;
 
-    public const int TotalComponents = 19;
+    public const int TotalComponents = 22;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -43,7 +46,10 @@ public static class GameComponentsLookup {
         "JoypadBinding",
         "Joystick",
         "Level",
+        "MovementDirectionChangedListener",
+        "MovementDirection",
         "Pause",
+        "Player",
         "Position",
         "Projectile",
         "RoundCounter",
@@ -65,7 +71,10 @@ public static class GameComponentsLookup {
         typeof(JoypadBindingComponent),
         typeof(JoystickComponent),
         typeof(LevelComponent),
+        typeof(MovementDirectionChangedListenerComponent),
+        typeof(MovementDirectionComponent),
         typeof(PauseComponent),
+        typeof(Player),
         typeof(PositionComponent),
         typeof(ProjectileComponent),
         typeof(RoundCounterComponent),

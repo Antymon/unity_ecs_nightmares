@@ -11,7 +11,9 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
     {
         base.DeserializeEnitity(entity);
         entity.ReplacePosition(transform.position);
-        entity.AddJoypadBinding(0, this);
+
+        //ToDo: radius is meant as improvement: to separate rotation from actual movement
+        entity.AddJoypadBinding(newRadius: 0, newListener: this);
 
         entity.OnComponentReplaced += OnComponentReplaced;
     }
@@ -27,7 +29,7 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
         }
     }
 
-    public void JoypadMoved(Vector2 joypadDirection)
+    public void OnJoypadMoved(Vector2 joypadDirection)
     {
         float joypadAngle = JoypadSystem.GetAngleFromDirection(joypadDirection);
 

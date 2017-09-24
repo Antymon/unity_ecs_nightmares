@@ -3,9 +3,16 @@ using UnityEngine;
 
 public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 {
+    //stateless utility
+    public static float GetAngleFromDirection(Vector2 direction)
+    {
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+    }
+
     private IEntityDeserializer entityDeserializer;
     private GameContext gameContext;
     private GameEntity joypadEntity;
+    private GameEntity playerEnity;
 
     public JoypadSystem(InputContext context, GameContext gameContext, IEntityDeserializer deserializer)
         : base(context)
@@ -14,12 +21,15 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
         this.gameContext = gameContext;
     }
 
+    //create joypad binding, fetch player entity
     public void Initialize()
     {
         joypadEntity = gameContext.CreateEntity();
         joypadEntity.AddEntityBinding(EntityPrefabNameBinding.JOYPAD_BINDING);
-        joypadEntity.AddJoystick(false,-1);
+        joypadEntity.AddJoystick(newEnabled: false, newTouchId:-1);
         entityDeserializer.DeserializeEnitity(joypadEntity);
+
+        playerEnity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
@@ -69,24 +79,21 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     private void ShowJoypad(Touch touch)
     {
         joypadEntity.ReplacePosition(touch.position);
-        joypadEntity.ReplaceJoystick(true, touch.fingerId);
+        joypadEntity.ReplaceJoystick(newEnabled:true,newTouchId:touch.fingerId);
     }
 
     private void MoveJoypad(Vector2 touchPosition)
     {
         Vector2 joypadDirection = touchPosition - (Vector2)joypadEntity.position.position;
 
-        joypadEntity.joypadBinding.listener.JoypadMoved(joypadDirection);
-    }
+        joypadEntity.joypadBinding.listener.OnJoypadMoved(joypadDirection);
 
-    public static float GetAngleFromDirection(Vector2 direction)
-    {
-        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+        playerEnity.ReplaceMovementDirection(joypadDirection);
     }
 
     private void HideJoypad()
     {
-        joypadEntity.ReplaceJoystick(false, -1);
+        joypadEntity.ReplaceJoystick(newEnabled: false, newTouchId:-1);
     }
 
     protected override bool Filter(InputEntity entity)

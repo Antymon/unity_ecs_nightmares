@@ -9,9 +9,24 @@ public class EntityBinding : IComponent
     public EntityPrefabNameBinding entitasBinding;
 }
 
-public class PositionComponent : IComponent {
-
+public class PositionComponent : IComponent 
+{
     public Vector3 position;
+}
+
+public class MovementDirectionComponent : IComponent
+{
+    public Vector3 direction;
+}
+
+public interface IMovementDirectionChangedListener : IComponent
+{
+    void OnMovementDirectionChanged(Vector2 direction);
+}
+
+public class MovementDirectionChangedListenerComponent : IComponent
+{
+    public IMovementDirectionChangedListener listener;
 }
 
 public class AgentComponent : IComponent
@@ -19,6 +34,11 @@ public class AgentComponent : IComponent
     public int id;
     public string name;
     public IEnumerable<IEffect> effects;
+}
+
+public class Player : IComponent
+{
+
 }
 
 public class AggressorComponent : IComponent
@@ -119,7 +139,7 @@ public class JoypadBindingComponent : IComponent
 
 public interface IJoypadMovedListener
 {
-    void JoypadMoved(Vector2 direction);
+    void OnJoypadMoved(Vector2 direction);
 }
 
 [Unique]

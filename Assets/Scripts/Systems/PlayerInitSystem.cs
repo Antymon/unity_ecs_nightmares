@@ -14,8 +14,10 @@ public class PlayerInitSystem  : IInitializeSystem
     public void Initialize()
     {
         var entity = context.CreateEntity();
+        entity.isPlayer = true;
         entity.AddEntityBinding(EntityPrefabNameBinding.PLAYER_BINDING);
         entityDeserializer.DeserializeEnitity(entity);
     }
+
 }
 
