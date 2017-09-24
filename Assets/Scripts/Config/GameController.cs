@@ -27,11 +27,13 @@ public class GameController : MonoBehaviour {
          
 	}
 
+    //in general systems ordering is significant
     private void AddSystems(Contexts contexts, Systems systems)
     {
         systems.Add(new PlayerInitSystem(contexts.game, entityDeserializer));
         systems.Add(new JoypadSystem(contexts.input,contexts.game, entityDeserializer));
         systems.Add(new PlayerMovementSystem(contexts.game));
+        systems.Add(new TriggerBulletSystem(contexts.input, contexts.game));
     }
 
     private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)

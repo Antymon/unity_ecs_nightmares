@@ -1,4 +1,5 @@
 ﻿using Entitas;
+using UnityEngine;
 
 public class PlayerMovementSystem : ReactiveSystem<GameEntity>
 {
@@ -23,6 +24,8 @@ public class PlayerMovementSystem : ReactiveSystem<GameEntity>
                 directionChangedListener.OnMovementDirectionChanged(direction);
             }
         }
+
+        
     }
 
     protected override bool Filter(GameEntity entity)

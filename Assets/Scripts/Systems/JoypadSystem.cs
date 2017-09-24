@@ -1,4 +1,5 @@
 ﻿using Entitas;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
@@ -34,12 +35,14 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
     {
-        int joypadTouchId = joypadEntity.joystick.touchId;
-        bool joypadEnabled = joypadEntity.joystick.enabled;
-
         foreach (var entity in entities)
         {
+            int joypadTouchId = joypadEntity.joystick.touchId;
+            bool joypadEnabled = joypadEntity.joystick.enabled;
+
             var touches = entity.touches.touches;
+
+            bool touchFound = false;
 
             if (joypadEnabled) //joypad is visible so valid actions are move or disable
             {
@@ -47,8 +50,11 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                 {
                     if(touch.fingerId == joypadTouchId)
                     {
+                        touchFound = true;
+
                         if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                         {
+                            Debug.Log("Hide joypad " + touch);
                             HideJoypad();
                         }
                         else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
@@ -59,6 +65,12 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                         break;
                     }
                 }
+
+                if(!touchFound)
+                {
+                    Debug.Log("Touch not found ");
+                    HideJoypad();
+                }
             }
             else
             {
@@ -67,12 +79,11 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                     if(touch.phase == TouchPhase.Began)
                     {
                         ShowJoypad(touch);
-                        
+                        Debug.Log("Show joypad " + touch.fingerId + " "+joypadEntity.joystick.enabled);
                         break;
                     }
                 }
-            }
-            entity.Destroy();
+            }   
         }
     }
 

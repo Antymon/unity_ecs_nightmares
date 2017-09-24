@@ -1,10 +1,15 @@
 ﻿using Entitas;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSystem
+public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSystem, ICleanupSystem
 {
     private GameContext gameContext;
     private GameEntity joypadEntity;
+
+    //other systems are operating on overlapping subsets of entities
+    //so cleanup has to be posponed after all executions have been made
+    private List<InputEntity> entitiesCleanupRegister = new List<InputEntity>();
 
     public TriggerBulletSystem(InputContext context, GameContext gameContext)
         : base(context)
@@ -19,6 +24,8 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
     {
+        entitiesCleanupRegister.AddRange(entities);
+
         //assumption: shooting is complementing navigation
         //specificically shooting is triggered by second touch point wheras navigation by first
         //so if navigation is disabled, nothing to consider
@@ -44,7 +51,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
                 }
             }
 
-            entity.Destroy();
+            //entity.Destroy();
         }
     }
 
@@ -61,6 +68,16 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
     {
         return context.CreateCollector<InputEntity>(InputMatcher.Touches.Added());
+    }
+
+    public void Cleanup()
+    {
+        foreach (var entity in entitiesCleanupRegister)
+        {
+            entity.Destroy();
+        }
+
+        entitiesCleanupRegister.Clear();
     }
 }
 

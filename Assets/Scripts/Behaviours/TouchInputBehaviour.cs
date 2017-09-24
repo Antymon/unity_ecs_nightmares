@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public class TouchInputBehaviour : MonoBehaviour
 {
-    public KeyCode shootingKey = KeyCode.Space;
+    public KeyCode alternativeTouchKey = KeyCode.Space;
 
     public void Update()
     {
@@ -33,20 +33,20 @@ public class TouchInputBehaviour : MonoBehaviour
                 touches.Add(FakeTouch(TouchPhase.Ended, 1));
             }
 
-            /*
-            if (Input.GetKeyDown(shootingKey))
+            
+            if (Input.GetKeyDown(alternativeTouchKey))
             {
                 touches.Add(FakeTouch(TouchPhase.Began, 2));
             }
-            else if (Input.GetKey(shootingKey))
+            else if (Input.GetKey(alternativeTouchKey))
             {
                 touches.Add(FakeTouch(TouchPhase.Stationary, 2));
             }
-            else if (Input.GetKeyUp(shootingKey))
+            else if (Input.GetKeyUp(alternativeTouchKey))
             {
                 touches.Add(FakeTouch(TouchPhase.Ended, 2));
             }
-             * */
+            
 
             NotifyTouches(touches.ToArray());
         }
