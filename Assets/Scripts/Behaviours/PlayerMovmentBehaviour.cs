@@ -4,17 +4,17 @@ using Entitas;
 
 public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
 {
+    const string WALKING_ANIMATION_LABEL = "IsWalking";
+
+    //used for animation toggling
+    const int MAX_FRAMES_SINCE_LAST_MOVEMENT = 5;
+    int framesCountSinceLastMovement = 0;
+
     public float speed = 6f;            // The speed that the player will move at.
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
     Animator playerAnimation;                      // Reference to the animator component.
-    Rigidbody playerRigidbody; 
-
-    //used for animation toggling
-    int framesCountSinceLastMovement = 0;
-    const int MAX_FRAMES_SINCE_LAST_MOVEMENT = 5;
-
-    const string WALKING_ANIMATION_LABEL = "IsWalking";
+    Rigidbody playerRigidbody;
 
     public void DeserializeEnitity(GameEntity entity)
     {
@@ -31,8 +31,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     public void OnOrientationChanged(Vector2 direction)
     {
-        Turn(direction);
-        
+        Turn(direction);  
     }
 
     void Awake()
@@ -55,30 +54,28 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     void Move(float h, float v)
     {
-        // Set the movement vector based on the axis input.
         movement.Set(h, 0f, v);
 
         // Normalise the movement vector and make it proportional to the speed per second.
         movement = movement.normalized * speed * Time.deltaTime;
 
-        // Move the player to it's current position plus the movement.
         playerRigidbody.MovePosition(transform.position + movement);
     }
 
 
     void Turn(Vector2 direction)
     {
-        // Create a vector from the player to the point on the floor the raycast from the mouse hit.
         Vector3 playerToMouse = Vector3.zero;
         playerToMouse.x = direction.x;
         playerToMouse.z = direction.y;
 
-        if (playerToMouse.Equals(Vector3.zero)) return;
+        //avoiding precison problems
+        //sqr is faster
+        if (playerToMouse.sqrMagnitude < 0.01f) return;
 
         // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
         Quaternion newRotatation = Quaternion.LookRotation(playerToMouse);
 
-        // Set the player's rotation to this new rotation.
         playerRigidbody.MoveRotation(newRotatation);
 
     }
