@@ -67,8 +67,10 @@ GameObject:
   - component: {fileID: 11400002}
   - component: {fileID: 13600000}
   - component: {fileID: 8200002}
-  - component: {fileID: 114085154455892596}
   - component: {fileID: 114057558593366232}
+  - component: {fileID: 114085154455892596}
+  - component: {fileID: 114741452270021438}
+  - component: {fileID: 114890796736048666}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3886,3 +3888,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58c971b00c3b8d4a8a0cf96dd559235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114741452270021438
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0899a89ec3109840bf270688dedd484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 5
+  healthPointsCap: 5
+--- !u!114 &114890796736048666
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f261cf830578e74698a71b684ef80e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPointsDamaged: 1

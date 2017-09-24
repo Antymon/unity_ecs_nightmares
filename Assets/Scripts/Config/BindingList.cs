@@ -19,11 +19,13 @@ public class EntityPrefabNameBinding
     public enum Type
     {
         PLAYER = 1,
+        JOYPAD = 2,
     }
 
     public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
 
     public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
+    public static readonly EntityPrefabNameBinding JOYPAD_BINDING = new EntityPrefabNameBinding(Type.JOYPAD, "Joypad");
 
     public Type entityType;
     public string prefabName;
