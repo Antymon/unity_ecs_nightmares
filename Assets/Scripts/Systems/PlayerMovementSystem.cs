@@ -13,7 +13,15 @@ public class PlayerMovementSystem : ReactiveSystem<GameEntity>
     {
         foreach (var entity in entities)
         {
-            entity.movementDirectionChangedListener.listener.OnMovementDirectionChanged(entity.movementDirection.direction);
+            var directionChangedListener = entity.movementDirectionChangedListener.listener;
+            var direction = entity.movementDirection.direction;
+
+            directionChangedListener.OnOrientationChanged(direction);
+
+            if (!entity.movementDirection.onlyRotationAffected)
+            {
+                directionChangedListener.OnMovementDirectionChanged(direction);
+            }
         }
     }
 

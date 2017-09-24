@@ -11,17 +11,19 @@ public partial class GameEntity {
     public MovementDirectionComponent movementDirection { get { return (MovementDirectionComponent)GetComponent(GameComponentsLookup.MovementDirection); } }
     public bool hasMovementDirection { get { return HasComponent(GameComponentsLookup.MovementDirection); } }
 
-    public void AddMovementDirection(UnityEngine.Vector3 newDirection) {
+    public void AddMovementDirection(UnityEngine.Vector3 newDirection, bool newOnlyRotationAffected) {
         var index = GameComponentsLookup.MovementDirection;
         var component = CreateComponent<MovementDirectionComponent>(index);
         component.direction = newDirection;
+        component.onlyRotationAffected = newOnlyRotationAffected;
         AddComponent(index, component);
     }
 
-    public void ReplaceMovementDirection(UnityEngine.Vector3 newDirection) {
+    public void ReplaceMovementDirection(UnityEngine.Vector3 newDirection, bool newOnlyRotationAffected) {
         var index = GameComponentsLookup.MovementDirection;
         var component = CreateComponent<MovementDirectionComponent>(index);
         component.direction = newDirection;
+        component.onlyRotationAffected = newOnlyRotationAffected;
         ReplaceComponent(index, component);
     }
 

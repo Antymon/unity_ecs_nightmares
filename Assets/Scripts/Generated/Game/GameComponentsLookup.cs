@@ -24,14 +24,15 @@ public static class GameComponentsLookup {
     public const int MovementDirection = 13;
     public const int Pause = 14;
     public const int Player = 15;
-    public const int Position = 16;
-    public const int Projectile = 17;
-    public const int RoundCounter = 18;
-    public const int ScoreCounter = 19;
-    public const int Spawner = 20;
-    public const int Tick = 21;
+    public const int PlayerMovmentBehaviour = 16;
+    public const int Position = 17;
+    public const int Projectile = 18;
+    public const int RoundCounter = 19;
+    public const int ScoreCounter = 20;
+    public const int Spawner = 21;
+    public const int Tick = 22;
 
-    public const int TotalComponents = 22;
+    public const int TotalComponents = 23;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -50,6 +51,7 @@ public static class GameComponentsLookup {
         "MovementDirection",
         "Pause",
         "Player",
+        "PlayerMovmentBehaviour",
         "Position",
         "Projectile",
         "RoundCounter",
@@ -75,6 +77,7 @@ public static class GameComponentsLookup {
         typeof(MovementDirectionComponent),
         typeof(PauseComponent),
         typeof(Player),
+        typeof(PlayerMovmentBehaviour),
         typeof(PositionComponent),
         typeof(ProjectileComponent),
         typeof(RoundCounterComponent),

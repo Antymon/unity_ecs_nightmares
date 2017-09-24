@@ -7,15 +7,22 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
     public Transform outerCircle;
     public Transform innerCircle;
 
+    float outerRadius;
+
     override public void DeserializeEnitity(GameEntity entity)
     {
         base.DeserializeEnitity(entity);
         entity.ReplacePosition(transform.position);
 
-        //ToDo: radius is meant as improvement: to separate rotation from actual movement
-        entity.AddJoypadBinding(newRadius: 0, newListener: this);
+        //ToDo: radius verification is meant as improvement: to separate rotation from actual movement
+        var rectTransform = GetComponent<RectTransform>();
+        outerRadius = rectTransform.rect.width / 2f;
+
+        entity.AddJoypadBinding(newRadius: outerRadius, newListener: this);
 
         entity.OnComponentReplaced += OnComponentReplaced;
+
+        gameObject.SetActive(entity.joystick.enabled);
     }
 
     private void OnComponentReplaced(IEntity entity, int index, IComponent previousComponent, IComponent newComponent)
@@ -34,14 +41,6 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
         float joypadAngle = JoypadSystem.GetAngleFromDirection(joypadDirection);
 
         UpdateShape(joypadAngle, joypadDirection);
-    }
-
-    float outerRadius;
-
-    void Start()
-    {   
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        outerRadius = rectTransform.rect.width / 2f;
     }
 
     void UpdateShape(float angle, Vector2 direction)

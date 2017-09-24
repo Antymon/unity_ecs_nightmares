@@ -88,7 +88,10 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
         joypadEntity.joypadBinding.listener.OnJoypadMoved(joypadDirection);
 
-        playerEnity.ReplaceMovementDirection(joypadDirection);
+        //it's hard to aim while running, this gives ability to rotate without changing position
+        bool onlyRotationAffected = joypadDirection.magnitude < joypadEntity.joypadBinding.radius;
+
+        playerEnity.ReplaceMovementDirection(joypadDirection,onlyRotationAffected);
     }
 
     private void HideJoypad()

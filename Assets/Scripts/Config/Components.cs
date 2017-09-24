@@ -17,11 +17,13 @@ public class PositionComponent : IComponent
 public class MovementDirectionComponent : IComponent
 {
     public Vector3 direction;
+    public bool onlyRotationAffected;
 }
 
 public interface IMovementDirectionChangedListener : IComponent
 {
     void OnMovementDirectionChanged(Vector2 direction);
+    void OnOrientationChanged(Vector2 direction);
 }
 
 public class MovementDirectionChangedListenerComponent : IComponent
