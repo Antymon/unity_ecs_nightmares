@@ -64,7 +64,6 @@ GameObject:
   - component: {fileID: 9500000}
   - component: {fileID: 11400004}
   - component: {fileID: 5400000}
-  - component: {fileID: 11400002}
   - component: {fileID: 13600000}
   - component: {fileID: 8200002}
   - component: {fileID: 114057558593366232}
@@ -72,6 +71,7 @@ GameObject:
   - component: {fileID: 114741452270021438}
   - component: {fileID: 114890796736048666}
   - component: {fileID: 114718303940145860}
+  - component: {fileID: 114536490291375900}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -441,23 +441,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c83720df9acb89488dbf2c0dbd3ad78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePerShot: 20
-  timeBetweenBullets: 0.12
-  range: 100
   faceLight: {fileID: 10800002}
---- !u!114 &11400002
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 100006}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b2268f9c7df8764aa2e92dbf55b5ae1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  navigationCircle: {fileID: 0}
-  speed: 6
+  effectsLastTicks: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3890,6 +3875,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58c971b00c3b8d4a8a0cf96dd559235, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114536490291375900
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f25a955fc1cd5438ca50ff36612e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownTicks: 20
+  range: 100
+  damagePerShot: 1
+  barrelEnd: {fileID: 400004}
 --- !u!114 &114718303940145860
 MonoBehaviour:
   m_ObjectHideFlags: 1

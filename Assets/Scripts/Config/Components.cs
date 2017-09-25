@@ -106,6 +106,8 @@ public class GunComponent : IComponent
     public int currentHeat;
     public IShootListener shootListener;
     public bool triggerDown;
+    public int range;
+    public int damagePerShot;
 }
 
 public interface IShootListener

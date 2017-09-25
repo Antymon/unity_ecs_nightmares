@@ -5,15 +5,13 @@ using System.Collections.Generic;
 public class ShootingSystem : IInitializeSystem, IExecuteSystem
 {
     private GameContext context;
-    private IEntityDeserializer entityDeserializer;
 
     private IGroup<GameEntity> gunGroup;
     private List<GameEntity> gunEntities;
 
-    public ShootingSystem(GameContext context, IEntityDeserializer entityDeserializer)
+    public ShootingSystem(GameContext context)
     {
         this.context = context;
-        this.entityDeserializer = entityDeserializer;
     }
 
     public void Initialize()
@@ -48,6 +46,8 @@ public class ShootingSystem : IInitializeSystem, IExecuteSystem
 
                 var bullet = context.CreateEntity();
                 bullet.isProjectile = true;
+                bullet.AddHealth(0, 0);
+                bullet.AddDamage(gun.damagePerShot);
                 gun.shootListener.OnShoot(bullet);
             }
         }

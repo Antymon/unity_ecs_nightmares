@@ -11,23 +11,27 @@ public partial class GameEntity {
     public GunComponent gun { get { return (GunComponent)GetComponent(GameComponentsLookup.Gun); } }
     public bool hasGun { get { return HasComponent(GameComponentsLookup.Gun); } }
 
-    public void AddGun(int newCooldownTicks, int newCurrentHeat, IShootListener newShootListener, bool newTriggerDown) {
+    public void AddGun(int newCooldownTicks, int newCurrentHeat, IShootListener newShootListener, bool newTriggerDown, int newRange, int newDamagePerShot) {
         var index = GameComponentsLookup.Gun;
         var component = CreateComponent<GunComponent>(index);
         component.cooldownTicks = newCooldownTicks;
         component.currentHeat = newCurrentHeat;
         component.shootListener = newShootListener;
         component.triggerDown = newTriggerDown;
+        component.range = newRange;
+        component.damagePerShot = newDamagePerShot;
         AddComponent(index, component);
     }
 
-    public void ReplaceGun(int newCooldownTicks, int newCurrentHeat, IShootListener newShootListener, bool newTriggerDown) {
+    public void ReplaceGun(int newCooldownTicks, int newCurrentHeat, IShootListener newShootListener, bool newTriggerDown, int newRange, int newDamagePerShot) {
         var index = GameComponentsLookup.Gun;
         var component = CreateComponent<GunComponent>(index);
         component.cooldownTicks = newCooldownTicks;
         component.currentHeat = newCurrentHeat;
         component.shootListener = newShootListener;
         component.triggerDown = newTriggerDown;
+        component.range = newRange;
+        component.damagePerShot = newDamagePerShot;
         ReplaceComponent(index, component);
     }
 

@@ -35,6 +35,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         //so if navigation is disabled, nothing to consider
         if(!joypadEntity.joystick.enabled)
         {
+            TriggerUp();
             return;
         }
 
