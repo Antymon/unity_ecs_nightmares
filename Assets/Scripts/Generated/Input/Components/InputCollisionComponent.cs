@@ -19,8 +19,7 @@ public partial class InputEntity {
         AddComponent(index, component);
     }
 
-    public void ReplaceCollision(GameEntity newSelf, GameEntity newOther)
-    {
+    public void ReplaceCollision(GameEntity newSelf, GameEntity newOther) {
         var index = InputComponentsLookup.Collision;
         var component = CreateComponent<CollisionComponent>(index);
         component.self = newSelf;

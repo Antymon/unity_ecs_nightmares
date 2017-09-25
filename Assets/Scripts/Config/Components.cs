@@ -43,9 +43,9 @@ public class Player : IComponent
 
 }
 
-public class AggressorComponent : IComponent
+public class EnemyComponent : IComponent
 {
-    public Entity target;
+    public GameEntity target;
 }
 
 public interface IEffect

@@ -8,25 +8,25 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public AggressorComponent aggressor { get { return (AggressorComponent)GetComponent(GameComponentsLookup.Aggressor); } }
-    public bool hasAggressor { get { return HasComponent(GameComponentsLookup.Aggressor); } }
+    public EnemyComponent enemy { get { return (EnemyComponent)GetComponent(GameComponentsLookup.Enemy); } }
+    public bool hasEnemy { get { return HasComponent(GameComponentsLookup.Enemy); } }
 
-    public void AddAggressor(Entitas.Entity newTarget) {
-        var index = GameComponentsLookup.Aggressor;
-        var component = CreateComponent<AggressorComponent>(index);
+    public void AddEnemy(GameEntity newTarget) {
+        var index = GameComponentsLookup.Enemy;
+        var component = CreateComponent<EnemyComponent>(index);
         component.target = newTarget;
         AddComponent(index, component);
     }
 
-    public void ReplaceAggressor(Entitas.Entity newTarget) {
-        var index = GameComponentsLookup.Aggressor;
-        var component = CreateComponent<AggressorComponent>(index);
+    public void ReplaceEnemy(GameEntity newTarget) {
+        var index = GameComponentsLookup.Enemy;
+        var component = CreateComponent<EnemyComponent>(index);
         component.target = newTarget;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveAggressor() {
-        RemoveComponent(GameComponentsLookup.Aggressor);
+    public void RemoveEnemy() {
+        RemoveComponent(GameComponentsLookup.Enemy);
     }
 }
 
@@ -40,17 +40,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherAggressor;
+    static Entitas.IMatcher<GameEntity> _matcherEnemy;
 
-    public static Entitas.IMatcher<GameEntity> Aggressor {
+    public static Entitas.IMatcher<GameEntity> Enemy {
         get {
-            if (_matcherAggressor == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Aggressor);
+            if (_matcherEnemy == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Enemy);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherAggressor = matcher;
+                _matcherEnemy = matcher;
             }
 
-            return _matcherAggressor;
+            return _matcherEnemy;
         }
     }
 }

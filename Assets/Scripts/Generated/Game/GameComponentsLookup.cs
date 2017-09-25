@@ -9,9 +9,9 @@
 public static class GameComponentsLookup {
 
     public const int Agent = 0;
-    public const int Aggressor = 1;
-    public const int Damage = 2;
-    public const int Effect = 3;
+    public const int Damage = 1;
+    public const int Effect = 2;
+    public const int Enemy = 3;
     public const int EntityBinding = 4;
     public const int Gun = 5;
     public const int HealthBar = 6;
@@ -37,9 +37,9 @@ public static class GameComponentsLookup {
 
     public static readonly string[] componentNames = {
         "Agent",
-        "Aggressor",
         "Damage",
         "Effect",
+        "Enemy",
         "EntityBinding",
         "Gun",
         "HealthBar",
@@ -64,9 +64,9 @@ public static class GameComponentsLookup {
 
     public static readonly System.Type[] componentTypes = {
         typeof(AgentComponent),
-        typeof(AggressorComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
+        typeof(EnemyComponent),
         typeof(EntityBinding),
         typeof(GunComponent),
         typeof(HealthBarComponent),
