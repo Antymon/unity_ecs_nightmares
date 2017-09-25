@@ -33,6 +33,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
         playerEnity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
     }
 
+    //ToDo: consider generalization of Trigger and Joypad systems
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
     {
         foreach (var entity in entities)

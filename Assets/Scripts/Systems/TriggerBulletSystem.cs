@@ -6,6 +6,9 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 {
     private GameContext gameContext;
     private GameEntity joypadEntity;
+    private GameEntity playerEntity;
+
+    private int triggerTouchId = -1;
 
     //other systems are operating on overlapping subsets of entities
     //so cleanup has to be posponed after all executions have been made
@@ -20,6 +23,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     public void Initialize()
     {
         joypadEntity = gameContext.GetGroup(GameMatcher.Joystick).GetSingleEntity();
+        playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
@@ -40,24 +44,59 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         {
             var touches = entity.touches.touches;
 
-            foreach (var touch in touches)
+            bool touchFound = false;
+
+            if (playerEntity.gun.triggerDown)
             {
-                if (touch.fingerId != joypadTakenTouchId)
+                foreach (var touch in touches)
                 {
-                    if (touch.phase == TouchPhase.Began)
+                    if (touch.fingerId == triggerTouchId)
                     {
-                        TriggerBullet();
+                        touchFound = true;
+
+                        if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                        {
+                            TriggerUp();
+                        }
+
+                        break;
+                    }
+                }
+
+                if (!touchFound)
+                {
+                    TriggerUp();
+                }
+            }
+            else
+            {
+                foreach (var touch in touches)
+                {
+                    if (touch.fingerId != joypadTakenTouchId)
+                    {
+                        if (touch.phase == TouchPhase.Began)
+                        {
+                            TriggerDown(touch);
+                            break;
+                        }
                     }
                 }
             }
-
-            //entity.Destroy();
         }
     }
 
-    private void TriggerBullet()
+    private void TriggerDown(Touch touch)
     {
-        Debug.Log("trigger bullet");
+        triggerTouchId = touch.fingerId;
+        playerEntity.gun.triggerDown = true;
+        Debug.Log("trigger down");
+    }
+
+    private void TriggerUp()
+    {
+        playerEntity.gun.triggerDown = false;
+        triggerTouchId = -1;
+        Debug.Log("trigger up");
     }
 
     protected override bool Filter(InputEntity entity)

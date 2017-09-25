@@ -100,9 +100,21 @@ public class SpawnerComponent : IComponent
     public float chanceOfSpawning; //normalized
 }
 
+public class GunComponent : IComponent
+{
+    public int cooldownTicks;
+    public int currentHeat;
+    public IShootListener shootListener;
+    public bool triggerDown;
+}
+
+public interface IShootListener
+{
+    void OnShoot(GameEntity bullet);
+}
+
 public class ProjectileComponent : IComponent
 {
-    public long cooldownTime; //ticks, time betweent consecutive shots
 }
 
 [Unique]

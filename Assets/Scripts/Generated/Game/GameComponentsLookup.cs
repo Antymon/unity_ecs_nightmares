@@ -13,26 +13,27 @@ public static class GameComponentsLookup {
     public const int Damage = 2;
     public const int Effect = 3;
     public const int EntityBinding = 4;
-    public const int HealthBar = 5;
-    public const int HealthChangedListener = 6;
-    public const int Health = 7;
-    public const int HealthDecreaseOverlay = 8;
-    public const int JoypadBinding = 9;
-    public const int Joystick = 10;
-    public const int Level = 11;
-    public const int MovementDirectionChangedListener = 12;
-    public const int MovementDirection = 13;
-    public const int Pause = 14;
-    public const int Player = 15;
-    public const int PlayerMovmentBehaviour = 16;
-    public const int Position = 17;
-    public const int Projectile = 18;
-    public const int RoundCounter = 19;
-    public const int ScoreCounter = 20;
-    public const int Spawner = 21;
-    public const int Tick = 22;
+    public const int Gun = 5;
+    public const int HealthBar = 6;
+    public const int HealthChangedListener = 7;
+    public const int Health = 8;
+    public const int HealthDecreaseOverlay = 9;
+    public const int JoypadBinding = 10;
+    public const int Joystick = 11;
+    public const int Level = 12;
+    public const int MovementDirectionChangedListener = 13;
+    public const int MovementDirection = 14;
+    public const int Pause = 15;
+    public const int Player = 16;
+    public const int PlayerMovmentBehaviour = 17;
+    public const int Position = 18;
+    public const int Projectile = 19;
+    public const int RoundCounter = 20;
+    public const int ScoreCounter = 21;
+    public const int Spawner = 22;
+    public const int Tick = 23;
 
-    public const int TotalComponents = 23;
+    public const int TotalComponents = 24;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -40,6 +41,7 @@ public static class GameComponentsLookup {
         "Damage",
         "Effect",
         "EntityBinding",
+        "Gun",
         "HealthBar",
         "HealthChangedListener",
         "Health",
@@ -66,6 +68,7 @@ public static class GameComponentsLookup {
         typeof(DamageComponent),
         typeof(EffectComponent),
         typeof(EntityBinding),
+        typeof(GunComponent),
         typeof(HealthBarComponent),
         typeof(HealthChangedListenerComponent),
         typeof(HealthComponent),

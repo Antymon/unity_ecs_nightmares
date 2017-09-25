@@ -1060,6 +1060,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0d7f65d0a461e47aeb372cf0d14d22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alternativeTouchKey: 32
 --- !u!1 &435515921
 GameObject:
   m_ObjectHideFlags: 0
@@ -2580,6 +2581,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1282159843 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100006, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
+  m_PrefabInternal: {fileID: 1729118947}
+--- !u!114 &1282159844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282159843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86f25a955fc1cd5438ca50ff36612e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cooldownTicks: 20
 --- !u!1 &1287916595
 GameObject:
   m_ObjectHideFlags: 0
@@ -3286,6 +3303,18 @@ Prefab:
       propertyPath: damageImage
       value: 
       objectReference: {fileID: 1394906873}
+    - target: {fileID: 13700002, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 10800000, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11400002, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}

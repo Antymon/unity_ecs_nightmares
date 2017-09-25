@@ -8,25 +8,19 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public ProjectileComponent projectile { get { return (ProjectileComponent)GetComponent(GameComponentsLookup.Projectile); } }
-    public bool hasProjectile { get { return HasComponent(GameComponentsLookup.Projectile); } }
+    static readonly ProjectileComponent projectileComponent = new ProjectileComponent();
 
-    public void AddProjectile(long newCooldownTime) {
-        var index = GameComponentsLookup.Projectile;
-        var component = CreateComponent<ProjectileComponent>(index);
-        component.cooldownTime = newCooldownTime;
-        AddComponent(index, component);
-    }
-
-    public void ReplaceProjectile(long newCooldownTime) {
-        var index = GameComponentsLookup.Projectile;
-        var component = CreateComponent<ProjectileComponent>(index);
-        component.cooldownTime = newCooldownTime;
-        ReplaceComponent(index, component);
-    }
-
-    public void RemoveProjectile() {
-        RemoveComponent(GameComponentsLookup.Projectile);
+    public bool isProjectile {
+        get { return HasComponent(GameComponentsLookup.Projectile); }
+        set {
+            if (value != isProjectile) {
+                if (value) {
+                    AddComponent(GameComponentsLookup.Projectile, projectileComponent);
+                } else {
+                    RemoveComponent(GameComponentsLookup.Projectile);
+                }
+            }
+        }
     }
 }
 
