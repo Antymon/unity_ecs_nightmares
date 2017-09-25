@@ -8,12 +8,12 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public PlayerMovmentBehaviour playerMovmentBehaviour { get { return (PlayerMovmentBehaviour)GetComponent(GameComponentsLookup.PlayerMovmentBehaviour); } }
+    public MovementBehaviour playerMovmentBehaviour { get { return (MovementBehaviour)GetComponent(GameComponentsLookup.PlayerMovmentBehaviour); } }
     public bool hasPlayerMovmentBehaviour { get { return HasComponent(GameComponentsLookup.PlayerMovmentBehaviour); } }
 
     public void AddPlayerMovmentBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
         var index = GameComponentsLookup.PlayerMovmentBehaviour;
-        var component = CreateComponent<PlayerMovmentBehaviour>(index);
+        var component = CreateComponent<MovementBehaviour>(index);
         component.speed = newSpeed;
         component.useGUILayout = newUseGUILayout;
         component.runInEditMode = newRunInEditMode;
@@ -26,7 +26,7 @@ public partial class GameEntity {
 
     public void ReplacePlayerMovmentBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
         var index = GameComponentsLookup.PlayerMovmentBehaviour;
-        var component = CreateComponent<PlayerMovmentBehaviour>(index);
+        var component = CreateComponent<MovementBehaviour>(index);
         component.speed = newSpeed;
         component.useGUILayout = newUseGUILayout;
         component.runInEditMode = newRunInEditMode;

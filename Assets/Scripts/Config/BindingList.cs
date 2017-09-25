@@ -20,12 +20,14 @@ public class EntityPrefabNameBinding
     {
         PLAYER = 1,
         JOYPAD = 2,
+        ENEMY = 3,
     }
 
     public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
 
     public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
     public static readonly EntityPrefabNameBinding JOYPAD_BINDING = new EntityPrefabNameBinding(Type.JOYPAD, "Joypad");
+    public static readonly EntityPrefabNameBinding ENEMY_BINDING = new EntityPrefabNameBinding(Type.ENEMY, "Enemy");
 
     public Type entityType;
     public string prefabName;

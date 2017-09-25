@@ -80,7 +80,7 @@ public static class GameComponentsLookup {
         typeof(MovementDirectionComponent),
         typeof(PauseComponent),
         typeof(Player),
-        typeof(PlayerMovmentBehaviour),
+        typeof(MovementBehaviour),
         typeof(PositionComponent),
         typeof(ProjectileComponent),
         typeof(RoundCounterComponent),

@@ -12,7 +12,8 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
         systems.Add(new PlayerMovementSystem(contexts.game));
         systems.Add(new TriggerBulletSystem(contexts.input, contexts.game));
         systems.Add(new ShootingSystem(contexts.game));
-        systems.Add(new CollisionSystem(contexts.input));   
+        systems.Add(new CollisionSystem(contexts.input));
+        systems.Add(new EnemyInitSystem(contexts.game, entityDeserializer));
     }
 }
 

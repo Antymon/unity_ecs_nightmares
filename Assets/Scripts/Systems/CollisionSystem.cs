@@ -22,6 +22,15 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
             AlterHealth(self, other);
             AlterHealth(other, self);
 
+            if (self.health.healthPoints == 0)
+            {
+                self.Destroy();
+            }
+            if(other.health.healthPoints == 0)
+            {
+                other.Destroy();
+            }
+
             entity.Destroy();
         }
     }
@@ -41,11 +50,6 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
         if(self.hasHealthChangedListener)
         {
             self.healthChangedListener.listener.HealthChanged(self);
-        }
-        
-        if(self.health.healthPoints == 0)
-        {
-            self.Destroy();
         }
     }
 

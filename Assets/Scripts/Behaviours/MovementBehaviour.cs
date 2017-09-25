@@ -2,7 +2,7 @@
 using Entitas;
 
 
-public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
+public class MovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
 {
     const string WALKING_ANIMATION_LABEL = "IsWalking";
 
@@ -14,7 +14,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
     Animator playerAnimation;                      // Reference to the animator component.
-    Rigidbody playerRigidbody;
+    Rigidbody agentRigidbody;
 
     public void DeserializeEnitity(GameEntity entity)
     {
@@ -37,7 +37,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
     void Awake()
     {
         playerAnimation = GetComponent<Animator>();
-        playerRigidbody = GetComponent<Rigidbody>();
+        agentRigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -59,7 +59,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
         // Normalise the movement vector and make it proportional to the speed per second.
         movement = movement.normalized * speed * Time.deltaTime;
 
-        playerRigidbody.MovePosition(transform.position + movement);
+        agentRigidbody.MovePosition(transform.position + movement);
     }
 
 
@@ -76,7 +76,7 @@ public class PlayerMovmentBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
         // Create a quaternion (rotation) based on looking down the vector from the player to the mouse.
         Quaternion newRotatation = Quaternion.LookRotation(playerToMouse);
 
-        playerRigidbody.MoveRotation(newRotatation);
+        agentRigidbody.MoveRotation(newRotatation);
 
     }
 }
