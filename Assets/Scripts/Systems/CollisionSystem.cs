@@ -1,12 +1,16 @@
 ﻿using Entitas;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionSystem : ReactiveSystem<InputEntity>
 {
-    public CollisionSystem(InputContext context)
+    private GameContext gameContext;
+
+    public CollisionSystem(InputContext context, GameContext gameContext)
         : base(context)
     {
+        this.gameContext = gameContext;
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
@@ -22,14 +26,8 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
             AlterHealth(self, other);
             AlterHealth(other, self);
 
-            if (self.health.healthPoints == 0)
-            {
-                self.Destroy();
-            }
-            if(other.health.healthPoints == 0)
-            {
-                other.Destroy();
-            }
+            ActionIfDead(self);
+            ActionIfDead(other);
 
             entity.Destroy();
         }
@@ -50,6 +48,21 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
         if(self.hasHealthChangedListener)
         {
             self.healthChangedListener.listener.HealthChanged(self);
+        }
+    }
+
+    private void ActionIfDead(GameEntity gameEntity)
+    {
+        if (gameEntity.health.healthPoints == 0)
+        {
+            if (gameEntity.hasAgent) //enemy or player
+            {
+                gameContext.CreateEntity().AddAgentDead(gameEntity);
+            }
+            else
+            {
+                gameEntity.isMarkedToPostponedDestroy = true;
+            }
         }
     }
 

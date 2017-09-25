@@ -9,38 +9,50 @@
 public static class GameComponentsLookup {
 
     public const int Agent = 0;
-    public const int Damage = 1;
-    public const int Effect = 2;
-    public const int Enemy = 3;
-    public const int EntityBinding = 4;
-    public const int Gun = 5;
-    public const int HealthBar = 6;
-    public const int HealthChangedListener = 7;
-    public const int Health = 8;
-    public const int HealthDecreaseOverlay = 9;
-    public const int JoypadBinding = 10;
-    public const int Joystick = 11;
-    public const int Level = 12;
-    public const int MovementDirectionChangedListener = 13;
-    public const int MovementDirection = 14;
-    public const int Pause = 15;
-    public const int Player = 16;
-    public const int PlayerMovmentBehaviour = 17;
-    public const int Position = 18;
-    public const int Projectile = 19;
-    public const int RoundCounter = 20;
-    public const int ScoreCounter = 21;
-    public const int Spawner = 22;
-    public const int Tick = 23;
+    public const int AgentDead = 1;
+    public const int Damage = 2;
+    public const int Effect = 3;
+    public const int Enemy = 4;
+    public const int EntityBinding = 5;
+    public const int GameOver = 6;
+    public const int GamePaused = 7;
+    public const int GameStart = 8;
+    public const int Gun = 9;
+    public const int HealthBar = 10;
+    public const int HealthChangedListener = 11;
+    public const int Health = 12;
+    public const int HealthDecreaseOverlay = 13;
+    public const int JoypadBinding = 14;
+    public const int Joystick = 15;
+    public const int Level = 16;
+    public const int MarkedToPostponedDestroy = 17;
+    public const int MovementBehaviour = 18;
+    public const int MovementDirectionChangedListener = 19;
+    public const int MovementDirection = 20;
+    public const int Pause = 21;
+    public const int Player = 22;
+    public const int Position = 23;
+    public const int Projectile = 24;
+    public const int RoundCounter = 25;
+    public const int RoundFinished = 26;
+    public const int RoundStarted = 27;
+    public const int Score = 28;
+    public const int ScoreCounter = 29;
+    public const int Spawner = 30;
+    public const int Tick = 31;
 
-    public const int TotalComponents = 24;
+    public const int TotalComponents = 32;
 
     public static readonly string[] componentNames = {
         "Agent",
+        "AgentDead",
         "Damage",
         "Effect",
         "Enemy",
         "EntityBinding",
+        "GameOver",
+        "GamePaused",
+        "GameStart",
         "Gun",
         "HealthBar",
         "HealthChangedListener",
@@ -49,14 +61,18 @@ public static class GameComponentsLookup {
         "JoypadBinding",
         "Joystick",
         "Level",
+        "MarkedToPostponedDestroy",
+        "MovementBehaviour",
         "MovementDirectionChangedListener",
         "MovementDirection",
         "Pause",
         "Player",
-        "PlayerMovmentBehaviour",
         "Position",
         "Projectile",
         "RoundCounter",
+        "RoundFinished",
+        "RoundStarted",
+        "Score",
         "ScoreCounter",
         "Spawner",
         "Tick"
@@ -64,10 +80,14 @@ public static class GameComponentsLookup {
 
     public static readonly System.Type[] componentTypes = {
         typeof(AgentComponent),
+        typeof(AgentDeadComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
         typeof(EnemyComponent),
         typeof(EntityBinding),
+        typeof(GameOverComponent),
+        typeof(GamePausedComponent),
+        typeof(GameStartComponent),
         typeof(GunComponent),
         typeof(HealthBarComponent),
         typeof(HealthChangedListenerComponent),
@@ -76,14 +96,18 @@ public static class GameComponentsLookup {
         typeof(JoypadBindingComponent),
         typeof(JoystickComponent),
         typeof(LevelComponent),
+        typeof(MarkedToPostponedDestroyComponent),
+        typeof(MovementBehaviour),
         typeof(MovementDirectionChangedListenerComponent),
         typeof(MovementDirectionComponent),
         typeof(PauseComponent),
         typeof(Player),
-        typeof(MovementBehaviour),
         typeof(PositionComponent),
         typeof(ProjectileComponent),
         typeof(RoundCounterComponent),
+        typeof(RoundFinishedComponent),
+        typeof(RoundStartedComponent),
+        typeof(ScoreComponent),
         typeof(ScoreCounterComponent),
         typeof(SpawnerComponent),
         typeof(TickComponent)

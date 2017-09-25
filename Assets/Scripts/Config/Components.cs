@@ -9,6 +9,11 @@ public class EntityBinding : IComponent
     public EntityPrefabNameBinding entitasBinding;
 }
 
+public class MarkedToPostponedDestroyComponent : IComponent
+{
+
+}
+
 public class PositionComponent : IComponent 
 {
     public Vector3 position;
@@ -31,11 +36,16 @@ public class MovementDirectionChangedListenerComponent : IComponent
     public IMovementDirectionChangedListener listener;
 }
 
+public class AgentDeadComponent : IComponent
+{
+    public GameEntity agent;
+}
+
 public class AgentComponent : IComponent
 {
     public int id;
     public string name;
-    public IEnumerable<IEffect> effects;
+    public List<IEffect> effects;
 }
 
 public class Player : IComponent
@@ -50,10 +60,12 @@ public class EnemyComponent : IComponent
 
 public interface IEffect
 {
-
+    void Apply(GameEntity entity);
+    int GetTickInterval();
+    bool ShouldRepeat();
 }
 
-//for spawner boosters
+//for boosters
 public class EffectComponent : IComponent
 {
     public IEffect effect;
@@ -123,10 +135,23 @@ public class ProjectileComponent : IComponent
 public class LevelComponent : IComponent
 {
     public int numberRounds;
-    public int spawnersCap;
+    public int effectsAtTimeCap;
     public int currentRound;
-    public int wonByPlayer;
-    public long roundTime; //ticks
+    public int roundTime; //sec
+    public int roundScoreReward;
+}
+
+
+public class GameOverComponent : IComponent{}
+public class GameStartComponent : IComponent{}
+public class GamePausedComponent : IComponent{}
+public class RoundStartedComponent : IComponent{}
+public class RoundFinishedComponent : IComponent{}
+
+[Unique]
+public class ScoreComponent : IComponent
+{
+    public int currentScore;
 }
 
 [Unique]

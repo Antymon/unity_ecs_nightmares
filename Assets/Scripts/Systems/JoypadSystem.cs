@@ -30,7 +30,8 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
         joypadEntity.AddJoystick(newEnabled: false, newTouchId:-1);
         entityDeserializer.DeserializeEnitity(joypadEntity);
 
-        playerEnity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+        var playerGroup = gameContext.GetGroup(GameMatcher.Player);
+        playerEnity = playerGroup.GetSingleEntity();
     }
 
     //ToDo: consider generalization of Trigger and Joypad systems

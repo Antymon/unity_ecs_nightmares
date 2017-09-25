@@ -1,4 +1,5 @@
 ﻿using Entitas;
+using System.Collections.Generic;
 
 public class PlayerInitSystem  : IInitializeSystem
 {
@@ -16,7 +17,9 @@ public class PlayerInitSystem  : IInitializeSystem
         var entity = context.CreateEntity();
         entity.isPlayer = true;
         entity.AddEntityBinding(EntityPrefabNameBinding.PLAYER_BINDING);
+        entity.AddAgent(0, string.Empty, new List<IEffect>());
         entityDeserializer.DeserializeEnitity(entity);
+
     }
 
 }

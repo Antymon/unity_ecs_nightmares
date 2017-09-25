@@ -11,7 +11,7 @@ public partial class GameEntity {
     public AgentComponent agent { get { return (AgentComponent)GetComponent(GameComponentsLookup.Agent); } }
     public bool hasAgent { get { return HasComponent(GameComponentsLookup.Agent); } }
 
-    public void AddAgent(int newId, string newName, System.Collections.Generic.IEnumerable<IEffect> newEffects) {
+    public void AddAgent(int newId, string newName, System.Collections.Generic.List<IEffect> newEffects) {
         var index = GameComponentsLookup.Agent;
         var component = CreateComponent<AgentComponent>(index);
         component.id = newId;
@@ -20,7 +20,7 @@ public partial class GameEntity {
         AddComponent(index, component);
     }
 
-    public void ReplaceAgent(int newId, string newName, System.Collections.Generic.IEnumerable<IEffect> newEffects) {
+    public void ReplaceAgent(int newId, string newName, System.Collections.Generic.List<IEffect> newEffects) {
         var index = GameComponentsLookup.Agent;
         var component = CreateComponent<AgentComponent>(index);
         component.id = newId;

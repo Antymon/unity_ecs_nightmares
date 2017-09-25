@@ -8,11 +8,11 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public MovementBehaviour playerMovmentBehaviour { get { return (MovementBehaviour)GetComponent(GameComponentsLookup.PlayerMovmentBehaviour); } }
-    public bool hasPlayerMovmentBehaviour { get { return HasComponent(GameComponentsLookup.PlayerMovmentBehaviour); } }
+    public MovementBehaviour movementBehaviour { get { return (MovementBehaviour)GetComponent(GameComponentsLookup.MovementBehaviour); } }
+    public bool hasMovementBehaviour { get { return HasComponent(GameComponentsLookup.MovementBehaviour); } }
 
-    public void AddPlayerMovmentBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
-        var index = GameComponentsLookup.PlayerMovmentBehaviour;
+    public void AddMovementBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
+        var index = GameComponentsLookup.MovementBehaviour;
         var component = CreateComponent<MovementBehaviour>(index);
         component.speed = newSpeed;
         component.useGUILayout = newUseGUILayout;
@@ -24,8 +24,8 @@ public partial class GameEntity {
         AddComponent(index, component);
     }
 
-    public void ReplacePlayerMovmentBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
-        var index = GameComponentsLookup.PlayerMovmentBehaviour;
+    public void ReplaceMovementBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
+        var index = GameComponentsLookup.MovementBehaviour;
         var component = CreateComponent<MovementBehaviour>(index);
         component.speed = newSpeed;
         component.useGUILayout = newUseGUILayout;
@@ -37,8 +37,8 @@ public partial class GameEntity {
         ReplaceComponent(index, component);
     }
 
-    public void RemovePlayerMovmentBehaviour() {
-        RemoveComponent(GameComponentsLookup.PlayerMovmentBehaviour);
+    public void RemoveMovementBehaviour() {
+        RemoveComponent(GameComponentsLookup.MovementBehaviour);
     }
 }
 
@@ -52,17 +52,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherPlayerMovmentBehaviour;
+    static Entitas.IMatcher<GameEntity> _matcherMovementBehaviour;
 
-    public static Entitas.IMatcher<GameEntity> PlayerMovmentBehaviour {
+    public static Entitas.IMatcher<GameEntity> MovementBehaviour {
         get {
-            if (_matcherPlayerMovmentBehaviour == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.PlayerMovmentBehaviour);
+            if (_matcherMovementBehaviour == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.MovementBehaviour);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherPlayerMovmentBehaviour = matcher;
+                _matcherMovementBehaviour = matcher;
             }
 
-            return _matcherPlayerMovmentBehaviour;
+            return _matcherMovementBehaviour;
         }
     }
 }

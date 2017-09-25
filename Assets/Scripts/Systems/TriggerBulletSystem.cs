@@ -113,6 +113,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         return context.CreateCollector<InputEntity>(InputMatcher.Touches.Added());
     }
 
+    //due to volume of input entities this system deals with his own garbage, rather than marking it for cleanup
     public void Cleanup()
     {
         foreach (var entity in entitiesCleanupRegister)

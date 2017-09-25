@@ -12,22 +12,22 @@ public partial class GameContext {
     public LevelComponent level { get { return levelEntity.level; } }
     public bool hasLevel { get { return levelEntity != null; } }
 
-    public GameEntity SetLevel(int newNumberRounds, int newSpawnersCap, int newCurrentRound, int newWonByPlayer, long newRoundTime) {
+    public GameEntity SetLevel(int newNumberRounds, int newEffectsAtTimeCap, int newCurrentRound, int newRoundTime, int newRoundScoreReward) {
         if (hasLevel) {
             throw new Entitas.EntitasException("Could not set Level!\n" + this + " already has an entity with LevelComponent!",
                 "You should check if the context already has a levelEntity before setting it or use context.ReplaceLevel().");
         }
         var entity = CreateEntity();
-        entity.AddLevel(newNumberRounds, newSpawnersCap, newCurrentRound, newWonByPlayer, newRoundTime);
+        entity.AddLevel(newNumberRounds, newEffectsAtTimeCap, newCurrentRound, newRoundTime, newRoundScoreReward);
         return entity;
     }
 
-    public void ReplaceLevel(int newNumberRounds, int newSpawnersCap, int newCurrentRound, int newWonByPlayer, long newRoundTime) {
+    public void ReplaceLevel(int newNumberRounds, int newEffectsAtTimeCap, int newCurrentRound, int newRoundTime, int newRoundScoreReward) {
         var entity = levelEntity;
         if (entity == null) {
-            entity = SetLevel(newNumberRounds, newSpawnersCap, newCurrentRound, newWonByPlayer, newRoundTime);
+            entity = SetLevel(newNumberRounds, newEffectsAtTimeCap, newCurrentRound, newRoundTime, newRoundScoreReward);
         } else {
-            entity.ReplaceLevel(newNumberRounds, newSpawnersCap, newCurrentRound, newWonByPlayer, newRoundTime);
+            entity.ReplaceLevel(newNumberRounds, newEffectsAtTimeCap, newCurrentRound, newRoundTime, newRoundScoreReward);
         }
     }
 
@@ -49,25 +49,25 @@ public partial class GameEntity {
     public LevelComponent level { get { return (LevelComponent)GetComponent(GameComponentsLookup.Level); } }
     public bool hasLevel { get { return HasComponent(GameComponentsLookup.Level); } }
 
-    public void AddLevel(int newNumberRounds, int newSpawnersCap, int newCurrentRound, int newWonByPlayer, long newRoundTime) {
+    public void AddLevel(int newNumberRounds, int newEffectsAtTimeCap, int newCurrentRound, int newRoundTime, int newRoundScoreReward) {
         var index = GameComponentsLookup.Level;
         var component = CreateComponent<LevelComponent>(index);
         component.numberRounds = newNumberRounds;
-        component.spawnersCap = newSpawnersCap;
+        component.effectsAtTimeCap = newEffectsAtTimeCap;
         component.currentRound = newCurrentRound;
-        component.wonByPlayer = newWonByPlayer;
         component.roundTime = newRoundTime;
+        component.roundScoreReward = newRoundScoreReward;
         AddComponent(index, component);
     }
 
-    public void ReplaceLevel(int newNumberRounds, int newSpawnersCap, int newCurrentRound, int newWonByPlayer, long newRoundTime) {
+    public void ReplaceLevel(int newNumberRounds, int newEffectsAtTimeCap, int newCurrentRound, int newRoundTime, int newRoundScoreReward) {
         var index = GameComponentsLookup.Level;
         var component = CreateComponent<LevelComponent>(index);
         component.numberRounds = newNumberRounds;
-        component.spawnersCap = newSpawnersCap;
+        component.effectsAtTimeCap = newEffectsAtTimeCap;
         component.currentRound = newCurrentRound;
-        component.wonByPlayer = newWonByPlayer;
         component.roundTime = newRoundTime;
+        component.roundScoreReward = newRoundScoreReward;
         ReplaceComponent(index, component);
     }
 
