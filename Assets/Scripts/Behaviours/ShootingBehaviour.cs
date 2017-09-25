@@ -4,13 +4,17 @@ using Entitas;
 
 public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListener
 {
-    public int cooldownTicks;
-    public int range;
+    public int cooldownTicks; //effectively frames between shots
+    public int range; //raycast range
     public int damagePerShot;
 
     public Transform barrelEnd;
 
-    private CompleteProject.ShootingEffects shootingEffects;
+    private ShootingEffects shootingEffects;
+
+    private Ray shootRay = new Ray();                       // A ray from the gun end forwards.
+    private RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
+    private int shootableMask;                              // A layer mask so the raycast only hits things on the shootable layer.
 
     public void DeserializeEnitity(GameEntity entity)
     {
@@ -24,15 +28,11 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
             );
     }
 
-    Ray shootRay = new Ray();                       // A ray from the gun end forwards.
-    RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
-    int shootableMask;                              // A layer mask so the raycast only hits things on the shootable layer.
-
     void Awake()
     {
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask("Shootable");
-        shootingEffects = GetComponentInChildren<CompleteProject.ShootingEffects>();
+        shootingEffects = GetComponentInChildren<ShootingEffects>();
         shootingEffects.effectsLastTicks = cooldownTicks;
     }
 
@@ -45,16 +45,24 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
         {
-            //ToDo: add collision
+            var entitasBinding = shootHit.collider.GetComponent<IEntitasBinding>();
 
-            //var coll = Contexts.sharedInstance.input.CreateEntity();
-            //coll.AddCollision(bullet,)
+            if(entitasBinding!=null)
+            {
+                var coll = Contexts.sharedInstance.input.CreateEntity();
+                coll.AddCollision(bullet, entitasBinding.GetEntity());
+            }
+            else
+            {
+                bullet.Destroy();
+            }
 
             shootingEffects.Shoot(shootHit.point);
         }
         // If the raycast didn't hit anything on the shootable layer...
         else
         {
+            bullet.Destroy();
             //the fullest extent of the gun's range.
             var rayEndPoint = shootRay.origin + shootRay.direction * range;
 

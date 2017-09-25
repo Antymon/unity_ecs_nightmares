@@ -9,6 +9,7 @@ public class ShootingSystem : IInitializeSystem, IExecuteSystem
     private IGroup<GameEntity> gunGroup;
     private List<GameEntity> gunEntities;
 
+    //bullet entities are represented only as animation on the unitys side, no corresponding game objects are created
     public ShootingSystem(GameContext context)
     {
         this.context = context;

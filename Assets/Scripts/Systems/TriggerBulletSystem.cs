@@ -35,7 +35,10 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         //so if navigation is disabled, nothing to consider
         if(!joypadEntity.joystick.enabled)
         {
-            TriggerUp();
+            if (playerEntity.gun.triggerDown)
+            {
+                ReleaseTrigger();
+            }
             return;
         }
 
@@ -57,16 +60,16 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
                         if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                         {
-                            TriggerUp();
+                            ReleaseTrigger();
                         }
 
                         break;
                     }
                 }
-
+                
                 if (!touchFound)
                 {
-                    TriggerUp();
+                    ReleaseTrigger();
                 }
             }
             else
@@ -77,7 +80,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
                     {
                         if (touch.phase == TouchPhase.Began)
                         {
-                            TriggerDown(touch);
+                            PullTrigger(touch);
                             break;
                         }
                     }
@@ -86,14 +89,14 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         }
     }
 
-    private void TriggerDown(Touch touch)
+    private void PullTrigger(Touch touch)
     {
         triggerTouchId = touch.fingerId;
         playerEntity.gun.triggerDown = true;
         Debug.Log("trigger down");
     }
 
-    private void TriggerUp()
+    private void ReleaseTrigger()
     {
         playerEntity.gun.triggerDown = false;
         triggerTouchId = -1;

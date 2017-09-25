@@ -69,8 +69,8 @@ public class TouchesComponent : IComponent
 [Input]
 public class CollisionComponent : IComponent
 {
-    public Entity self;
-    public Entity other;
+    public GameEntity self;
+    public GameEntity other;
 }
 
 public interface HealthChangedListener

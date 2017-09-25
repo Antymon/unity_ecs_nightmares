@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entitas;
 
-public class GameController : MonoBehaviour {
+public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
 
     public Transform displayRoot;
 
@@ -24,18 +24,11 @@ public class GameController : MonoBehaviour {
         systems = new Feature("Systems");
         AddSystems(Contexts.sharedInstance, systems);
         systems.Initialize();
-         
 	}
 
-    //in general systems ordering is significant
-    private void AddSystems(Contexts contexts, Systems systems)
-    {
-        systems.Add(new PlayerInitSystem(contexts.game, entityDeserializer));
-        systems.Add(new JoypadSystem(contexts.input,contexts.game, entityDeserializer));
-        systems.Add(new PlayerMovementSystem(contexts.game));
-        systems.Add(new TriggerBulletSystem(contexts.input, contexts.game));
-        systems.Add(new ShootingSystem(contexts.game));
-    }
+    //template method just to separate config from general bootstrapping
+    protected abstract void AddSystems(Contexts contexts, Systems systems);
+
 
     private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)
     {
