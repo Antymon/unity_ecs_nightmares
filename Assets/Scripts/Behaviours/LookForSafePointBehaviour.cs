@@ -33,20 +33,7 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
     {
         if(currentSafePoint==null)
         {
-            float bestSafetyValue = 0;
-
-            foreach(var shelter in shelters)
-            {
-                if(IsSafe(shelter))
-                {
-                    float safetyValue = GetReachingSafetyChance(shelter);
-                    if(safetyValue>bestSafetyValue)
-                    {
-                        bestSafetyValue = safetyValue;
-                        currentSafePoint = shelter;                    
-                    }
-                }
-            }
+            SetShelterMaximizingReachingChance();
 
             if(currentSafePoint!=null)
             {
@@ -64,6 +51,25 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
 
     }
 
+    private void SetShelterMaximizingReachingChance()
+    {
+        float bestSafetyValue = 0;
+
+        foreach (var shelter in shelters)
+        {
+            if (IsSafe(shelter))
+            {
+                float safetyValue = GetReachingSafetyChance(shelter);
+
+                if (safetyValue > bestSafetyValue)
+                {
+                    bestSafetyValue = safetyValue;
+                    currentSafePoint = shelter;
+                }
+            }
+        }
+    }
+
 
     //heuristics
     private float GetReachingSafetyChance(Transform shelterTransform)
@@ -71,7 +77,7 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
         Vector3 threatDistance = threat.position - transform.position;
         Vector3 safePointDistance = shelterTransform.position - transform.position;
 
-        return Vector3.Angle(threatDistance, safePointDistance);
+        return Mathf.Abs(Vector3.Angle(threatDistance, safePointDistance));
     }
 
     private bool IsSafe(Transform shelterTransform)
@@ -81,10 +87,23 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
         direction.y = 0f; //we are considering  floor XZ surface only
         shootRay.direction = direction;
 
-        float checkedDistance = Mathf.Min(direction.magnitude, range);
+        float distance = direction.magnitude;
+
+        //spot is out of range at the moment thus safe
+        if(distance>range)
+        {
+            return true;
+        }
 
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-        return Physics.Raycast(shootRay, out shootHit, checkedDistance, shootableMask);        
+        if(Physics.Raycast(shootRay, out shootHit, distance, shootableMask))
+        {
+            //some obstacle would be hit, but not me, thus making it safe
+            return shootHit.collider.transform != this.transform;
+        }
+
+        //spot is within clean shot
+        return false;
     }
 }
 
