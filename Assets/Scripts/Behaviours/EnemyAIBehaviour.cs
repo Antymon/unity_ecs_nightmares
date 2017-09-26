@@ -3,7 +3,7 @@ using Entitas;
 using UnityEngine.AI;
 
 
-public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
+public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
 {
     public int range = 100;
 
@@ -17,10 +17,18 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
     private Transform currentSafePoint;
     private NavMeshAgent navAgent;
 
+    private GameEntity selfGameEntity;
+
+    bool pursuePlayer = false;
 
     public void DeserializeEnitity(GameEntity entity)
     {
-        //entity.ReplaceHealth(healthPoints, healthPointsCap);
+        this.selfGameEntity = entity;
+    }
+
+    private float GetNormalizedHealth()
+    {
+        return (float)selfGameEntity.health.healthPoints / selfGameEntity.health.healthPointsCap;
     }
 
     public void Start()
@@ -31,26 +39,70 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
 
     public void Update()
     {
-        if(currentSafePoint==null)
+        if(GetNormalizedHealth()<.5f)
+        {
+            if (selfGameEntity.gun.triggerDown)
+            {
+                selfGameEntity.gun.triggerDown = false;
+            }
+            SeekSafety();
+        }
+        else
+        {
+            Attack();
+        }
+    }
+
+    private void Attack()
+    {
+        var distance = threat.position - transform.position;
+
+        if(distance.sqrMagnitude > range*range) //ToDo: quicker to multiply, but can be premul
+        {
+            //ToDo:potentially expensive to call this on every frame
+            navAgent.SetDestination(threat.position);
+            if (selfGameEntity.gun.triggerDown)
+            {
+                selfGameEntity.gun.triggerDown = false;
+            }
+        }
+        else
+        {
+            if (navAgent.hasPath)
+            {
+                navAgent.ResetPath();
+            }
+
+            transform.forward = distance;
+            if (!selfGameEntity.gun.triggerDown)
+            {
+                //selfGameEntity.gun.triggerDown = true;
+            }
+        }
+    }
+
+    private void SeekSafety()
+    {
+        if (currentSafePoint == null)
         {
             SetShelterMaximizingReachingChance();
 
-            if(currentSafePoint!=null)
+            if (currentSafePoint != null)
             {
                 navAgent.SetDestination(currentSafePoint.position);
             }
         }
         else
         {
-            if(!IsSafe(currentSafePoint))
+            if (!IsSafe(currentSafePoint))
             {
                 navAgent.SetDestination(transform.position);
                 currentSafePoint = null;
             }
         }
-
     }
 
+    //maximizing value of shelter choice
     private void SetShelterMaximizingReachingChance()
     {
         float bestSafetyValue = 0;
@@ -59,7 +111,7 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
         {
             if (IsSafe(shelter))
             {
-                float safetyValue = GetReachingSafetyChance(shelter);
+                float safetyValue = GetReachingSafelyChance(shelter);
 
                 if (safetyValue > bestSafetyValue)
                 {
@@ -72,7 +124,7 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
 
 
     //heuristics
-    private float GetReachingSafetyChance(Transform shelterTransform)
+    private float GetReachingSafelyChance(Transform shelterTransform)
     {
         Vector3 threatDistance = threat.position - transform.position;
         Vector3 safePointDistance = shelterTransform.position - transform.position;

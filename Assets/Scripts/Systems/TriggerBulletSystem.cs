@@ -105,7 +105,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     protected override bool Filter(InputEntity entity)
     {
-        return true;
+        return playerEntity.isEnabled;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
