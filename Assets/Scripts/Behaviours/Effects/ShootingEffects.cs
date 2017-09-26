@@ -6,7 +6,6 @@ using UnitySampleAssets.CrossPlatformInput;
 public class ShootingEffects : MonoBehaviour
 {
     public Light faceLight;
-    [HideInInspector]
     public int effectsLastTicks; //how long will the effects last
 
     int effectsEnabledTicks; //0 - effects disabled, + enabled

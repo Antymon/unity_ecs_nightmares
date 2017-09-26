@@ -33,7 +33,6 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask("Shootable");
         shootingEffects = GetComponentInChildren<ShootingEffects>();
-        shootingEffects.effectsLastTicks = cooldownTicks;
     }
 
     public void OnShoot(GameEntity bullet)

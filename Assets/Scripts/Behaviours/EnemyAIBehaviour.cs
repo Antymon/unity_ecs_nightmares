@@ -49,7 +49,14 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
         }
         else
         {
-            Attack();
+            if (threat.gameObject.activeInHierarchy)
+            {
+                Attack();
+            }
+            else
+            {
+                selfGameEntity.gun.triggerDown = false;
+            }
         }
     }
 
@@ -76,7 +83,7 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
             transform.forward = distance;
             if (!selfGameEntity.gun.triggerDown)
             {
-                //selfGameEntity.gun.triggerDown = true;
+                selfGameEntity.gun.triggerDown = true;
             }
         }
     }

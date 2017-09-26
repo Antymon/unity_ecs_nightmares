@@ -32,6 +32,12 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
         var playerGroup = gameContext.GetGroup(GameMatcher.Player);
         playerEnity = playerGroup.GetSingleEntity();
+        playerEnity.OnDestroyEntity += OnPlayerDestroyed;
+    }
+
+    private void OnPlayerDestroyed(IEntity entity)
+    {
+        HideJoypad();
     }
 
     //ToDo: consider generalization of Trigger and Joypad systems
@@ -114,7 +120,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     protected override bool Filter(InputEntity entity)
     {
-        return true;
+        return playerEnity.isEnabled;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)

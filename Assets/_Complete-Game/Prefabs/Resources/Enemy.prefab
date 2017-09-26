@@ -127,7 +127,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1392284583566242}
-  m_LocalRotation: {x: -0, y: -0.9988609, z: 0, w: -0.047716543}
+  m_LocalRotation: {x: 0, y: -0.51787776, z: 0, w: 0.8554546}
   m_LocalPosition: {x: -3.21, y: -10.902, z: 13.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -136,7 +136,7 @@ Transform:
   - {fileID: 4361542717044246}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -185.47, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -62.38, z: 0}
 --- !u!4 &4361542717044246
 Transform:
   m_ObjectHideFlags: 1
@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f25a955fc1cd5438ca50ff36612e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTicks: 5
+  cooldownTicks: 20
   range: 100
   damagePerShot: 1
   barrelEnd: {fileID: 4361542717044246}
@@ -508,7 +508,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 100
-  nav: {fileID: 0}
   threat: {fileID: 0}
   shelters:
   - {fileID: 0}

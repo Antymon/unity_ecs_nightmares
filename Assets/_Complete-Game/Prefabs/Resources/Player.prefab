@@ -3882,7 +3882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f25a955fc1cd5438ca50ff36612e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTicks: 5
+  cooldownTicks: 10
   range: 100
   damagePerShot: 1
   barrelEnd: {fileID: 400004}
