@@ -8,13 +8,12 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public MovementBehaviour movementBehaviour { get { return (MovementBehaviour)GetComponent(GameComponentsLookup.MovementBehaviour); } }
-    public bool hasMovementBehaviour { get { return HasComponent(GameComponentsLookup.MovementBehaviour); } }
+    public AIMovementBehaviour aIMovementBehaviour { get { return (AIMovementBehaviour)GetComponent(GameComponentsLookup.AIMovementBehaviour); } }
+    public bool hasAIMovementBehaviour { get { return HasComponent(GameComponentsLookup.AIMovementBehaviour); } }
 
-    public void AddMovementBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
-        var index = GameComponentsLookup.MovementBehaviour;
-        var component = CreateComponent<MovementBehaviour>(index);
-        component.speed = newSpeed;
+    public void AddAIMovementBehaviour(bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
+        var index = GameComponentsLookup.AIMovementBehaviour;
+        var component = CreateComponent<AIMovementBehaviour>(index);
         component.useGUILayout = newUseGUILayout;
         component.runInEditMode = newRunInEditMode;
         component.enabled = newEnabled;
@@ -24,10 +23,9 @@ public partial class GameEntity {
         AddComponent(index, component);
     }
 
-    public void ReplaceMovementBehaviour(float newSpeed, bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
-        var index = GameComponentsLookup.MovementBehaviour;
-        var component = CreateComponent<MovementBehaviour>(index);
-        component.speed = newSpeed;
+    public void ReplaceAIMovementBehaviour(bool newUseGUILayout, bool newRunInEditMode, bool newEnabled, string newTag, string newName, UnityEngine.HideFlags newHideFlags) {
+        var index = GameComponentsLookup.AIMovementBehaviour;
+        var component = CreateComponent<AIMovementBehaviour>(index);
         component.useGUILayout = newUseGUILayout;
         component.runInEditMode = newRunInEditMode;
         component.enabled = newEnabled;
@@ -37,8 +35,8 @@ public partial class GameEntity {
         ReplaceComponent(index, component);
     }
 
-    public void RemoveMovementBehaviour() {
-        RemoveComponent(GameComponentsLookup.MovementBehaviour);
+    public void RemoveAIMovementBehaviour() {
+        RemoveComponent(GameComponentsLookup.AIMovementBehaviour);
     }
 }
 
@@ -52,17 +50,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherMovementBehaviour;
+    static Entitas.IMatcher<GameEntity> _matcherAIMovementBehaviour;
 
-    public static Entitas.IMatcher<GameEntity> MovementBehaviour {
+    public static Entitas.IMatcher<GameEntity> AIMovementBehaviour {
         get {
-            if (_matcherMovementBehaviour == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.MovementBehaviour);
+            if (_matcherAIMovementBehaviour == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.AIMovementBehaviour);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherMovementBehaviour = matcher;
+                _matcherAIMovementBehaviour = matcher;
             }
 
-            return _matcherMovementBehaviour;
+            return _matcherAIMovementBehaviour;
         }
     }
 }

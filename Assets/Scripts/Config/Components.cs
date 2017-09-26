@@ -27,8 +27,8 @@ public class MovementDirectionComponent : IComponent
 
 public interface IMovementDirectionChangedListener : IComponent
 {
-    void OnMovementDirectionChanged(Vector2 direction);
-    void OnOrientationChanged(Vector2 direction);
+    void OnMovementDirectionChanged(Vector3 direction);
+    void OnOrientationChanged(Vector3 direction);
 }
 
 public class MovementDirectionChangedListenerComponent : IComponent
@@ -56,6 +56,19 @@ public class Player : IComponent
 public class EnemyComponent : IComponent
 {
     public GameEntity target;
+}
+
+public class AIPerceptionComponent : IComponent
+{
+    public Vector3[] stationaryPositions;
+    public int attackDistance;
+    public float attackRecoverHealthThreshold;
+    public IPositionVerificationCallback callback;
+}
+
+public interface IPositionVerificationCallback
+{
+    bool IsPositionSafe(Vector3 position);
 }
 
 public interface IEffect

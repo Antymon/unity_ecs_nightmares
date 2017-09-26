@@ -10,42 +10,46 @@ public static class GameComponentsLookup {
 
     public const int Agent = 0;
     public const int AgentDead = 1;
-    public const int Damage = 2;
-    public const int Effect = 3;
-    public const int Enemy = 4;
-    public const int EntityBinding = 5;
-    public const int GameOver = 6;
-    public const int GamePaused = 7;
-    public const int GameStart = 8;
-    public const int Gun = 9;
-    public const int HealthBar = 10;
-    public const int HealthChangedListener = 11;
-    public const int Health = 12;
-    public const int HealthDecreaseOverlay = 13;
-    public const int JoypadBinding = 14;
-    public const int Joystick = 15;
-    public const int Level = 16;
-    public const int MarkedToPostponedDestroy = 17;
-    public const int MovementBehaviour = 18;
-    public const int MovementDirectionChangedListener = 19;
-    public const int MovementDirection = 20;
-    public const int Pause = 21;
-    public const int Player = 22;
-    public const int Position = 23;
-    public const int Projectile = 24;
-    public const int RoundCounter = 25;
-    public const int RoundFinished = 26;
-    public const int RoundStarted = 27;
-    public const int Score = 28;
-    public const int ScoreCounter = 29;
-    public const int Spawner = 30;
-    public const int Tick = 31;
+    public const int AIMovementBehaviour = 2;
+    public const int AIPerception = 3;
+    public const int Damage = 4;
+    public const int Effect = 5;
+    public const int Enemy = 6;
+    public const int EntityBinding = 7;
+    public const int GameOver = 8;
+    public const int GamePaused = 9;
+    public const int GameStart = 10;
+    public const int Gun = 11;
+    public const int HealthBar = 12;
+    public const int HealthChangedListener = 13;
+    public const int Health = 14;
+    public const int HealthDecreaseOverlay = 15;
+    public const int InputMovementBehaviour = 16;
+    public const int JoypadBinding = 17;
+    public const int Joystick = 18;
+    public const int Level = 19;
+    public const int MarkedToPostponedDestroy = 20;
+    public const int MovementDirectionChangedListener = 21;
+    public const int MovementDirection = 22;
+    public const int Pause = 23;
+    public const int Player = 24;
+    public const int Position = 25;
+    public const int Projectile = 26;
+    public const int RoundCounter = 27;
+    public const int RoundFinished = 28;
+    public const int RoundStarted = 29;
+    public const int Score = 30;
+    public const int ScoreCounter = 31;
+    public const int Spawner = 32;
+    public const int Tick = 33;
 
-    public const int TotalComponents = 32;
+    public const int TotalComponents = 34;
 
     public static readonly string[] componentNames = {
         "Agent",
         "AgentDead",
+        "AIMovementBehaviour",
+        "AIPerception",
         "Damage",
         "Effect",
         "Enemy",
@@ -58,11 +62,11 @@ public static class GameComponentsLookup {
         "HealthChangedListener",
         "Health",
         "HealthDecreaseOverlay",
+        "InputMovementBehaviour",
         "JoypadBinding",
         "Joystick",
         "Level",
         "MarkedToPostponedDestroy",
-        "MovementBehaviour",
         "MovementDirectionChangedListener",
         "MovementDirection",
         "Pause",
@@ -81,6 +85,8 @@ public static class GameComponentsLookup {
     public static readonly System.Type[] componentTypes = {
         typeof(AgentComponent),
         typeof(AgentDeadComponent),
+        typeof(AIMovementBehaviour),
+        typeof(AIPerceptionComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
         typeof(EnemyComponent),
@@ -93,11 +99,11 @@ public static class GameComponentsLookup {
         typeof(HealthChangedListenerComponent),
         typeof(HealthComponent),
         typeof(HealthDecreaseOverlayComponent),
+        typeof(InputMovementBehaviour),
         typeof(JoypadBindingComponent),
         typeof(JoystickComponent),
         typeof(LevelComponent),
         typeof(MarkedToPostponedDestroyComponent),
-        typeof(MovementBehaviour),
         typeof(MovementDirectionChangedListenerComponent),
         typeof(MovementDirectionComponent),
         typeof(PauseComponent),

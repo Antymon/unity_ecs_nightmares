@@ -1,10 +1,10 @@
 ﻿using Entitas;
 using UnityEngine;
 
-public class PlayerMovementSystem : ReactiveSystem<GameEntity>
+public class MovementSystem : ReactiveSystem<GameEntity>
 {
 
-    public PlayerMovementSystem(GameContext context)
+    public MovementSystem(GameContext context)
         : base(context)
     {
 
@@ -30,7 +30,7 @@ public class PlayerMovementSystem : ReactiveSystem<GameEntity>
 
     protected override bool Filter(GameEntity entity)
     {
-        return entity.isPlayer && entity.hasMovementDirectionChangedListener;
+        return entity.hasMovementDirection && entity.hasMovementDirectionChangedListener;
     }
 
     protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)

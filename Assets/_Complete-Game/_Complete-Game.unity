@@ -707,11 +707,6 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114592824987763012, guid: f1f82b581e6e6ef42b0dcd6149d812cd,
         type: 2}
-      propertyPath: threat
-      value: 
-      objectReference: {fileID: 608045577}
-    - target: {fileID: 114592824987763012, guid: f1f82b581e6e6ef42b0dcd6149d812cd,
-        type: 2}
       propertyPath: shelters.Array.data[0]
       value: 
       objectReference: {fileID: 933008769}
@@ -735,7 +730,13 @@ Prefab:
       propertyPath: shelters.Array.data[4]
       value: 
       objectReference: {fileID: 1914889339}
-    m_RemovedComponents: []
+    - target: {fileID: 114592824987763012, guid: f1f82b581e6e6ef42b0dcd6149d812cd,
+        type: 2}
+      propertyPath: attackDistance
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114610779604862654, guid: f1f82b581e6e6ef42b0dcd6149d812cd, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: f1f82b581e6e6ef42b0dcd6149d812cd, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &261212727 stripped
@@ -1610,10 +1611,6 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
---- !u!4 &608045577 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 400004, guid: 4e5a0d387dc27394b81600988ad0216f, type: 2}
-  m_PrefabInternal: {fileID: 73246394}
 --- !u!1 &636207312
 GameObject:
   m_ObjectHideFlags: 0
