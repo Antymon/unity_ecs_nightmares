@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Entitas;
+using UnityEngine.AI;
 
 
 public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
@@ -13,6 +14,10 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
     private RaycastHit shootHit;
     private int shootableMask;
 
+    private Transform currentSafePoint;
+    private NavMeshAgent navAgent;
+
+
     public void DeserializeEnitity(GameEntity entity)
     {
         //entity.ReplaceHealth(healthPoints, healthPointsCap);
@@ -21,28 +26,65 @@ public class LookForSafePointBehaviour : MonoBehaviour, IEntityDeserializer
     public void Start()
     {
         shootableMask = LayerMask.GetMask("Shootable");
+        navAgent = GetComponent<NavMeshAgent>();
+    }
 
-        shootRay.origin = threat.position;
-        Vector3 direction;
-
-        foreach (var shelterTransform in shelters)
+    public void Update()
+    {
+        if(currentSafePoint==null)
         {
-            direction = shelterTransform.position - threat.position;
-            direction.y = 0f; //we are considering  floor XZ surface only
-            shootRay.direction = direction;
+            float bestSafetyValue = 0;
 
-            float checkedDistance = Mathf.Min(direction.magnitude,range);
-            
-            // Perform the raycast against gameobjects on the shootable layer and if it hits something...
-            if (Physics.Raycast(shootRay, out shootHit, checkedDistance, shootableMask))
+            foreach(var shelter in shelters)
             {
-                Debug.Log(shelterTransform.name + " safe");
+                if(IsSafe(shelter))
+                {
+                    float safetyValue = GetReachingSafetyChance(shelter);
+                    if(safetyValue>bestSafetyValue)
+                    {
+                        bestSafetyValue = safetyValue;
+                        currentSafePoint = shelter;                    
+                    }
+                }
             }
-            else
+
+            if(currentSafePoint!=null)
             {
-                Debug.Log(shelterTransform.name + " unsafe");
+                navAgent.SetDestination(currentSafePoint.position);
             }
         }
+        else
+        {
+            if(!IsSafe(currentSafePoint))
+            {
+                navAgent.SetDestination(transform.position);
+                currentSafePoint = null;
+            }
+        }
+
+    }
+
+
+    //heuristics
+    private float GetReachingSafetyChance(Transform shelterTransform)
+    {
+        Vector3 threatDistance = threat.position - transform.position;
+        Vector3 safePointDistance = shelterTransform.position - transform.position;
+
+        return Vector3.Angle(threatDistance, safePointDistance);
+    }
+
+    private bool IsSafe(Transform shelterTransform)
+    {
+        shootRay.origin = threat.position;
+        Vector3 direction = shelterTransform.position - threat.position;
+        direction.y = 0f; //we are considering  floor XZ surface only
+        shootRay.direction = direction;
+
+        float checkedDistance = Mathf.Min(direction.magnitude, range);
+
+        // Perform the raycast against gameobjects on the shootable layer and if it hits something...
+        return Physics.Raycast(shootRay, out shootHit, checkedDistance, shootableMask);        
     }
 }
 
