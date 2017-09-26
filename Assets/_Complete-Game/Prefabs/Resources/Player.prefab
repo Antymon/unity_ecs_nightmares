@@ -3885,6 +3885,7 @@ MonoBehaviour:
   cooldownTicks: 10
   range: 100
   damagePerShot: 1
+  missError: 0
   barrelEnd: {fileID: 400004}
 --- !u!114 &114718303940145860
 MonoBehaviour:
@@ -3922,4 +3923,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f261cf830578e74698a71b684ef80e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPointsDamaged: 1
+  healthPointsDamaged: 0

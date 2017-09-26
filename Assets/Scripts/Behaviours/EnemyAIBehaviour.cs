@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
 {
     public int range = 100;
+    private int attackDistanceSqr = 10 * 10;
 
     public Transform threat;
     public Transform[] shelters;
@@ -62,9 +63,9 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
 
     private void Attack()
     {
-        var distance = threat.position - transform.position;
+        var distance = threat.parent.position - transform.position;
 
-        if(distance.sqrMagnitude > range*range) //ToDo: quicker to multiply, but can be premul
+        if(distance.sqrMagnitude > attackDistanceSqr)
         {
             //ToDo:potentially expensive to call this on every frame
             navAgent.SetDestination(threat.position);

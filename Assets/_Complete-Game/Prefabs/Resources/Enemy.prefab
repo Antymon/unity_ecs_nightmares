@@ -468,7 +468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f261cf830578e74698a71b684ef80e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPointsDamaged: 1
+  healthPointsDamaged: 0
 --- !u!114 &114413165267017220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -480,9 +480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f25a955fc1cd5438ca50ff36612e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTicks: 20
+  cooldownTicks: 40
   range: 100
   damagePerShot: 1
+  missError: 0.35
   barrelEnd: {fileID: 4361542717044246}
 --- !u!114 &114488339291934020
 MonoBehaviour:
@@ -539,7 +540,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   faceLight: {fileID: 108188986045816234}
-  effectsLastTicks: 2
+  effectsLastTicks: 3
 --- !u!114 &114865721396060046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -834,7 +835,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -20640616
+  randomSeed: 1319492726
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3940,7 +3941,7 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89

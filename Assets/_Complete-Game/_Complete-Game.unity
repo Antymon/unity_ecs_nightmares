@@ -735,11 +735,6 @@ Prefab:
       propertyPath: shelters.Array.data[4]
       value: 
       objectReference: {fileID: 1914889339}
-    - target: {fileID: 114413165267017220, guid: f1f82b581e6e6ef42b0dcd6149d812cd,
-        type: 2}
-      propertyPath: cooldownTicks
-      value: 40
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f1f82b581e6e6ef42b0dcd6149d812cd, type: 2}
   m_IsPrefabParent: 0

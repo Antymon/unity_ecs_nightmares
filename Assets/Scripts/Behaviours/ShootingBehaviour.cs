@@ -8,6 +8,8 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
     public int range; //raycast range
     public int damagePerShot;
 
+    public float missError = 0f; //max shooting error
+
     public Transform barrelEnd;
 
     private ShootingEffects shootingEffects;
@@ -39,7 +41,13 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
     {
         // Set the shootRay so that it starts at the end of the gun and points forward from the barrel.
         shootRay.origin = barrelEnd.position;
-        shootRay.direction = barrelEnd.forward;
+
+        //adding some randomness in order to avoid perfect shooting 
+        var direction = barrelEnd.forward;
+        direction.x += (Random.value - .5f) * missError;
+        direction.z += (Random.value - .5f) * missError;
+
+        shootRay.direction = direction;
 
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
