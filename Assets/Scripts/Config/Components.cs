@@ -61,8 +61,8 @@ public class EnemyComponent : IComponent
 public interface IEffect
 {
     void Apply(GameEntity entity);
-    int GetTickInterval();
-    bool ShouldRepeat();
+    int GetRepeatInterval();
+    bool IsContintous();
 }
 
 //for boosters
