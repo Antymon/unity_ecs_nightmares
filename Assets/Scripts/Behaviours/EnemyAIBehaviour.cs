@@ -5,13 +5,16 @@ using UnityEngine.AI;
 
 public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
 {
-    public int range = 100;
-    private int attackDistanceSqr = 10 * 10;
+    public int attackDistance = 10;
+    public float attackRecoverHealthThreshold = .5f;
 
     public Transform threat;
     public Transform[] shelters;
 
-    private Ray shootRay = new Ray();
+    private int attackDistanceSqr;//optimization
+    private int othersGunRange;
+
+    private Ray shootRay;
     private RaycastHit shootHit;
     private int shootableMask;
 
@@ -20,11 +23,10 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
 
     private GameEntity selfGameEntity;
 
-    bool pursuePlayer = false;
-
-    public void DeserializeEnitity(GameEntity entity)
+    public void DeserializeEnitity(GameEntity selfGameEntity)
     {
-        this.selfGameEntity = entity;
+        this.selfGameEntity = selfGameEntity;
+        othersGunRange = selfGameEntity.enemy.target.gun.range;
     }
 
     private float GetNormalizedHealth()
@@ -36,16 +38,15 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
     {
         shootableMask = LayerMask.GetMask("Shootable");
         navAgent = GetComponent<NavMeshAgent>();
+        attackDistanceSqr = attackDistance * attackDistance;
+        shootRay = new Ray();
     }
 
     public void Update()
     {
-        if(GetNormalizedHealth()<.5f)
+        if (GetNormalizedHealth() < attackRecoverHealthThreshold)
         {
-            if (selfGameEntity.gun.triggerDown)
-            {
-                selfGameEntity.gun.triggerDown = false;
-            }
+            SetTrigger(false);
             SeekSafety();
         }
         else
@@ -56,8 +57,16 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
             }
             else
             {
-                selfGameEntity.gun.triggerDown = false;
+                SetTrigger(false);
             }
+        }
+    }
+
+    private void SetTrigger(bool pull)
+    {
+        if (selfGameEntity.gun.triggerDown != pull)
+        {
+            selfGameEntity.gun.triggerDown = pull;
         }
     }
 
@@ -65,14 +74,14 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
     {
         var distance = threat.parent.position - transform.position;
 
-        if(distance.sqrMagnitude > attackDistanceSqr)
+        bool desiredDistance = distance.sqrMagnitude > attackDistanceSqr; //sqr is cheaper
+
+        SetTrigger(!desiredDistance);
+
+        if(desiredDistance)
         {
             //ToDo:potentially expensive to call this on every frame
             navAgent.SetDestination(threat.position);
-            if (selfGameEntity.gun.triggerDown)
-            {
-                selfGameEntity.gun.triggerDown = false;
-            }
         }
         else
         {
@@ -82,11 +91,8 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
             }
 
             transform.forward = distance;
-            if (!selfGameEntity.gun.triggerDown)
-            {
-                selfGameEntity.gun.triggerDown = true;
-            }
         }
+
     }
 
     private void SeekSafety()
@@ -150,7 +156,7 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer
         float distance = direction.magnitude;
 
         //spot is out of range at the moment thus safe
-        if(distance>range)
+        if(distance>othersGunRange)
         {
             return true;
         }
