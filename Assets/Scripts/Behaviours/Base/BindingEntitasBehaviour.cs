@@ -5,7 +5,7 @@ public class BindingEntitasBehaviour : MonoBehaviour, IEntitasBinding
 {
     public EntityPrefabNameBinding.Type entityPrefabNameBinding;
 
-    protected IPool pool;
+    protected IGameObjectPool pool;
     protected GameEntity entity;
 
     public virtual void DeserializeEnitity(GameEntity entity)
@@ -26,7 +26,7 @@ public class BindingEntitasBehaviour : MonoBehaviour, IEntitasBinding
         return EntityPrefabNameBinding.entityTypeToPrefabName[entityPrefabNameBinding];
     }
 
-    public void SetPool(IPool pool)
+    public void SetPool(IGameObjectPool pool)
     {
         this.pool = pool;
     }

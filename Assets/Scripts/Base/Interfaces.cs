@@ -8,7 +8,7 @@ public interface IPrefabIdentifier
 }
 
 //signalizes game object-entity relationship
-public interface IEntitasBinding : IPrefabIdentifier, IPooledObject, IEntityDeserializer
+public interface IEntitasBinding : IPrefabIdentifier, IPooledGameObject, IEntityDeserializer
 {
     //returns entity associated with game object
     GameEntity GetEntity();

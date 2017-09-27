@@ -14,9 +14,9 @@ public interface IEntityDeserializer
 //whenever agnostic execution is required - new implementation of the deserialization needs to be provided
 public class EntityDeserializerViaBinding : IEntityDeserializer
 {
-    private IPool pool;
+    private IGameObjectPool pool;
 
-    public EntityDeserializerViaBinding(IPool pool)
+    public EntityDeserializerViaBinding(IGameObjectPool pool)
     {
         this.pool = pool;
     }

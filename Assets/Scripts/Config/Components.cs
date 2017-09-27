@@ -25,7 +25,7 @@ public class MovementDirectionComponent : IComponent
     public bool onlyRotationAffected;
 }
 
-public interface IMovementDirectionChangedListener : IComponent
+public interface IMovementDirectionChangedListener
 {
     void OnMovementDirectionChanged(Vector3 direction);
     void OnOrientationChanged(Vector3 direction);
@@ -34,6 +34,17 @@ public interface IMovementDirectionChangedListener : IComponent
 public class MovementDirectionChangedListenerComponent : IComponent
 {
     public IMovementDirectionChangedListener listener;
+}
+
+public interface IMovementDestinationChangedListener
+{
+    void OnMovementDestinationChanged(Vector3 destination);
+    void OnOrientationDestinationChanged(Vector3 destination);
+}
+
+public class MovementDestinationChangedComponent : IComponent
+{
+    public IMovementDestinationChangedListener listener;
 }
 
 public class AgentDeadComponent : IComponent

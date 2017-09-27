@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPooledObject
+public interface IPooledGameObject
 {
-    void SetPool(IPool pool);
+    void SetPool(IGameObjectPool pool);
     void Reset();
     GameObject gameObject { get; }
 }
 
-public interface IPool
+public interface IGameObjectPool
 {
     GameObject Get(string typeId);
     void Return(GameObject poolItem);
@@ -17,12 +17,12 @@ public interface IPool
 
 //pool for game objects bound to entities
 //binding itself is expected to be overwritten when reusing game object
-public class BindableGameObjectPool : IPool
+public class BindableGameObjectPool : IGameObjectPool
 {
     private Dictionary<string, Stack<GameObject>> pools;
-    private IFactory factory;
+    private IGameObjectFactory factory;
 
-    public BindableGameObjectPool(IFactory factory)
+    public BindableGameObjectPool(IGameObjectFactory factory)
     {
         this.factory = factory;
         pools = new Dictionary<string, Stack<GameObject>>();
@@ -41,7 +41,7 @@ public class BindableGameObjectPool : IPool
             result = factory.Create(prefabName);
         }
 
-        var pooledObject = result.GetComponent<IPooledObject>();
+        var pooledObject = result.GetComponent<IPooledGameObject>();
 
         if (pooledObject == null)
         {
@@ -67,7 +67,7 @@ public class BindableGameObjectPool : IPool
             return;
         }
 
-        var pooledObject = poolItem.GetComponent<IPooledObject>();
+        var pooledObject = poolItem.GetComponent<IPooledGameObject>();
 
         if (pooledObject == null)
         {

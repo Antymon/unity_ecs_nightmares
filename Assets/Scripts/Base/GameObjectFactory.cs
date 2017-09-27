@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFactory
+public interface IGameObjectFactory
 {
     GameObject Create(string prefabName);
 }
 
-public class Factory : IFactory
+public class GameObjectFactory : IGameObjectFactory
 {
     private Dictionary<string, GameObject> resources;
     private Transform defaultTransform;
 
     //transform will be used as a parent for spawning game objects
-    public Factory(Transform defaultTransform)
+    public GameObjectFactory(Transform defaultTransform)
     {
         resources = new Dictionary<string, GameObject>();
         this.defaultTransform = defaultTransform;

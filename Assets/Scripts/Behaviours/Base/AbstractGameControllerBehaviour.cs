@@ -14,8 +14,8 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
 	void Start () {
         Application.targetFrameRate = 60;
 
-        IFactory factory = new Factory(displayRoot);
-        IPool pool = new BindableGameObjectPool(factory);
+        IGameObjectFactory factory = new GameObjectFactory(displayRoot);
+        IGameObjectPool pool = new BindableGameObjectPool(factory);
 
         ReclaimInstatiatedPrefabs(displayRoot, pool);
 
@@ -30,11 +30,11 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
     protected abstract void AddSystems(Contexts contexts, Systems systems);
 
 
-    private void ReclaimInstatiatedPrefabs(Transform root, IPool pool)
+    private void ReclaimInstatiatedPrefabs(Transform root, IGameObjectPool pool)
     {
-        var poolableObjects = root.GetComponentsInChildren<IPooledObject>();
+        var poolableObjects = root.GetComponentsInChildren<IPooledGameObject>();
 
-        foreach (IPooledObject pooledObject in poolableObjects)
+        foreach (IPooledGameObject pooledObject in poolableObjects)
         {
             pool.Return(pooledObject.gameObject);
         }
