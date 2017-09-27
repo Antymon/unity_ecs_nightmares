@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public class EffectSystem : IInitializeSystem, IExecuteSystem
 {
-    private GameContext context;
+    private GameContext gameContext;
+    private InputContext inputContext;
     private IEntityDeserializer entityDeserializer;
 
     private IGroup<GameEntity> creationRequestGroup;
@@ -13,9 +14,10 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     private List<IEffect> effectsToRemove;
 
-    public EffectSystem(GameContext context, IEntityDeserializer entityDeserializer)
+    public EffectSystem(GameContext gameContext,InputContext inputContext, IEntityDeserializer entityDeserializer)
     {
-        this.context = context;
+        this.gameContext = gameContext;
+        this.inputContext = inputContext;
         this.entityDeserializer = entityDeserializer;
 
         effectsFactory = new EffectsFactory();
@@ -25,10 +27,10 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     public void Initialize()
     {
-        creationRequestGroup = context.GetGroup(GameMatcher.CreationRequest);
+        creationRequestGroup = gameContext.GetGroup(GameMatcher.CreationRequest);
         creationRequestGroup.OnEntityAdded += OnCreationRequest;
 
-        agentsGroup = context.GetGroup(GameMatcher.Agent);
+        agentsGroup = gameContext.GetGroup(GameMatcher.Agent);
     }
 
     //request will be promoted to actual entity if binding is correct
@@ -68,20 +70,14 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
             foreach (var effect in agentsEffects)
             {
-                //manage effect
-                //apply, ignore or remove
+                effect.Update(inputContext.tick.currentTick);
 
-                if(effect.CanApply(agentEntity))
-                {
-                    effect.Apply(agentEntity);
-                }
+                effect.Apply(agentEntity);
                 
                 if(effect.IsUsed())
                 {
                     effectsToRemove.Add(effect);
                 }
-
-                effect.Update();
             }
 
             //cleanup

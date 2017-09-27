@@ -3,7 +3,7 @@
 public class PersistantAddHealthEffectBehaviour : TransformResettingBindingBehaviour
 {
     public int healthPoints;
-    public int intervalTicks; //how often to apply effect
+    public ulong intervalTicks; //how often to apply effect
 
     public override void DeserializeEnitity(GameEntity entity)
     {

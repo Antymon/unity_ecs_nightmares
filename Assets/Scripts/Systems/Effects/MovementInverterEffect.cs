@@ -3,23 +3,24 @@ using UnityEngine;
 
 public class MovementInverterEffect : IEffect, IMovementDestinationChangedListener, IMovementDirectionChangedListener
 {
-    public int lastingTicks; //how long will the effect last
-
-    private int ticksSinceApply = 0; //counter to keep track of effect time
+    public ulong lastingTicks; //how long will the effect last
 
     private bool canApply = true; //one time toggle
-    private bool applied = false; //update optimization
+    private bool applied = false; //helps with tracking if effect was eventually unapplied
 
     private IMovementDestinationChangedListener interceptedDestinationChangedListener;
     private IMovementDirectionChangedListener interceptedDirectionChangedListener;
 
     private GameEntity targetEntity; //effect will affect oponent rather than collector entity
 
-    public void Apply(GameEntity entity)
+    private ulong currentTick = 0;
+    private ulong applicationTick = 0;
+
+    public bool Apply(GameEntity entity)
     {
         if(!CanApply(entity))
         {
-            return;
+            return false;
         }
 
         targetEntity = entity.agent.target;
@@ -37,6 +38,10 @@ public class MovementInverterEffect : IEffect, IMovementDestinationChangedListen
 
         canApply = false;
         applied = true;
+
+        applicationTick = currentTick;
+
+        return true;
     }
 
     private void Unapply()
@@ -54,22 +59,26 @@ public class MovementInverterEffect : IEffect, IMovementDestinationChangedListen
 
     public bool IsUsed()
     {
-        return ticksSinceApply >= lastingTicks;
+        return !canApply && currentTick-applicationTick >= lastingTicks;
     }
 
-    public bool CanApply(GameEntity entity)
+    private bool CanApply(GameEntity entity)
+    {
+        return canApply && IsApplicable(entity);
+    }
+
+    public bool IsApplicable(GameEntity entity)
     {
         var target = entity.agent.target;
 
-        return 
-            canApply &&
-            target.isEnabled && //opponent has to be alive
+        return target.isEnabled && //opponent has to be alive
             (target.hasMovementDestinationChangedListener || target.hasMovementDirectionChangedListener);
     }
 
-    public void Update()
+    public void Update(ulong tick)
     {
-        ticksSinceApply++;
+        currentTick = tick;
+
         if(applied && IsUsed())
         {
             Unapply();

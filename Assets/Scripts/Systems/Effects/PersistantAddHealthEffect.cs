@@ -5,28 +5,30 @@ using System.Collections.Generic;
 public class PersistantAddHealthEffect : IEffect
 {
     public int healthPoints;
-    public int intervalTicks; //how many updates needed to reapply
+    public ulong intervalTicks; //how many updates needed to reapply
 
-    private Dictionary<int, int> userIdsToTicksSinceApply; //agents id who are/were using persistant effect
-    private List<int> userIds; //optimization, keys from userIdsToTicksSinceApply
+    private Dictionary<int, ulong> userIdsToApplicationTick; //agents id who are/were using persistant effect
+
+    private ulong currentTick = 0;
 
     public PersistantAddHealthEffect()
     {
-        userIdsToTicksSinceApply = new Dictionary<int, int>();
-        userIds = new List<int>();
+        userIdsToApplicationTick = new Dictionary<int, ulong>();
     }
 
-    public void Apply(GameEntity entity)
+    public bool Apply(GameEntity entity)
     {
         if(!CanApply(entity))
         {
-            return;
+            return false;
         }
 
         //ToDo: health points capping logic shouldn't be here
         entity.health.healthPoints = System.Math.Min(entity.health.healthPoints+healthPoints, entity.health.healthPointsCap);
 
-        userIdsToTicksSinceApply[entity.agent.id] = 0;
+        userIdsToApplicationTick[entity.agent.id] = currentTick;
+
+        return true;
     }
 
     public bool IsUsed()
@@ -34,17 +36,19 @@ public class PersistantAddHealthEffect : IEffect
         return false;
     }
 
-    public bool CanApply(GameEntity entity)
+    private bool CanApply(GameEntity entity)
     {
-        return entity.hasAgent && GetTicksForAgent(entity.agent)>= intervalTicks;
+        return IsApplicable(entity) && GetTicksForAgent(entity.agent) >= intervalTicks;
     }
 
-    public void Update()
+    public bool IsApplicable(GameEntity entity)
     {
-        foreach(var id in userIds)
-        {
-            userIdsToTicksSinceApply[id]++;
-        }
+        return entity.hasAgent && entity.hasHealth;
+    }
+
+    public void Update(ulong time)
+    {
+        currentTick = time;
     }
 
     public bool IsCollectible()
@@ -52,16 +56,15 @@ public class PersistantAddHealthEffect : IEffect
         return false;
     }
 
-    private int GetTicksForAgent(AgentComponent agentComponent)
+    private ulong GetTicksForAgent(AgentComponent agentComponent)
     {
         //intervalTicks is returned to satisfy first use condition of CanApply
-        if(!userIdsToTicksSinceApply.ContainsKey(agentComponent.id))
+        if(!userIdsToApplicationTick.ContainsKey(agentComponent.id))
         {
-            userIdsToTicksSinceApply[agentComponent.id] = intervalTicks;
-            userIds.Add(agentComponent.id);
+            return intervalTicks;
         }
 
-        return userIdsToTicksSinceApply[agentComponent.id];
+        return currentTick - userIdsToApplicationTick[agentComponent.id];
     }
 }
 

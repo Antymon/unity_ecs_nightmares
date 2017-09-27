@@ -6,13 +6,13 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-public partial class GameContext {
+public partial class InputContext {
 
-    public GameEntity tickEntity { get { return GetGroup(GameMatcher.Tick).GetSingleEntity(); } }
+    public InputEntity tickEntity { get { return GetGroup(InputMatcher.Tick).GetSingleEntity(); } }
     public TickComponent tick { get { return tickEntity.tick; } }
     public bool hasTick { get { return tickEntity != null; } }
 
-    public GameEntity SetTick(long newCurrentTick) {
+    public InputEntity SetTick(ulong newCurrentTick) {
         if (hasTick) {
             throw new Entitas.EntitasException("Could not set Tick!\n" + this + " already has an entity with TickComponent!",
                 "You should check if the context already has a tickEntity before setting it or use context.ReplaceTick().");
@@ -22,7 +22,7 @@ public partial class GameContext {
         return entity;
     }
 
-    public void ReplaceTick(long newCurrentTick) {
+    public void ReplaceTick(ulong newCurrentTick) {
         var entity = tickEntity;
         if (entity == null) {
             entity = SetTick(newCurrentTick);
@@ -44,27 +44,27 @@ public partial class GameContext {
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-public partial class GameEntity {
+public partial class InputEntity {
 
-    public TickComponent tick { get { return (TickComponent)GetComponent(GameComponentsLookup.Tick); } }
-    public bool hasTick { get { return HasComponent(GameComponentsLookup.Tick); } }
+    public TickComponent tick { get { return (TickComponent)GetComponent(InputComponentsLookup.Tick); } }
+    public bool hasTick { get { return HasComponent(InputComponentsLookup.Tick); } }
 
-    public void AddTick(long newCurrentTick) {
-        var index = GameComponentsLookup.Tick;
+    public void AddTick(ulong newCurrentTick) {
+        var index = InputComponentsLookup.Tick;
         var component = CreateComponent<TickComponent>(index);
         component.currentTick = newCurrentTick;
         AddComponent(index, component);
     }
 
-    public void ReplaceTick(long newCurrentTick) {
-        var index = GameComponentsLookup.Tick;
+    public void ReplaceTick(ulong newCurrentTick) {
+        var index = InputComponentsLookup.Tick;
         var component = CreateComponent<TickComponent>(index);
         component.currentTick = newCurrentTick;
         ReplaceComponent(index, component);
     }
 
     public void RemoveTick() {
-        RemoveComponent(GameComponentsLookup.Tick);
+        RemoveComponent(InputComponentsLookup.Tick);
     }
 }
 
@@ -76,15 +76,15 @@ public partial class GameEntity {
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-public sealed partial class GameMatcher {
+public sealed partial class InputMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherTick;
+    static Entitas.IMatcher<InputEntity> _matcherTick;
 
-    public static Entitas.IMatcher<GameEntity> Tick {
+    public static Entitas.IMatcher<InputEntity> Tick {
         get {
             if (_matcherTick == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Tick);
-                matcher.componentNames = GameComponentsLookup.componentNames;
+                var matcher = (Entitas.Matcher<InputEntity>)Entitas.Matcher<InputEntity>.AllOf(InputComponentsLookup.Tick);
+                matcher.componentNames = InputComponentsLookup.componentNames;
                 _matcherTick = matcher;
             }
 

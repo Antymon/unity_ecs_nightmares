@@ -186,9 +186,10 @@ public class ScoreComponent : IComponent
 }
 
 [Unique]
-public class TickComponent : IComponent
+[Input]
+public class TickComponent : IComponent 
 {
-    public long currentTick;
+    public ulong currentTick; //time measure
 }
 
 public class HealthBarComponent : IComponent

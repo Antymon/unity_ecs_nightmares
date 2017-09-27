@@ -40,7 +40,7 @@ public class TriggerSystem : ReactiveSystem<InputEntity>
 
         if(onEnter)
         {
-            if (entityEffect.CanApply(agentEntity))
+            if (entityEffect.IsApplicable(agentEntity))
             {
                 aggentsEffects.Add(entityEffect);
                 if(entityEffect.IsCollectible())

@@ -2,7 +2,7 @@
 
 public class MovementInverterEffectBehaviour : TransformResettingBindingBehaviour
 {
-    public int lastingTicks; //how long will the inverter last
+    public ulong lastingTicks; //how long will the inverter last
 
     public override void DeserializeEnitity(GameEntity entity)
     {

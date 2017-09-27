@@ -42,9 +42,8 @@ public static class GameComponentsLookup {
     public const int Score = 31;
     public const int ScoreCounter = 32;
     public const int Spawner = 33;
-    public const int Tick = 34;
 
-    public const int TotalComponents = 35;
+    public const int TotalComponents = 34;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -80,8 +79,7 @@ public static class GameComponentsLookup {
         "RoundStarted",
         "Score",
         "ScoreCounter",
-        "Spawner",
-        "Tick"
+        "Spawner"
     };
 
     public static readonly System.Type[] componentTypes = {
@@ -118,7 +116,6 @@ public static class GameComponentsLookup {
         typeof(RoundStartedComponent),
         typeof(ScoreComponent),
         typeof(ScoreCounterComponent),
-        typeof(SpawnerComponent),
-        typeof(TickComponent)
+        typeof(SpawnerComponent)
     };
 }

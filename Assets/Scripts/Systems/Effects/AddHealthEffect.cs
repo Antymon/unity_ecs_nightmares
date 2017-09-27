@@ -6,16 +6,18 @@ public class AddHealthEffect : IEffect
 
     private bool used = false;
 
-    public void Apply(GameEntity entity)
+    public bool Apply(GameEntity entity)
     {
-        if(!CanApply(entity))
+        if (IsUsed())
         {
-            return;
+            return false;
         }
 
         //ToDo: health points capping logic shouldn't be here
         entity.health.healthPoints = System.Math.Min(entity.health.healthPoints+healthPoints, entity.health.healthPointsCap);
         used = true;
+
+        return true;
     }
 
     public bool IsUsed()
@@ -23,12 +25,12 @@ public class AddHealthEffect : IEffect
         return used;
     }
 
-    public bool CanApply(GameEntity entity)
+    public bool IsApplicable(GameEntity entity)
     {
-        return !IsUsed();
+        return entity.hasHealth;
     }
 
-    public void Update()
+    public void Update(ulong tick)
     {
     }
 
