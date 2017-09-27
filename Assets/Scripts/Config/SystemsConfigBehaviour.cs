@@ -7,16 +7,19 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
 
     protected override void AddSystems(Contexts contexts, Systems systems)
     {
-        systems.Add(new PlayerInitSystem(contexts.game, entityDeserializer));
-        systems.Add(new JoypadSystem(contexts.input, contexts.game, entityDeserializer));
-        systems.Add(new MovementSystem(contexts.game));
-        systems.Add(new TriggerBulletSystem(contexts.input, contexts.game));
-        systems.Add(new ShootingSystem(contexts.game));
-        systems.Add(new CollisionSystem(contexts.input,contexts.game));
-        systems.Add(new EnemyInitSystem(contexts.game, entityDeserializer));
-        systems.Add(new DestroySystem(contexts.game));
-        systems.Add(new RoundSystem(contexts.game, entityDeserializer));
-        systems.Add(new EnemyAISystem(contexts.game));
+        var gameContext = contexts.game;
+        var inputContext = contexts.input;
+
+        systems.Add(new PlayerInitSystem(gameContext, entityDeserializer));
+        systems.Add(new JoypadSystem(inputContext, gameContext, entityDeserializer));
+        systems.Add(new MovementSystem(gameContext));
+        systems.Add(new TriggerBulletSystem(inputContext, gameContext));
+        systems.Add(new ShootingSystem(gameContext));
+        systems.Add(new CollisionSystem(inputContext,gameContext));
+        systems.Add(new EnemyInitSystem(gameContext, entityDeserializer));
+        systems.Add(new DestroySystem(gameContext));
+        systems.Add(new RoundSystem(gameContext, entityDeserializer));
+        systems.Add(new EnemyAISystem(gameContext));
     }
 }
 
