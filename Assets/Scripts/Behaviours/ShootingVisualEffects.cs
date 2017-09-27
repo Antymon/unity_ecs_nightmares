@@ -3,7 +3,7 @@ using UnityEngine;
 using UnitySampleAssets.CrossPlatformInput;
 
 
-public class ShootingEffects : MonoBehaviour
+public class ShootingVisualEffects : MonoBehaviour
 {
     public Light faceLight;
     public int effectsLastTicks; //how long will the effects last

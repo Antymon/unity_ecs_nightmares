@@ -21,6 +21,9 @@ public class EntityPrefabNameBinding
         PLAYER = 1,
         JOYPAD = 2,
         ENEMY = 3,
+        EFFECT_ADD_HEALTH = 4,
+        EFFECT_REPAIR_HEALTH = 5,
+        EFFECT_SCRAMBLER = 6
     }
 
     public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
@@ -28,6 +31,10 @@ public class EntityPrefabNameBinding
     public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
     public static readonly EntityPrefabNameBinding JOYPAD_BINDING = new EntityPrefabNameBinding(Type.JOYPAD, "Joypad");
     public static readonly EntityPrefabNameBinding ENEMY_BINDING = new EntityPrefabNameBinding(Type.ENEMY, "Enemy");
+
+    public static readonly EntityPrefabNameBinding EFFECT_ADD_HEALTH_BINDING = new EntityPrefabNameBinding(Type.EFFECT_ADD_HEALTH, "EffectAddHealth");
+    public static readonly EntityPrefabNameBinding EFFECT_REPAIR_HEALTH_BINDING = new EntityPrefabNameBinding(Type.EFFECT_REPAIR_HEALTH, "EffectRepairHealth");
+    public static readonly EntityPrefabNameBinding EFFECT_SCRAMBLER_BINDING = new EntityPrefabNameBinding(Type.EFFECT_SCRAMBLER, "EffectScrambler");
 
     public Type entityType;
     public string prefabName;

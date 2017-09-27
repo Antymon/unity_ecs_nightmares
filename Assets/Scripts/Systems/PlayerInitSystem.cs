@@ -17,7 +17,8 @@ public class PlayerInitSystem  : IInitializeSystem
         var entity = context.CreateEntity();
         entity.isPlayer = true;
         entity.AddEntityBinding(EntityPrefabNameBinding.PLAYER_BINDING);
-        entity.AddAgent(0, string.Empty, new List<IEffect>());
+        //ToDo: opponent as null is not desirable
+        entity.AddAgent(0, string.Empty, new List<IEffect>(),null);
         entityDeserializer.DeserializeEnitity(entity);
 
     }

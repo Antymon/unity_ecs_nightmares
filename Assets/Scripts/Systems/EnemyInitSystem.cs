@@ -16,12 +16,16 @@ public class EnemyInitSystem  : IInitializeSystem
     {
         var entity = context.CreateEntity();
         entity.AddEntityBinding(EntityPrefabNameBinding.ENEMY_BINDING);
-        entity.AddAgent(0, string.Empty, new List<IEffect>());
-
+        
         var playerGroup = context.GetGroup(GameMatcher.Player);
         var playerEntity = playerGroup.GetSingleEntity();
 
-        entity.AddEnemy(playerEntity);
+        entity.AddAgent(0, string.Empty, new List<IEffect>(), playerEntity);
+        entity.isEnemy = true;
+
+        //ToDo: temp hack, to avoid initialization isssues
+        playerEntity.agent.target = entity;
+
         entityDeserializer.DeserializeEnitity(entity);
     }
 

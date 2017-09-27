@@ -39,7 +39,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     {
         var enemyGroup = context.GetGroup(GameMatcher.Enemy);
         selfGameEntity = enemyGroup.GetSingleEntity();
-        otherGameEntity = selfGameEntity.enemy.target;
+        otherGameEntity = selfGameEntity.agent.target;
 
         shelterPoints = selfGameEntity.aIPerception.stationaryPositions;
 

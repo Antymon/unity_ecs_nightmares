@@ -63,6 +63,7 @@ public class AgentComponent : IComponent
     public int id;
     public string name;
     public List<IEffect> effects;
+    public GameEntity target;
 }
 
 public class Player : IComponent
@@ -72,7 +73,6 @@ public class Player : IComponent
 
 public class EnemyComponent : IComponent
 {
-    public GameEntity target;
 }
 
 public class AIPerceptionComponent : IComponent
@@ -86,13 +86,6 @@ public class AIPerceptionComponent : IComponent
 public interface IPositionVerificationCallback
 {
     bool IsPositionSafe(Vector3 position);
-}
-
-public interface IEffect
-{
-    void Apply(GameEntity entity);
-    int GetRepeatInterval();
-    bool IsContintous();
 }
 
 //for boosters
@@ -113,6 +106,14 @@ public class CollisionComponent : IComponent
 {
     public GameEntity self;
     public GameEntity other;
+}
+
+[Input]
+public class TriggerComponent : IComponent
+{
+    public GameEntity self;
+    public GameEntity other;
+    public bool onEnter;
 }
 
 public interface HealthChangedListener

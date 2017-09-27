@@ -19,7 +19,7 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVer
 
     public void DeserializeEnitity(GameEntity selfGameEntity)
     {
-        this.otherGameEntity = selfGameEntity.enemy.target;
+        this.otherGameEntity = selfGameEntity.agent.target;
 
         var shelterPositions = shelters.Select(s => s.position).ToArray();
 

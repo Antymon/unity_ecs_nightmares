@@ -1,10 +1,12 @@
-﻿using Entitas;
+﻿
+using Entitas;
 
-public class AddHealthEffect : IEffect
+public class PersistantAddHealthEffect : IEffect
 {
     public int healthPoints;
+    public int intervalTicks; //how many updates needed to reapply
 
-    private bool used = false;
+    private int ticksSinceApply = 0;
 
     public void Apply(GameEntity entity)
     {
@@ -15,27 +17,28 @@ public class AddHealthEffect : IEffect
 
         //ToDo: health points capping logic shouldn't be here
         entity.health.healthPoints = System.Math.Min(entity.health.healthPoints+healthPoints, entity.health.healthPointsCap);
-        used = true;
+        
+        ticksSinceApply = 0;
     }
 
     public bool IsUsed()
     {
-        return used;
+        return false;
     }
 
     public bool CanApply(GameEntity entity)
     {
-        return !IsUsed();
+        return ticksSinceApply>=intervalTicks;
     }
 
     public void Update()
     {
+        ticksSinceApply++;
     }
-
 
     public bool IsCollectible()
     {
-        return true;
+        return false;
     }
 }
 

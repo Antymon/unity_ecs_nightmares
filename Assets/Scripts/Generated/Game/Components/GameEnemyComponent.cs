@@ -8,25 +8,19 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public EnemyComponent enemy { get { return (EnemyComponent)GetComponent(GameComponentsLookup.Enemy); } }
-    public bool hasEnemy { get { return HasComponent(GameComponentsLookup.Enemy); } }
+    static readonly EnemyComponent enemyComponent = new EnemyComponent();
 
-    public void AddEnemy(GameEntity newTarget) {
-        var index = GameComponentsLookup.Enemy;
-        var component = CreateComponent<EnemyComponent>(index);
-        component.target = newTarget;
-        AddComponent(index, component);
-    }
-
-    public void ReplaceEnemy(GameEntity newTarget) {
-        var index = GameComponentsLookup.Enemy;
-        var component = CreateComponent<EnemyComponent>(index);
-        component.target = newTarget;
-        ReplaceComponent(index, component);
-    }
-
-    public void RemoveEnemy() {
-        RemoveComponent(GameComponentsLookup.Enemy);
+    public bool isEnemy {
+        get { return HasComponent(GameComponentsLookup.Enemy); }
+        set {
+            if (value != isEnemy) {
+                if (value) {
+                    AddComponent(GameComponentsLookup.Enemy, enemyComponent);
+                } else {
+                    RemoveComponent(GameComponentsLookup.Enemy);
+                }
+            }
+        }
     }
 }
 

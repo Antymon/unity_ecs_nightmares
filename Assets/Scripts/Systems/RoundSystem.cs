@@ -70,7 +70,7 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
             {
                 playerIsDead = true;
             }
-            else if (agent.hasEnemy)
+            else if (agent.isEnemy)
             {
                 enemyIsDead = true;
             }

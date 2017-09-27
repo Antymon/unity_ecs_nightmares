@@ -12,7 +12,7 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
 
     public Transform barrelEnd;
 
-    private ShootingEffects shootingEffects;
+    private ShootingVisualEffects shootingEffects;
 
     private Ray shootRay = new Ray();                       // A ray from the gun end forwards.
     private RaycastHit shootHit;                            // A raycast hit to get information about what was hit.
@@ -34,7 +34,7 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
     {
         // Create a layer mask for the Shootable layer.
         shootableMask = LayerMask.GetMask("Shootable");
-        shootingEffects = GetComponentInChildren<ShootingEffects>();
+        shootingEffects = GetComponentInChildren<ShootingVisualEffects>();
     }
 
     public void OnShoot(GameEntity bullet)
