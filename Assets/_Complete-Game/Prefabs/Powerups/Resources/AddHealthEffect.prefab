@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 114219800094798338}
   - component: {fileID: 114902388548989118}
   m_Layer: 0
-  m_Name: alt
+  m_Name: AddHealthEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,9 +173,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474488301503372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: a4d817e9223c2034f985dc32860c39ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entityPrefabNameBinding: 4
+  healthPoints: 2
 --- !u!114 &114902388548989118
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,7 +186,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1474488301503372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
+  m_Script: {fileID: 11500000, guid: f82de1a3403283d4c9bf6a5367cbbd1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &135565649224831752
@@ -197,8 +199,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 1
+  m_Center: {x: 0, y: -0.7, z: 0}
 --- !u!198 &198492559415918398
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -256,7 +258,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -1831240219
+  randomSeed: 1784169601
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -6502,7 +6504,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1783221252
+  randomSeed: 1579392095
   InitialModule:
     serializedVersion: 3
     enabled: 1
