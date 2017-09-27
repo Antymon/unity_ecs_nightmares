@@ -20,6 +20,8 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
         systems.Add(new DestroySystem(gameContext));
         systems.Add(new RoundSystem(gameContext, entityDeserializer));
         systems.Add(new EnemyAISystem(gameContext));
+        systems.Add(new TriggerSystem(inputContext));
+        systems.Add(new EffectSystem(gameContext, entityDeserializer));
     }
 }
 

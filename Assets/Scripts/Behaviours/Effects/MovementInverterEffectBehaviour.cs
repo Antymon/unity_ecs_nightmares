@@ -8,6 +8,8 @@ public class MovementInverterEffectBehaviour : TransformResettingBindingBehaviou
     {
         base.DeserializeEnitity(entity);
 
+        transform.position = entity.position.position;
+
         MovementInverterEffect entityEffect = ((MovementInverterEffect)entity.effect.effect);
 
         entityEffect.lastingTicks = lastingTicks;       

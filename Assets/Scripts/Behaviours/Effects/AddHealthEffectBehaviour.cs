@@ -8,6 +8,8 @@ public class AddHealthEffectBehaviour : TransformResettingBindingBehaviour
     {
         base.DeserializeEnitity(entity);
 
+        transform.position = entity.position.position;
+
         ((AddHealthEffect)entity.effect.effect).healthPoints = healthPoints;
     }
 }

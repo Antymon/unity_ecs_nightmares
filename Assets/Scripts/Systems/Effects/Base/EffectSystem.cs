@@ -36,6 +36,14 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         {
             effectComponent.effect = effectsFactory.Create<AddHealthEffect>();
         }
+        else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING))
+        {
+            effectComponent.effect = effectsFactory.Create<MovementInverterEffect>();
+        }
+        else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING))
+        {
+            effectComponent.effect = effectsFactory.Create<PersistantAddHealthEffect>();
+        }
 
         entityDeserializer.DeserializeEnitity(effectEntity);
     }

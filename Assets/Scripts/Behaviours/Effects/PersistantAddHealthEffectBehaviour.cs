@@ -9,6 +9,8 @@ public class PersistantAddHealthEffectBehaviour : TransformResettingBindingBehav
     {
         base.DeserializeEnitity(entity);
 
+        transform.position = entity.position.position;
+
         PersistantAddHealthEffect entityEffect = ((PersistantAddHealthEffect)entity.effect.effect);
 
         entityEffect.healthPoints = healthPoints;

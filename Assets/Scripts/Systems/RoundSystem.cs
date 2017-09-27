@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using Entitas;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 {
@@ -45,6 +46,16 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         scoreComponent.currentScore = 0;
         levelComponent.currentRound = 0;
         StartNextRound();
+
+        RequestEffectCreation(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING, new Vector3(-9,-10,10));        
+    }
+
+    private void RequestEffectCreation(EntityPrefabNameBinding binding, Vector3 position)
+    {
+        var effectEntity = gameContext.CreateEntity();
+        effectEntity.AddEntityBinding(binding);
+        effectEntity.position.position = position;
+        effectEntity.AddEffect(null);
     }
 
     private void StartNextRound()

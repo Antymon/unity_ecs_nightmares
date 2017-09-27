@@ -6,8 +6,10 @@ public class TransformResettingBindingBehaviour : BindingEntitasBehaviour
     private Vector3 position;
     private Quaternion rotation;
 
-    void Start()
+    public override void DeserializeEnitity(GameEntity entity)
     {
+ 	    base.DeserializeEnitity(entity);
+
         position = transform.position;
         rotation = transform.rotation;
     }
