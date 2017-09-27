@@ -10,25 +10,25 @@ public static class GameComponentsLookup {
 
     public const int Agent = 0;
     public const int AgentDead = 1;
-    public const int AIMovementBehaviour = 2;
-    public const int AIPerception = 3;
-    public const int Damage = 4;
-    public const int Effect = 5;
-    public const int Enemy = 6;
-    public const int EntityBinding = 7;
-    public const int GameOver = 8;
-    public const int GamePaused = 9;
-    public const int GameStart = 10;
-    public const int Gun = 11;
-    public const int HealthBar = 12;
-    public const int HealthChangedListener = 13;
-    public const int Health = 14;
-    public const int HealthDecreaseOverlay = 15;
-    public const int InputMovementBehaviour = 16;
-    public const int JoypadBinding = 17;
-    public const int Joystick = 18;
-    public const int Level = 19;
-    public const int MarkedToPostponedDestroy = 20;
+    public const int AIPerception = 2;
+    public const int Damage = 3;
+    public const int Effect = 4;
+    public const int Enemy = 5;
+    public const int EntityBinding = 6;
+    public const int GameOver = 7;
+    public const int GamePaused = 8;
+    public const int GameStart = 9;
+    public const int Gun = 10;
+    public const int HealthBar = 11;
+    public const int HealthChangedListener = 12;
+    public const int Health = 13;
+    public const int HealthDecreaseOverlay = 14;
+    public const int JoypadBinding = 15;
+    public const int Joystick = 16;
+    public const int Level = 17;
+    public const int MarkedToPostponedDestroy = 18;
+    public const int MovementDestinationChangedListener = 19;
+    public const int MovementDestination = 20;
     public const int MovementDirectionChangedListener = 21;
     public const int MovementDirection = 22;
     public const int Pause = 23;
@@ -48,7 +48,6 @@ public static class GameComponentsLookup {
     public static readonly string[] componentNames = {
         "Agent",
         "AgentDead",
-        "AIMovementBehaviour",
         "AIPerception",
         "Damage",
         "Effect",
@@ -62,11 +61,12 @@ public static class GameComponentsLookup {
         "HealthChangedListener",
         "Health",
         "HealthDecreaseOverlay",
-        "InputMovementBehaviour",
         "JoypadBinding",
         "Joystick",
         "Level",
         "MarkedToPostponedDestroy",
+        "MovementDestinationChangedListener",
+        "MovementDestination",
         "MovementDirectionChangedListener",
         "MovementDirection",
         "Pause",
@@ -85,7 +85,6 @@ public static class GameComponentsLookup {
     public static readonly System.Type[] componentTypes = {
         typeof(AgentComponent),
         typeof(AgentDeadComponent),
-        typeof(AIMovementBehaviour),
         typeof(AIPerceptionComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
@@ -99,11 +98,12 @@ public static class GameComponentsLookup {
         typeof(HealthChangedListenerComponent),
         typeof(HealthComponent),
         typeof(HealthDecreaseOverlayComponent),
-        typeof(InputMovementBehaviour),
         typeof(JoypadBindingComponent),
         typeof(JoystickComponent),
         typeof(LevelComponent),
         typeof(MarkedToPostponedDestroyComponent),
+        typeof(MovementDestinationChangedListenerComponent),
+        typeof(MovementDestinationComponent),
         typeof(MovementDirectionChangedListenerComponent),
         typeof(MovementDirectionComponent),
         typeof(PauseComponent),

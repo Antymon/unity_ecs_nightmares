@@ -3,7 +3,7 @@ using Entitas;
 using UnityEngine.AI;
 
 
-public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
+public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDestinationChangedListener
 {
     //ToDo extract class
     const string WALKING_ANIMATION_LABEL = "IsWalking";
@@ -18,16 +18,16 @@ public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovement
     public void DeserializeEnitity(GameEntity entity)
     {
         this.selfGameEntity = entity;
-        selfGameEntity.AddMovementDirectionChangedListener(this);
+        selfGameEntity.AddMovementDestinationChangedListener(this);
         selfGameEntity.AddPosition(transform.position);
     }
 
-    public void OnMovementDirectionChanged(Vector3 destination)
+    public void OnMovementDestinationChanged(Vector3 destination)
     {
         navAgent.SetDestination(destination);
     }
 
-    public void OnOrientationChanged(Vector3 destination)
+    public void OnOrientationDestinationChanged(Vector3 destination)
     {
         if (destination.Equals(transform.position))
         {

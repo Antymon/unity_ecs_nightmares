@@ -36,13 +36,19 @@ public class MovementDirectionChangedListenerComponent : IComponent
     public IMovementDirectionChangedListener listener;
 }
 
+public class MovementDestinationComponent : IComponent
+{
+    public Vector3 destination;
+    public Vector3 orientation;
+}
+
 public interface IMovementDestinationChangedListener
 {
     void OnMovementDestinationChanged(Vector3 destination);
     void OnOrientationDestinationChanged(Vector3 destination);
 }
 
-public class MovementDestinationChangedComponent : IComponent
+public class MovementDestinationChangedListenerComponent : IComponent
 {
     public IMovementDestinationChangedListener listener;
 }

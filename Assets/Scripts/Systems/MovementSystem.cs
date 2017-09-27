@@ -1,18 +1,40 @@
 ﻿using Entitas;
 using UnityEngine;
 
-public class MovementSystem : ReactiveSystem<GameEntity>
+public class MovementSystem : IInitializeSystem
 {
+    private GameContext context;
+
+    private IGroup<GameEntity> movementDestinationGroup;
+    private IGroup<GameEntity> movementDirectionGroup;
 
     public MovementSystem(GameContext context)
-        : base(context)
     {
-
+        this.context = context;
     }
 
-    protected override void Execute(System.Collections.Generic.List<GameEntity> entities)
+    public void Initialize()
     {
-        foreach (var entity in entities)
+        movementDestinationGroup = context.GetGroup(GameMatcher.MovementDestination);
+        movementDestinationGroup.OnEntityUpdated += OnMovementDestinationChanged;
+
+        movementDirectionGroup = context.GetGroup(GameMatcher.MovementDirection);
+        movementDirectionGroup.OnEntityUpdated += OnMovementDirectionChanged;
+    }
+
+    private void OnMovementDestinationChanged(IGroup<GameEntity> group, GameEntity entity, int index, IComponent previousComponent, IComponent newComponent)
+    {
+        if (entity.hasMovementDestinationChangedListener)
+        {
+            IMovementDestinationChangedListener listener = entity.movementDestinationChangedListener.listener;
+            listener.OnMovementDestinationChanged(entity.movementDestination.destination);
+            listener.OnOrientationDestinationChanged(entity.movementDestination.orientation);
+        }
+    }
+
+    private void OnMovementDirectionChanged(IGroup<GameEntity> group, GameEntity entity, int index, IComponent previousComponent, IComponent newComponent)
+    {
+        if(entity.hasMovementDirectionChangedListener)
         {
             var directionChangedListener = entity.movementDirectionChangedListener.listener;
             var direction = entity.movementDirection.direction;
@@ -24,18 +46,6 @@ public class MovementSystem : ReactiveSystem<GameEntity>
                 directionChangedListener.OnMovementDirectionChanged(direction);
             }
         }
-
-        
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return entity.hasMovementDirection && entity.hasMovementDirectionChangedListener;
-    }
-
-    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector<GameEntity>(GameMatcher.MovementDirection.Added());
     }
 }
 

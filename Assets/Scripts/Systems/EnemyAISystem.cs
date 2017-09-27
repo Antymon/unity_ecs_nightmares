@@ -5,10 +5,10 @@ using UnityEngine;
 public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 {
     private GameContext context;
-    private GameEntity enemyGameEntity;
-    private GameEntity threat;
+    private GameEntity selfGameEntity;
+    private GameEntity otherGameEntity;
 
-    public Vector3[] shelters;
+    public Vector3[] shelterPoints;
     private Vector3 currentSafePoint;
     private bool safePositionFound = false;
 
@@ -16,6 +16,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     private float attackDistanceSqr;
 
     //ToDo: shortcut; not quite entitas way, but ultimately non-determinisic input has to be recorded in some way, anyway
+    //calling into relevant behaviour
     private Func<Vector3, bool> isPositionSafeCallback;
 
     public EnemyAISystem(GameContext context)
@@ -26,19 +27,19 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     public void Initialize()
     {
         var enemyGroup = context.GetGroup(GameMatcher.Enemy);
-        enemyGameEntity = enemyGroup.GetSingleEntity();
-        threat = enemyGameEntity.enemy.target;
+        selfGameEntity = enemyGroup.GetSingleEntity();
+        otherGameEntity = selfGameEntity.enemy.target;
 
-        shelters = enemyGameEntity.aIPerception.stationaryPositions;
+        shelterPoints = selfGameEntity.aIPerception.stationaryPositions;
 
-        attackRecoverHealthThreshold = enemyGameEntity.aIPerception.attackRecoverHealthThreshold;
-        attackDistanceSqr = enemyGameEntity.aIPerception.attackDistance * enemyGameEntity.aIPerception.attackDistance;
-        isPositionSafeCallback = enemyGameEntity.aIPerception.callback.IsPositionSafe;
+        attackRecoverHealthThreshold = selfGameEntity.aIPerception.attackRecoverHealthThreshold;
+        attackDistanceSqr = selfGameEntity.aIPerception.attackDistance * selfGameEntity.aIPerception.attackDistance;
+        isPositionSafeCallback = selfGameEntity.aIPerception.callback.IsPositionSafe;
     }
 
     public void Execute()
     {
-        if (!enemyGameEntity.isEnabled)
+        if (!selfGameEntity.isEnabled)
         {
             return;
         }
@@ -50,7 +51,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
         }
         else
         {
-            if (threat.isEnabled)
+            if (otherGameEntity.isEnabled)
             {
                 Attack();
             }
@@ -63,35 +64,32 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
     private float GetNormalizedHealth()
     {
-        return (float)enemyGameEntity.health.healthPoints / enemyGameEntity.health.healthPointsCap;
+        return (float)selfGameEntity.health.healthPoints / selfGameEntity.health.healthPointsCap;
     }
 
     private void SetTrigger(bool pull)
     {
-        if (enemyGameEntity.gun.triggerDown != pull)
+        if (selfGameEntity.gun.triggerDown != pull)
         {
-            enemyGameEntity.gun.triggerDown = pull;
+            selfGameEntity.gun.triggerDown = pull;
         }
     }
 
     private void Attack()
     {
-        var distance = threat.position.position - enemyGameEntity.position.position;
+        var distance = otherGameEntity.position.position - selfGameEntity.position.position;
 
-        bool desiredDistance = distance.sqrMagnitude > attackDistanceSqr; //sqr is cheaper
+        bool isDesiredDistance = distance.sqrMagnitude <= attackDistanceSqr; //sqr is cheaper
 
-        SetTrigger(!desiredDistance);
+        SetTrigger(isDesiredDistance); //shoot or not shoot
 
-        if (desiredDistance)
+        if (isDesiredDistance) //stop, aim
         {
-            enemyGameEntity.ReplaceMovementDirection(threat.position.position, newOnlyRotationAffected:false);
+            selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, otherGameEntity.position.position);
         }
-        else
+        else //chase
         {
-            //ToDo: bit hacky, set position to current position in order to stop
-            enemyGameEntity.ReplaceMovementDirection(enemyGameEntity.position.position, newOnlyRotationAffected: false);
-            //effectively: rotation
-            enemyGameEntity.ReplaceMovementDirection(threat.position.position, newOnlyRotationAffected: true);
+            selfGameEntity.ReplaceMovementDestination(otherGameEntity.position.position, otherGameEntity.position.position);
         }
 
     }
@@ -104,14 +102,16 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
             if (safePositionFound)
             {
-                enemyGameEntity.ReplaceMovementDirection(currentSafePoint, newOnlyRotationAffected: false);
+                //head safe position
+                selfGameEntity.ReplaceMovementDestination(currentSafePoint, currentSafePoint);
             }
         }
         else
         {
             if (!isPositionSafeCallback(currentSafePoint))
             {
-                enemyGameEntity.ReplaceMovementDirection(enemyGameEntity.position.position, newOnlyRotationAffected: false);
+                //stop
+                selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, selfGameEntity.position.position);
 
                 safePositionFound = false;
             }
@@ -123,7 +123,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     {
         float bestSafetyValue = 0;
 
-        foreach (var shelter in shelters)
+        foreach (var shelter in shelterPoints)
         {
             if (isPositionSafeCallback(shelter))
             {
@@ -143,8 +143,8 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     //heuristics
     private float AssessChanceOfReachingSafely(Vector3 shelterTransform)
     {
-        Vector3 threatDistance = threat.position.position - enemyGameEntity.position.position;
-        Vector3 safePointDistance = shelterTransform - enemyGameEntity.position.position;
+        Vector3 threatDistance = otherGameEntity.position.position - selfGameEntity.position.position;
+        Vector3 safePointDistance = shelterTransform - selfGameEntity.position.position;
 
         return Mathf.Abs(Vector3.Angle(threatDistance, safePointDistance));
     }
