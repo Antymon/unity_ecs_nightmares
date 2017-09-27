@@ -7,6 +7,8 @@ public class TouchInputBehaviour : MonoBehaviour
 {
     public KeyCode alternativeTouchKey = KeyCode.Space;
 
+    List<Touch> touches = new List<Touch>();
+
     public void Update()
     {
         if(!Application.isEditor)
@@ -18,8 +20,6 @@ public class TouchInputBehaviour : MonoBehaviour
         }
         else
         {
-            var touches = new List<Touch>();
-
             if(Input.GetMouseButtonDown(0))
             {
                 touches.Add(FakeTouch(TouchPhase.Began,1));
@@ -46,9 +46,13 @@ public class TouchInputBehaviour : MonoBehaviour
             {
                 touches.Add(FakeTouch(TouchPhase.Ended, 2));
             }
-            
 
-            NotifyTouches(touches.ToArray());
+            if (touches.Count > 0)
+            {
+                NotifyTouches(touches.ToArray());
+                touches.Clear();
+            }
+
         }
     }
 

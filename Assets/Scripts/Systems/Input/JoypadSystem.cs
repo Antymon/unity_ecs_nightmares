@@ -45,6 +45,12 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     {
         foreach (var entity in entities)
         {
+            if(!playerEnity.isEnabled)
+            {
+                entity.Destroy();
+                continue;
+            }
+
             int joypadTouchId = joypadEntity.joystick.touchId;
             bool joypadEnabled = joypadEntity.joystick.enabled;
 
@@ -120,7 +126,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     protected override bool Filter(InputEntity entity)
     {
-        return playerEnity.isEnabled;
+        return true;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
