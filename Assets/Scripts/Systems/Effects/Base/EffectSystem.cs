@@ -1,15 +1,17 @@
 ﻿using Entitas;
+using System.Collections.Generic;
 
 public class EffectSystem : IInitializeSystem, IExecuteSystem
 {
     private GameContext context;
     private IEntityDeserializer entityDeserializer;
 
-    private IGroup<GameEntity> effectsGroup;
+    private IGroup<GameEntity> creationRequestGroup;
     private IGroup<GameEntity> agentsGroup;
 
     private IEffectsFactory effectsFactory;
 
+    private List<IEffect> effectsToRemove;
 
     public EffectSystem(GameContext context, IEntityDeserializer entityDeserializer)
     {
@@ -17,42 +19,54 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         this.entityDeserializer = entityDeserializer;
 
         effectsFactory = new EffectsFactory();
+
+        effectsToRemove = new List<IEffect>();
     }
 
     public void Initialize()
     {
-        effectsGroup = context.GetGroup(GameMatcher.Effect);
-        effectsGroup.OnEntityAdded += OnEffectEntityCreated;
+        creationRequestGroup = context.GetGroup(GameMatcher.CreationRequest);
+        creationRequestGroup.OnEntityAdded += OnCreationRequest;
 
         agentsGroup = context.GetGroup(GameMatcher.Agent);
     }
 
-    private void OnEffectEntityCreated(IGroup<GameEntity> group, GameEntity effectEntity, int index, IComponent component)
+    //request will be promoted to actual entity if binding is correct
+    private void OnCreationRequest(IGroup<GameEntity> group, GameEntity requestEntity, int index, IComponent component)
     {
-        EffectComponent effectComponent = effectEntity.effect;
-        var perfabBinding = effectEntity.entityBinding;
+        var perfabBinding = requestEntity.entityBinding.entitasBinding;
 
+        //could be folded nicely with reflaction and mapping
         if(perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING))
         {
-            effectComponent.effect = effectsFactory.Create<AddHealthEffect>();
+            requestEntity.AddEffect(effectsFactory.Create<AddHealthEffect>());
         }
         else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING))
         {
-            effectComponent.effect = effectsFactory.Create<MovementInverterEffect>();
+            requestEntity.AddEffect(effectsFactory.Create<MovementInverterEffect>());
         }
         else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING))
         {
-            effectComponent.effect = effectsFactory.Create<PersistantAddHealthEffect>();
+            requestEntity.AddEffect(effectsFactory.Create<PersistantAddHealthEffect>());
+        }
+        else //not supported request
+        {
+            return;
         }
 
-        entityDeserializer.DeserializeEnitity(effectEntity);
+        //request is being promoted to actual object
+        requestEntity.isCreationRequest = false;
+
+        entityDeserializer.DeserializeEnitity(requestEntity);
     }
 
     public void Execute()
     {
         foreach (var agentEntity in agentsGroup.GetEntities())
         {
-            foreach(var effect in agentEntity.agent.effects)
+            var agentsEffects = agentEntity.agent.effects;
+
+            foreach (var effect in agentsEffects)
             {
                 //manage effect
                 //apply, ignore or remove
@@ -64,11 +78,19 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
                 
                 if(effect.IsUsed())
                 {
-                    agentEntity.agent.effects.Remove(effect);
+                    effectsToRemove.Add(effect);
                 }
 
                 effect.Update();
             }
+
+            //cleanup
+            //these could be potentially pooled as well
+            foreach (var effect in effectsToRemove)
+            {
+                agentsEffects.Remove(effect);
+            }
+            effectsToRemove.Clear();
         }
     }
 }

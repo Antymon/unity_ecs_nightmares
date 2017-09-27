@@ -47,15 +47,15 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         levelComponent.currentRound = 0;
         StartNextRound();
 
-        RequestEffectCreation(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING, new Vector3(-9,-10,10));        
+        RequestCreation(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING, new Vector3(-6,1,4));        
     }
 
-    private void RequestEffectCreation(EntityPrefabNameBinding binding, Vector3 position)
+    private void RequestCreation(EntityPrefabNameBinding binding, Vector3 position)
     {
-        var effectEntity = gameContext.CreateEntity();
-        effectEntity.AddEntityBinding(binding);
-        effectEntity.position.position = position;
-        effectEntity.AddEffect(null);
+        var requestEnity = gameContext.CreateEntity();
+        requestEnity.AddEntityBinding(binding);
+        requestEnity.AddPosition(position);
+        requestEnity.isCreationRequest = true;
     }
 
     private void StartNextRound()

@@ -237,3 +237,8 @@ public class HealthDecreaseOverlayComponent : IComponent
 {
 
 }
+
+public class CreationRequestComponent : IComponent
+{
+
+}

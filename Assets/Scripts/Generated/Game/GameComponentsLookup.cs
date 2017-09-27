@@ -11,44 +11,46 @@ public static class GameComponentsLookup {
     public const int Agent = 0;
     public const int AgentDead = 1;
     public const int AIPerception = 2;
-    public const int Damage = 3;
-    public const int Effect = 4;
-    public const int Enemy = 5;
-    public const int EntityBinding = 6;
-    public const int GameOver = 7;
-    public const int GamePaused = 8;
-    public const int GameStart = 9;
-    public const int Gun = 10;
-    public const int HealthBar = 11;
-    public const int HealthChangedListener = 12;
-    public const int Health = 13;
-    public const int HealthDecreaseOverlay = 14;
-    public const int JoypadBinding = 15;
-    public const int Joystick = 16;
-    public const int Level = 17;
-    public const int MarkedToPostponedDestroy = 18;
-    public const int MovementDestinationChangedListener = 19;
-    public const int MovementDestination = 20;
-    public const int MovementDirectionChangedListener = 21;
-    public const int MovementDirection = 22;
-    public const int Pause = 23;
-    public const int Player = 24;
-    public const int Position = 25;
-    public const int Projectile = 26;
-    public const int RoundCounter = 27;
-    public const int RoundFinished = 28;
-    public const int RoundStarted = 29;
-    public const int Score = 30;
-    public const int ScoreCounter = 31;
-    public const int Spawner = 32;
-    public const int Tick = 33;
+    public const int CreationRequest = 3;
+    public const int Damage = 4;
+    public const int Effect = 5;
+    public const int Enemy = 6;
+    public const int EntityBinding = 7;
+    public const int GameOver = 8;
+    public const int GamePaused = 9;
+    public const int GameStart = 10;
+    public const int Gun = 11;
+    public const int HealthBar = 12;
+    public const int HealthChangedListener = 13;
+    public const int Health = 14;
+    public const int HealthDecreaseOverlay = 15;
+    public const int JoypadBinding = 16;
+    public const int Joystick = 17;
+    public const int Level = 18;
+    public const int MarkedToPostponedDestroy = 19;
+    public const int MovementDestinationChangedListener = 20;
+    public const int MovementDestination = 21;
+    public const int MovementDirectionChangedListener = 22;
+    public const int MovementDirection = 23;
+    public const int Pause = 24;
+    public const int Player = 25;
+    public const int Position = 26;
+    public const int Projectile = 27;
+    public const int RoundCounter = 28;
+    public const int RoundFinished = 29;
+    public const int RoundStarted = 30;
+    public const int Score = 31;
+    public const int ScoreCounter = 32;
+    public const int Spawner = 33;
+    public const int Tick = 34;
 
-    public const int TotalComponents = 34;
+    public const int TotalComponents = 35;
 
     public static readonly string[] componentNames = {
         "Agent",
         "AgentDead",
         "AIPerception",
+        "CreationRequest",
         "Damage",
         "Effect",
         "Enemy",
@@ -86,6 +88,7 @@ public static class GameComponentsLookup {
         typeof(AgentComponent),
         typeof(AgentDeadComponent),
         typeof(AIPerceptionComponent),
+        typeof(CreationRequestComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
         typeof(EnemyComponent),
