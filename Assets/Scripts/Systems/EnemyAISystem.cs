@@ -41,12 +41,15 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     {
         enemyGroup = context.GetGroup(GameMatcher.Enemy);
         enemyGroup.OnEntityAdded += OnEnemyCreated;
+        enemyGroup.OnEntityRemoved += OnEnemyDestroyed;
 
-        stateController = new StateController<AIState>(AIState.CHOOSE);
+    }
 
-        stateController.AddState(AIState.CHOOSE, Choose);
-        stateController.AddState(AIState.ATTACK, Attack);
-        stateController.AddState(AIState.HIDE, Hide);
+    private void OnEnemyDestroyed(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        selfGameEntity = null;
+        otherGameEntity = null;
+        stateController = null;
     }
 
     private void OnEnemyCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
@@ -60,17 +63,25 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
         attackDistanceSqr = selfGameEntity.aIPerception.attackDistance * selfGameEntity.aIPerception.attackDistance;
         isPositionSafeCallback = selfGameEntity.aIPerception.callback.IsPositionSafe;
 
+        CreateStateController();
         stateController.EnterState(AIState.CHOOSE);
+    }
+
+    private void CreateStateController()
+    {
+        stateController = new StateController<AIState>(AIState.CHOOSE);
+
+        stateController.AddState(AIState.CHOOSE, Choose);
+        stateController.AddState(AIState.ATTACK, Attack);
+        stateController.AddState(AIState.HIDE, Hide);
     }
 
     public void Execute()
     {
-        if (selfGameEntity==null || !selfGameEntity.isEnabled)
+        if (stateController != null)
         {
-            return;
+            stateController.Update();
         }
-
-        stateController.Update();
     }
 
     void Choose(StateController<AIState>.Stage stage, AIState state)
