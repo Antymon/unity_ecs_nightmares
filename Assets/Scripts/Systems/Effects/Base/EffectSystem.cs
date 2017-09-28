@@ -14,6 +14,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
     private IGroup<GameEntity> roundStartedGroup;
     private IGroup<GameEntity> roundFinishedGroup;
     private IGroup<GameEntity> effectsGroup;
+    private IGroup<GameEntity> enemyGroup;
 
     private IEffectsFactory effectsFactory;
 
@@ -25,6 +26,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING,
         EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING
     };
+    
 
     public EffectSystem(GameContext gameContext,InputContext inputContext, IEntityDeserializer entityDeserializer)
     {
@@ -47,19 +49,42 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         roundStartedGroup = gameContext.GetGroup(GameMatcher.RoundStarted);
         roundFinishedGroup = gameContext.GetGroup(GameMatcher.RoundFinished);
         effectsGroup = gameContext.GetGroup(GameMatcher.Effect);
+        enemyGroup = gameContext.GetGroup(GameMatcher.Enemy);
+
+        enemyGroup.OnEntityAdded += OnSafePointsInfoAvailable;
 
         roundStartedGroup.OnEntityAdded += OnRoundStarted;
         roundFinishedGroup.OnEntityAdded += OnRoundFinished;
     }
 
-    private void OnEffectCollected(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    //ToDo: safe points data should be probably moved away from enemy
+    //one time action to create repair points
+    private void OnSafePointsInfoAvailable(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        enemyGroup.OnEntityAdded -= OnSafePointsInfoAvailable;
+
+        var stationaryPoints = entity.aIPerception.stationaryPositions;
+
+        //pick every 2 hiding points
+        for(int i = 0; i<stationaryPoints.Length; i+=2)
+        {
+            var position = stationaryPoints[i];
+            position.y = 1; //just more visually pleasing [height]
+
+            CreateEffect(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING, position);
+        }
+    }
+
+
+
+    private void OnEffectCollectedDuringRound(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * Random.value, CreateEffect));
     }
 
     private void OnRoundFinished(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        effectsGroup.OnEntityRemoved -= OnEffectCollected;
+        effectsGroup.OnEntityRemoved -= OnEffectCollectedDuringRound;
 
         foreach (var effectEntity in effectsGroup.GetEntities())
         {
@@ -81,7 +106,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     private void OnRoundStarted(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        effectsGroup.OnEntityRemoved += OnEffectCollected;
+        effectsGroup.OnEntityRemoved += OnEffectCollectedDuringRound;
 
         int requiredEffects = gameContext.level.effectsAtTimeCap;
 
@@ -95,14 +120,23 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     private void CreateEffect()
     {
-        var randomPosition = Random.insideUnitCircle * 10;
-        var randomIndex = Mathf.FloorToInt(Random.value*spawnableEffects.Length)%spawnableEffects.Length;
-        
+        var randomIndex = Mathf.FloorToInt(Random.value * spawnableEffects.Length) % spawnableEffects.Length;
+
         var prefabBinding = spawnableEffects[randomIndex];
 
+        var randomPosition = Random.insideUnitCircle * 10;
+
+        var position = new Vector3(randomPosition.x, 1, randomPosition.y);
+
+        CreateEffect(prefabBinding, position);
+    }
+
+    //ToDo: move inside of factory
+    private void CreateEffect(EntityPrefabNameBinding prefabBinding, Vector3 position)
+    {
         var effectEntity = gameContext.CreateEntity();
         effectEntity.AddEntityBinding(prefabBinding);
-        effectEntity.AddPosition(new Vector3(randomPosition.x,1,randomPosition.y)); //transforming 2d to 3d random position
+        effectEntity.AddPosition(position); //transforming 2d to 3d random position
 
         //could be folded nicely with reflaction and mapping
         if(prefabBinding.Equals(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING))
@@ -113,9 +147,9 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         {
             effectEntity.AddEffect(effectsFactory.Create<MovementInverterEffect>());
         }
-        else //not supported request
+        else if (prefabBinding.Equals(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING))
         {
-            return;
+            effectEntity.AddEffect(effectsFactory.Create<PersistantAddHealthEffect>());
         }
 
         entityDeserializer.DeserializeEnitity(effectEntity);
