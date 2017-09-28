@@ -21,9 +21,16 @@ public class EntityPrefabNameBinding
         PLAYER = 1,
         JOYPAD = 2,
         ENEMY = 3,
+
         EFFECT_ADD_HEALTH = 4,
         EFFECT_PERSISTANT_ADD_HEALTH = 5,
-        EFFECT_MOVEMENT_INVERTER = 6
+        EFFECT_MOVEMENT_INVERTER = 6,
+
+        GAME_OVER_SCREEN = 7,
+        PAUSE_SCREEN = 8,
+        HEALTH_BAR = 9,
+        SCORE_COUNTER = 10,
+        ROUND_COUNTER = 11
     }
 
     public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
@@ -35,6 +42,12 @@ public class EntityPrefabNameBinding
     public static readonly EntityPrefabNameBinding EFFECT_ADD_HEALTH_BINDING = new EntityPrefabNameBinding(Type.EFFECT_ADD_HEALTH, "AddHealthEffect");
     public static readonly EntityPrefabNameBinding EFFECT_PERSISTANT_ADD_HEALTH_BINDING = new EntityPrefabNameBinding(Type.EFFECT_PERSISTANT_ADD_HEALTH, "PersistantAddHealthEffect");
     public static readonly EntityPrefabNameBinding EFFECT_MOVEMENT_INVERTER_BINDING = new EntityPrefabNameBinding(Type.EFFECT_MOVEMENT_INVERTER, "MovementInverterEffect");
+
+    public static readonly EntityPrefabNameBinding GAME_OVER_SCREEN_BINDING = new EntityPrefabNameBinding(Type.GAME_OVER_SCREEN, "GameOverScreen");
+    public static readonly EntityPrefabNameBinding PAUSE_SCREEN_BINDING = new EntityPrefabNameBinding(Type.PAUSE_SCREEN, "PauseScreen");
+    public static readonly EntityPrefabNameBinding HEALTH_BAR_BINDING = new EntityPrefabNameBinding(Type.HEALTH_BAR, "HealthBar");
+    public static readonly EntityPrefabNameBinding SCORE_COUNTER_BINDING = new EntityPrefabNameBinding(Type.SCORE_COUNTER, "ScoreCounter");
+    public static readonly EntityPrefabNameBinding ROUND_COUNTER_BINDING = new EntityPrefabNameBinding(Type.ROUND_COUNTER, "RoundCounter");
 
     public Type entityType;
     public string prefabName;

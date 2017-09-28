@@ -42,7 +42,6 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
         enemyGroup = context.GetGroup(GameMatcher.Enemy);
         enemyGroup.OnEntityAdded += OnEnemyCreated;
         enemyGroup.OnEntityRemoved += OnEnemyDestroyed;
-
     }
 
     private void OnEnemyDestroyed(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//This class is by unity
+
 namespace CompleteProject
 {
     public class CameraFollow : MonoBehaviour

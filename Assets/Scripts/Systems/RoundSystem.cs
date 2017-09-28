@@ -27,7 +27,7 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
         //ToDo: should be soft-configurable
         context.SetLevel(
-            newNumberRounds: 5, 
+            newNumberRounds: 2, 
             newEffectsAtTimeCap: 4, 
             newCurrentRound: 0, 
             newRoundTime: 180, 
@@ -51,8 +51,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         scoreComponent.currentScore = 0;
         levelComponent.currentRound = 0;
         StartNextRound();
-
-        //RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));
     }
 
     private void StartNextRound()
