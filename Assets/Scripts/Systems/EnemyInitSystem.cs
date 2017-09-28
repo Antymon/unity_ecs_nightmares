@@ -3,21 +3,24 @@ using System.Collections.Generic;
 
 public class EnemyInitSystem  : IInitializeSystem
 {
-    private GameContext context;
+    private GameContext gameContext;
+    private InputContext inputContext;
     private IEntityDeserializer entityDeserializer;
 
-    public EnemyInitSystem(GameContext context, IEntityDeserializer entityDeserializer)
+
+    public EnemyInitSystem(GameContext gameContext, InputContext inputContext, IEntityDeserializer entityDeserializer)
     {
-        this.context = context;
+        this.gameContext = gameContext;
+        this.inputContext = inputContext;
         this.entityDeserializer = entityDeserializer;
     }
 
     public void Initialize()
     {
-        var entity = context.CreateEntity();
+        var entity = gameContext.CreateEntity();
         entity.AddEntityBinding(EntityPrefabNameBinding.ENEMY_BINDING);
         
-        var playerGroup = context.GetGroup(GameMatcher.Player);
+        var playerGroup = gameContext.GetGroup(GameMatcher.Player);
         var playerEntity = playerGroup.GetSingleEntity();
 
         entity.AddAgent(0, string.Empty, new List<IEffect>(), playerEntity);
@@ -27,6 +30,8 @@ public class EnemyInitSystem  : IInitializeSystem
         playerEntity.agent.target = entity;
 
         entityDeserializer.DeserializeEnitity(entity);
+
+        entity.AddPositionChanged(inputContext.tick.currentTick, 0, false, entity.position.position);
     }
 
 }

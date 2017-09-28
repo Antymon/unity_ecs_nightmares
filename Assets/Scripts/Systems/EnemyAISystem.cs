@@ -130,14 +130,36 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
                 if (!isPositionSafeCallback(currentSafePoint))
                 {
                     //stop
-                    selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, selfGameEntity.position.position);
-
+                    StopMovement();
                     safePositionFound = false;
+                }
+                else
+                {
+                    //if I haven't been moving for a while
+                    if(IsStationary())
+                    {
+                        //if my current position is not safe
+                        if(!isPositionSafeCallback(selfGameEntity.position.position))
+                        {
+                            //find a new safe position (and head there)
+                            safePositionFound = false;
+                        }
+                    }
                 }
             }
 
             stateController.SetNextState(AIState.CHOOSE);
         }
+    }
+
+    private bool IsStationary()
+    {
+        return selfGameEntity.positionChanged.isStationary && selfGameEntity.positionChanged.ticksStationary > 5;
+    }
+
+    private void StopMovement() //by setting destination to current position
+    {
+        selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, selfGameEntity.position.position);
     }
 
     private float GetNormalizedHealth()

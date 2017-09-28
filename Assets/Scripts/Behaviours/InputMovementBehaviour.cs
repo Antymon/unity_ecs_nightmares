@@ -6,10 +6,6 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 {
     const string WALKING_ANIMATION_LABEL = "IsWalking";
 
-    //used for animation toggling
-    const int MAX_FRAMES_SINCE_LAST_MOVEMENT = 5;
-    int framesCountSinceLastMovement = 0;
-
     public float speed = 6f;            // The speed that the player will move at.
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
@@ -29,9 +25,6 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
     {
         Move(direction.x, direction.y);
         selfGameEntity.ReplacePosition(transform.position);
-        
-        framesCountSinceLastMovement = 0;
-        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, true);
     }
 
     public void OnOrientationChanged(Vector3 direction)
@@ -47,14 +40,7 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     void Update()
     {
-        if (framesCountSinceLastMovement < MAX_FRAMES_SINCE_LAST_MOVEMENT)
-        {
-            framesCountSinceLastMovement++;
-        }
-        else
-        {
-            playerAnimation.SetBool(WALKING_ANIMATION_LABEL, false);
-        }
+        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, !selfGameEntity.positionChanged.isStationary);
     }
 
     void Move(float x, float z)

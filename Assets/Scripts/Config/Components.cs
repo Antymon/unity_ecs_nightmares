@@ -18,6 +18,13 @@ public class PositionComponent : IComponent
 {
     public Vector3 position;
 }
+public class PositionChangedComponent : IComponent
+{
+    public ulong lastChangeTick;
+    public ulong ticksStationary;
+    public bool isStationary;
+    public Vector3 lastPositon;
+}
 
 public class MovementDirectionComponent : IComponent
 {

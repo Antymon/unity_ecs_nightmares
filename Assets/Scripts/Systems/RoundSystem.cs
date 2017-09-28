@@ -47,7 +47,7 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         levelComponent.currentRound = 0;
         StartNextRound();
 
-        RequestCreation(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING, new Vector3(-6,1,4));        
+        RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));        
     }
 
     private void RequestCreation(EntityPrefabNameBinding binding, Vector3 position)

@@ -13,8 +13,6 @@ public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovement
 
     private GameEntity selfGameEntity;
 
-    private Vector3 previousPosition;
-
     public void DeserializeEnitity(GameEntity entity)
     {
         this.selfGameEntity = entity;
@@ -44,16 +42,7 @@ public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovement
 
     void Update()
     {
-        if (Vector3.Distance(previousPosition,transform.position)<.01f) //precision check
-        {
-            playerAnimation.SetBool(WALKING_ANIMATION_LABEL, false);
-        }
-        else
-        {
-            playerAnimation.SetBool(WALKING_ANIMATION_LABEL, true);
-        }
-
-        previousPosition = transform.position;
+        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, !selfGameEntity.positionChanged.isStationary);
     }
 
     void LateUpdate()
