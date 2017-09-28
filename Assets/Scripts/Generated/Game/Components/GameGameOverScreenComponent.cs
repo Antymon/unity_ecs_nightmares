@@ -11,14 +11,14 @@ public partial class GameEntity {
     public GameOverScreenComponent gameOverScreen { get { return (GameOverScreenComponent)GetComponent(GameComponentsLookup.GameOverScreen); } }
     public bool hasGameOverScreen { get { return HasComponent(GameComponentsLookup.GameOverScreen); } }
 
-    public void AddGameOverScreen(IUIListener newListener) {
+    public void AddGameOverScreen(IGameOverScreenListener newListener) {
         var index = GameComponentsLookup.GameOverScreen;
         var component = CreateComponent<GameOverScreenComponent>(index);
         component.listener = newListener;
         AddComponent(index, component);
     }
 
-    public void ReplaceGameOverScreen(IUIListener newListener) {
+    public void ReplaceGameOverScreen(IGameOverScreenListener newListener) {
         var index = GameComponentsLookup.GameOverScreen;
         var component = CreateComponent<GameOverScreenComponent>(index);
         component.listener = newListener;

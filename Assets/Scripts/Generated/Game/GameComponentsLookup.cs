@@ -26,7 +26,7 @@ public static class GameComponentsLookup {
     public const int Health = 15;
     public const int HealthDecreaseOverlay = 16;
     public const int JoypadBinding = 17;
-    public const int Joystick = 18;
+    public const int Joypad = 18;
     public const int Level = 19;
     public const int MarkedToPostponedDestroy = 20;
     public const int MovementDestinationChangedListener = 21;
@@ -66,7 +66,7 @@ public static class GameComponentsLookup {
         "Health",
         "HealthDecreaseOverlay",
         "JoypadBinding",
-        "Joystick",
+        "Joypad",
         "Level",
         "MarkedToPostponedDestroy",
         "MovementDestinationChangedListener",
@@ -105,7 +105,7 @@ public static class GameComponentsLookup {
         typeof(HealthComponent),
         typeof(HealthDecreaseOverlayComponent),
         typeof(JoypadBindingComponent),
-        typeof(JoystickComponent),
+        typeof(JoypadComponent),
         typeof(LevelComponent),
         typeof(MarkedToPostponedDestroyComponent),
         typeof(MovementDestinationChangedListenerComponent),

@@ -27,7 +27,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     {
         joypadEntity = gameContext.CreateEntity();
         joypadEntity.AddEntityBinding(EntityPrefabNameBinding.JOYPAD_BINDING);
-        joypadEntity.AddJoystick(newEnabled: false, newTouchId:-1);
+        joypadEntity.AddJoypad(newEnabled: false, newTouchId:-1);
         entityDeserializer.DeserializeEnitity(joypadEntity);
 
         var playerGroup = gameContext.GetGroup(GameMatcher.Player);
@@ -57,8 +57,8 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                 continue;
             }
 
-            int joypadTouchId = joypadEntity.joystick.touchId;
-            bool joypadEnabled = joypadEntity.joystick.enabled;
+            int joypadTouchId = joypadEntity.joypad.touchId;
+            bool joypadEnabled = joypadEntity.joypad.enabled;
 
             var touches = entity.touches.touches;
 
@@ -99,7 +99,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                     if(touch.phase == TouchPhase.Began)
                     {
                         ShowJoypad(touch);
-                        Debug.Log("Show joypad " + touch.fingerId + " "+joypadEntity.joystick.enabled);
+                        Debug.Log("Show joypad " + touch.fingerId + " "+joypadEntity.joypad.enabled);
                         break;
                     }
                 }
@@ -110,7 +110,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     private void ShowJoypad(Touch touch)
     {
         joypadEntity.ReplacePosition(touch.position);
-        joypadEntity.ReplaceJoystick(newEnabled:true,newTouchId:touch.fingerId);
+        joypadEntity.ReplaceJoypad(newEnabled:true,newTouchId:touch.fingerId);
     }
 
     private void MoveJoypad(Vector2 touchPosition)
@@ -127,7 +127,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
     private void HideJoypad()
     {
-        joypadEntity.ReplaceJoystick(newEnabled: false, newTouchId:-1);
+        joypadEntity.ReplaceJoypad(newEnabled: false, newTouchId:-1);
     }
 
     protected override bool Filter(InputEntity entity)

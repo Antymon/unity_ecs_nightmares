@@ -22,10 +22,16 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     public void Initialize()
     {
-        joypadEntity = gameContext.GetGroup(GameMatcher.Joystick).GetSingleEntity();
+        joypadEntity = gameContext.GetGroup(GameMatcher.Joypad).GetSingleEntity();
 
         var playerGroup = gameContext.GetGroup(GameMatcher.Player);
         playerGroup.OnEntityAdded += OnPlayerCreated;
+        playerGroup.OnEntityRemoved += OnPlayerDestroyed;
+    }
+
+    private void OnPlayerDestroyed(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        playerEntity = null;
     }
 
     private void OnPlayerCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
@@ -40,13 +46,13 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         //assumption: shooting is complementing navigation
         //specificically shooting is triggered by second touch point wheras navigation by first
         //so if navigation is disabled, nothing to consider
-        if(!joypadEntity.joystick.enabled)
+        if(!joypadEntity.joypad.enabled)
         {
             ReleaseTrigger();
             return;
         }
 
-        int joypadTakenTouchId = joypadEntity.joystick.touchId;
+        int joypadTakenTouchId = joypadEntity.joypad.touchId;
 
         foreach (var entity in entities)
         {

@@ -11,17 +11,19 @@ public partial class GameEntity {
     public HealthBarComponent healthBar { get { return (HealthBarComponent)GetComponent(GameComponentsLookup.HealthBar); } }
     public bool hasHealthBar { get { return HasComponent(GameComponentsLookup.HealthBar); } }
 
-    public void AddHealthBar(int newActorId) {
+    public void AddHealthBar(int newAgentId, IHealthBarListener newListener) {
         var index = GameComponentsLookup.HealthBar;
         var component = CreateComponent<HealthBarComponent>(index);
-        component.actorId = newActorId;
+        component.agentId = newAgentId;
+        component.listener = newListener;
         AddComponent(index, component);
     }
 
-    public void ReplaceHealthBar(int newActorId) {
+    public void ReplaceHealthBar(int newAgentId, IHealthBarListener newListener) {
         var index = GameComponentsLookup.HealthBar;
         var component = CreateComponent<HealthBarComponent>(index);
-        component.actorId = newActorId;
+        component.agentId = newAgentId;
+        component.listener = newListener;
         ReplaceComponent(index, component);
     }
 

@@ -200,13 +200,7 @@ public class TickComponent : IComponent
     public ulong currentTick; //time measure
 }
 
-public class HealthBarComponent : IComponent
-{
-    public int actorId;
-}
-
-
-public class JoystickComponent : IComponent
+public class JoypadComponent : IComponent
 {
     public bool enabled;
     public int touchId;
@@ -223,12 +217,7 @@ public interface IJoypadMovedListener
     void OnJoypadMoved(Vector2 direction);
 }
 
-public interface IUIListener
-{
-    void OnShow();
-    void OnHide();
-    void OnUpdate(float value);
-}
+
 
 
 [Unique]
@@ -260,7 +249,24 @@ public class CreationRequestComponent : IComponent
 
 }
 
+public class HealthBarComponent : IComponent
+{
+    public int agentId;
+    public IHealthBarListener listener;
+}
+
+public interface IHealthBarListener
+{
+    void OnHealthChanged(float value);
+    void OnNameChanged(string name);
+}
+
 public class GameOverScreenComponent : IComponent
 {
-    public IUIListener listener;
+    public IGameOverScreenListener listener;
+}
+
+public interface IGameOverScreenListener
+{
+    void OnShow();
 }

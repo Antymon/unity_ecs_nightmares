@@ -4,12 +4,11 @@ using DG.Tweening;
 using System.Collections.Generic;
 
 /*
- * general UI Fading class
+ * general UI Fading implemented
  * fetches all images and text within
  * and then tweens alpha values on their colors
- * 
  */
-public class GameOverScreenBehaviour : BindingEntitasBehaviour, IUIListener
+public class GameOverScreenBehaviour : BindingEntitasBehaviour, IGameOverScreenListener
 {
     private bool buttonPressed;
 

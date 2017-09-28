@@ -87,7 +87,8 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     {
         if (stage == StateController<AIState>.Stage.ENTER)
         {
-            if (GetNormalizedHealth() < attackRecoverHealthThreshold)
+
+            if (HealthHelpers.GetNormalizedHealth(selfGameEntity.health) < attackRecoverHealthThreshold)
             {
                 stateController.SetNextState(AIState.HIDE);
             }
@@ -178,11 +179,6 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     private void StopMovement() //by setting destination to current position
     {
         selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, selfGameEntity.position.position);
-    }
-
-    private float GetNormalizedHealth()
-    {
-        return (float)selfGameEntity.health.healthPoints / selfGameEntity.health.healthPointsCap;
     }
 
     private void SetTrigger(bool pull)

@@ -8,27 +8,27 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public JoystickComponent joystick { get { return (JoystickComponent)GetComponent(GameComponentsLookup.Joystick); } }
-    public bool hasJoystick { get { return HasComponent(GameComponentsLookup.Joystick); } }
+    public JoypadComponent joypad { get { return (JoypadComponent)GetComponent(GameComponentsLookup.Joypad); } }
+    public bool hasJoypad { get { return HasComponent(GameComponentsLookup.Joypad); } }
 
-    public void AddJoystick(bool newEnabled, int newTouchId) {
-        var index = GameComponentsLookup.Joystick;
-        var component = CreateComponent<JoystickComponent>(index);
+    public void AddJoypad(bool newEnabled, int newTouchId) {
+        var index = GameComponentsLookup.Joypad;
+        var component = CreateComponent<JoypadComponent>(index);
         component.enabled = newEnabled;
         component.touchId = newTouchId;
         AddComponent(index, component);
     }
 
-    public void ReplaceJoystick(bool newEnabled, int newTouchId) {
-        var index = GameComponentsLookup.Joystick;
-        var component = CreateComponent<JoystickComponent>(index);
+    public void ReplaceJoypad(bool newEnabled, int newTouchId) {
+        var index = GameComponentsLookup.Joypad;
+        var component = CreateComponent<JoypadComponent>(index);
         component.enabled = newEnabled;
         component.touchId = newTouchId;
         ReplaceComponent(index, component);
     }
 
-    public void RemoveJoystick() {
-        RemoveComponent(GameComponentsLookup.Joystick);
+    public void RemoveJoypad() {
+        RemoveComponent(GameComponentsLookup.Joypad);
     }
 }
 
@@ -42,17 +42,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherJoystick;
+    static Entitas.IMatcher<GameEntity> _matcherJoypad;
 
-    public static Entitas.IMatcher<GameEntity> Joystick {
+    public static Entitas.IMatcher<GameEntity> Joypad {
         get {
-            if (_matcherJoystick == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Joystick);
+            if (_matcherJoypad == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Joypad);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherJoystick = matcher;
+                _matcherJoypad = matcher;
             }
 
-            return _matcherJoystick;
+            return _matcherJoypad;
         }
     }
 }

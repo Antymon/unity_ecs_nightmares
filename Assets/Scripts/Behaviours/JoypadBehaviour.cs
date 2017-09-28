@@ -22,12 +22,12 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
 
         entity.OnComponentReplaced += OnComponentReplaced;
 
-        gameObject.SetActive(entity.joystick.enabled);
+        gameObject.SetActive(entity.joypad.enabled);
     }
 
     private void OnComponentReplaced(IEntity entity, int index, IComponent previousComponent, IComponent newComponent)
     {
-        JoystickComponent joystickComponent = newComponent as JoystickComponent;
+        JoypadComponent joystickComponent = newComponent as JoypadComponent;
 
         if(joystickComponent != null)
         {
