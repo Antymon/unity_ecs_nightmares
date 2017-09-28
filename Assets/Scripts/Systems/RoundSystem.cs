@@ -15,6 +15,9 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private LevelComponent levelComponent;
     private ScoreComponent scoreComponent;
 
+    private GameEntity player;
+    private GameEntity enemy;
+
     public RoundSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
     {
@@ -50,18 +53,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         StartNextRound();
 
         RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));
-
-        //ToDo: opponent as null is not desirable
-
-        var player = RequestActorCreation(player: true, target: null);
-        var enemy = RequestActorCreation(player: false, target: player);
-
-        player.agent.target = enemy;
-
-        //setting following flags will make them picked up synchronously
-        //so they are set when everything is ready
-        player.isPlayer = true;
-        enemy.isEnemy = true;
     }
 
     private void RequestCreation(EntityPrefabNameBinding binding, Vector3 position)
@@ -70,6 +61,29 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         requestEnity.AddEntityBinding(binding);
         requestEnity.AddPosition(position);
         requestEnity.isCreationRequest = true;
+    }
+
+    private void StartNextRound()
+    {
+        levelComponent.currentRound++;
+
+        roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, FinishRound);
+        roundTimer.Play();
+
+        CreateAgents();
+    }
+
+    private void CreateAgents()
+    {
+        player = RequestActorCreation(player: true, target: null);
+        enemy = RequestActorCreation(player: false, target: player);
+
+        player.agent.target = enemy;
+
+        //setting following flags will make them picked up synchronously
+        //so they are set when everything is ready
+        player.isPlayer = true;
+        enemy.isEnemy = true;
     }
 
     private GameEntity RequestActorCreation(bool player, GameEntity target)
@@ -86,14 +100,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         requestEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, requestEntity.position.position);
 
         return requestEntity;
-    }
-
-    private void StartNextRound()
-    {
-        levelComponent.currentRound++;
-
-        roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, FinishRound);
-        roundTimer.Play();
     }
 
     protected override void Execute(List<GameEntity> entities)
@@ -115,8 +121,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
             {
                 enemyIsDead = true;
             }
-
-            agent.Destroy();
             entity.Destroy();
         }
 
@@ -144,6 +148,12 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private void FinishRound()
     {
         roundTimer.Kill();
+
+        if(player.isEnabled)
+            player.Destroy();
+
+        if(enemy.isEnabled)
+            enemy.Destroy();
 
         if (levelComponent.currentRound < levelComponent.numberRounds)
         {
