@@ -10,6 +10,8 @@ using System.Collections.Generic;
  */
 public class GameOverScreenBehaviour : BindingEntitasBehaviour, IGameOverScreenListener
 {
+    public Text messageTextField;
+
     private bool buttonPressed;
 
     private Image[] imagesUsed;
@@ -46,11 +48,12 @@ public class GameOverScreenBehaviour : BindingEntitasBehaviour, IGameOverScreenL
         entity.AddGameOverScreen(this);
     }
 
-    public void OnShow()
+    public void OnShow(string message)
     {
         buttonPressed = false;
 
-        tween = DOVirtual.Float(0, 1, 1, OnAlphaUpdate);
+        tween = DOVirtual.Float(0, 1, .5f, OnAlphaUpdate);
+        messageTextField.text = message;
     }
 
     private void OnAlphaUpdate(float value)
@@ -78,7 +81,7 @@ public class GameOverScreenBehaviour : BindingEntitasBehaviour, IGameOverScreenL
     public void OnHide()
     {
         tween.Kill();
-        tween = DOVirtual.Float(1, 0, 1, OnAlphaUpdate);
+        tween = DOVirtual.Float(1, 0, .25f, OnAlphaUpdate);
     }
 
     public void OnUpdate(float value)

@@ -9,6 +9,7 @@ public class HealthBarBehaviour : BindingEntitasBehaviour, IHealthBarListener
 
     public Slider healthSlider;
     public Text agentNameTextField;
+    public Text scoreTextField;
 
     override public void DeserializeEnitity(GameEntity entity)
     {
@@ -24,6 +25,11 @@ public class HealthBarBehaviour : BindingEntitasBehaviour, IHealthBarListener
     public void OnNameChanged(string name)
     {
         agentNameTextField.text = name;
+    }
+
+    public void OnScoreChanged(int value)
+    {
+        scoreTextField.text = value.ToString();
     }
 }
 

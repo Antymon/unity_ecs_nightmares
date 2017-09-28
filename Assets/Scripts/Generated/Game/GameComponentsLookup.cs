@@ -11,60 +11,55 @@ public static class GameComponentsLookup {
     public const int Agent = 0;
     public const int AgentDead = 1;
     public const int AIPerception = 2;
-    public const int CreationRequest = 3;
-    public const int Damage = 4;
-    public const int Effect = 5;
-    public const int Enemy = 6;
-    public const int EntityBinding = 7;
-    public const int GameOver = 8;
-    public const int GameOverScreen = 9;
-    public const int GamePaused = 10;
-    public const int GameStart = 11;
-    public const int Gun = 12;
-    public const int HealthBar = 13;
-    public const int HealthChangedListener = 14;
-    public const int Health = 15;
-    public const int HealthDecreaseOverlay = 16;
-    public const int JoypadBinding = 17;
-    public const int Joypad = 18;
-    public const int Level = 19;
-    public const int MarkedToPostponedDestroy = 20;
-    public const int MovementDestinationChangedListener = 21;
-    public const int MovementDestination = 22;
-    public const int MovementDirectionChangedListener = 23;
-    public const int MovementDirection = 24;
-    public const int PauseScreen = 25;
-    public const int Player = 26;
-    public const int PositionChanged = 27;
-    public const int Position = 28;
-    public const int Projectile = 29;
-    public const int RoundCounter = 30;
-    public const int RoundFinished = 31;
-    public const int RoundStarted = 32;
-    public const int Score = 33;
-    public const int ScoreCounter = 34;
-    public const int Spawner = 35;
+    public const int Damage = 3;
+    public const int Effect = 4;
+    public const int Enemy = 5;
+    public const int EntityBinding = 6;
+    public const int GameOver = 7;
+    public const int GameOverScreen = 8;
+    public const int GameRestart = 9;
+    public const int GameStart = 10;
+    public const int Gun = 11;
+    public const int HealthBar = 12;
+    public const int HealthChangedListener = 13;
+    public const int Health = 14;
+    public const int JoypadBinding = 15;
+    public const int Joypad = 16;
+    public const int Level = 17;
+    public const int MarkedToPostponedDestroy = 18;
+    public const int MovementDestinationChangedListener = 19;
+    public const int MovementDestination = 20;
+    public const int MovementDirectionChangedListener = 21;
+    public const int MovementDirection = 22;
+    public const int PauseScreen = 23;
+    public const int Player = 24;
+    public const int PositionChanged = 25;
+    public const int Position = 26;
+    public const int Projectile = 27;
+    public const int RoundCounter = 28;
+    public const int RoundFinished = 29;
+    public const int RoundRestartCopmonpent = 30;
+    public const int RoundStarted = 31;
+    public const int Scores = 32;
 
-    public const int TotalComponents = 36;
+    public const int TotalComponents = 33;
 
     public static readonly string[] componentNames = {
         "Agent",
         "AgentDead",
         "AIPerception",
-        "CreationRequest",
         "Damage",
         "Effect",
         "Enemy",
         "EntityBinding",
         "GameOver",
         "GameOverScreen",
-        "GamePaused",
+        "GameRestart",
         "GameStart",
         "Gun",
         "HealthBar",
         "HealthChangedListener",
         "Health",
-        "HealthDecreaseOverlay",
         "JoypadBinding",
         "Joypad",
         "Level",
@@ -80,30 +75,27 @@ public static class GameComponentsLookup {
         "Projectile",
         "RoundCounter",
         "RoundFinished",
+        "RoundRestartCopmonpent",
         "RoundStarted",
-        "Score",
-        "ScoreCounter",
-        "Spawner"
+        "Scores"
     };
 
     public static readonly System.Type[] componentTypes = {
         typeof(AgentComponent),
         typeof(AgentDeadComponent),
         typeof(AIPerceptionComponent),
-        typeof(CreationRequestComponent),
         typeof(DamageComponent),
         typeof(EffectComponent),
         typeof(EnemyComponent),
         typeof(EntityBinding),
         typeof(GameOverComponent),
         typeof(GameOverScreenComponent),
-        typeof(GamePausedComponent),
+        typeof(GameRestartComponent),
         typeof(GameStartComponent),
         typeof(GunComponent),
         typeof(HealthBarComponent),
         typeof(HealthChangedListenerComponent),
         typeof(HealthComponent),
-        typeof(HealthDecreaseOverlayComponent),
         typeof(JoypadBindingComponent),
         typeof(JoypadComponent),
         typeof(LevelComponent),
@@ -119,9 +111,8 @@ public static class GameComponentsLookup {
         typeof(ProjectileComponent),
         typeof(RoundCounterComponent),
         typeof(RoundFinishedComponent),
+        typeof(RoundRestartComponent),
         typeof(RoundStartedComponent),
-        typeof(ScoreComponent),
-        typeof(ScoreCounterComponent),
-        typeof(SpawnerComponent)
+        typeof(ScoresComponent)
     };
 }

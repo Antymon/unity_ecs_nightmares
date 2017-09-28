@@ -8,16 +8,16 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly GamePausedComponent gamePausedComponent = new GamePausedComponent();
+    static readonly GameRestartComponent gameRestartComponent = new GameRestartComponent();
 
-    public bool isGamePaused {
-        get { return HasComponent(GameComponentsLookup.GamePaused); }
+    public bool isGameRestart {
+        get { return HasComponent(GameComponentsLookup.GameRestart); }
         set {
-            if (value != isGamePaused) {
+            if (value != isGameRestart) {
                 if (value) {
-                    AddComponent(GameComponentsLookup.GamePaused, gamePausedComponent);
+                    AddComponent(GameComponentsLookup.GameRestart, gameRestartComponent);
                 } else {
-                    RemoveComponent(GameComponentsLookup.GamePaused);
+                    RemoveComponent(GameComponentsLookup.GameRestart);
                 }
             }
         }
@@ -34,17 +34,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherGamePaused;
+    static Entitas.IMatcher<GameEntity> _matcherGameRestart;
 
-    public static Entitas.IMatcher<GameEntity> GamePaused {
+    public static Entitas.IMatcher<GameEntity> GameRestart {
         get {
-            if (_matcherGamePaused == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GamePaused);
+            if (_matcherGameRestart == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GameRestart);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherGamePaused = matcher;
+                _matcherGameRestart = matcher;
             }
 
-            return _matcherGamePaused;
+            return _matcherGameRestart;
         }
     }
 }

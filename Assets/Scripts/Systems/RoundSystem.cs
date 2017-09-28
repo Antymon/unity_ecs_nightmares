@@ -13,7 +13,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private InputContext inputContext;
 
     private LevelComponent levelComponent;
-    private ScoreComponent scoreComponent;
 
     private GameEntity player;
     private GameEntity enemy;
@@ -27,7 +26,7 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
         //ToDo: deserialize from outside like rest
         context.SetLevel(
-            newNumberRounds: 2, 
+            newNumberRounds: 5, 
             newEffectsAtTimeCap: 4, 
             newCurrentRound: 0, 
             newRoundTime: 180, 
@@ -37,9 +36,6 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         //ToDo: unitys random is not portable, replace
         Random.InitState(context.level.seed);
 
-        context.SetScore(0);
-
-        scoreComponent = context.score;
         levelComponent = context.level;
     }
 
@@ -56,7 +52,10 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     {
         entity.isGameStart = false;
 
-        scoreComponent.currentScore = 0;
+
+        gameContext.ReplaceScores(new Dictionary<int, int>());
+
+
         levelComponent.currentRound = 0;
         StartNextRound();
     }
@@ -80,6 +79,8 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
         player.agent.target = enemy;
 
+        
+
         //setting following flags will make them picked up synchronously
         //so they are set when everything is ready
         player.isPlayer = true;
@@ -89,17 +90,36 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private GameEntity RequestActorCreation(bool player, GameEntity target)
     {
         var binding = player ? EntityPrefabNameBinding.PLAYER_BINDING : EntityPrefabNameBinding.ENEMY_BINDING;
-        var requestEntity = gameContext.CreateEntity();
-        requestEntity.AddEntityBinding(binding);
+        var agentEntity = gameContext.CreateEntity();
+        agentEntity.AddEntityBinding(binding);
 
         //agent placeholder values
-        requestEntity.AddAgent(0, string.Empty, new List<IEffect>(), target);
+        agentEntity.AddAgent(
+            newId: 0, 
+            newName: string.Empty, 
+            newScore: 0, 
+            newEffects: new List<IEffect>(), 
+            newTarget: target
+            );
 
-        entityDeserializer.DeserializeEnitity(requestEntity);
+        entityDeserializer.DeserializeEnitity(agentEntity);
 
-        requestEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, requestEntity.position.position);
+        InitializeScoreForAgent(agentEntity);
 
-        return requestEntity;
+        agentEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, agentEntity.position.position);
+
+        return agentEntity;
+    }
+
+    private void InitializeScoreForAgent(GameEntity agentEntity)
+    {
+        var scores = gameContext.scores.agentIdToScoreMapping;
+        var agentId = agentEntity.agent.id;
+
+        if (!scores.ContainsKey(agentId))
+        {
+            scores[agentId] = 0;
+        }
     }
 
     protected override void Execute(List<GameEntity> entities)
@@ -126,22 +146,17 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
         if (playerIsDead)
         {
-            OnPlayerLost();
+            OnAgentWon(enemy);
         }
         else if (enemyIsDead)
         {
-            OnPlayerWon();
+            OnAgentWon(player);
         }
     }
 
-    private void OnPlayerWon()
+    private void OnAgentWon(GameEntity agentEntity)
     {
-        scoreComponent.currentScore += levelComponent.roundScoreReward;
-        FinishRound();
-    }
-
-    private void OnPlayerLost()
-    {
+        gameContext.scores.agentIdToScoreMapping[agentEntity.agent.id]+=levelComponent.roundScoreReward;
         FinishRound();
     }
 

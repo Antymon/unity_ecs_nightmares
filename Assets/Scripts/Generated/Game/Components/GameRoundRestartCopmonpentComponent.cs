@@ -8,16 +8,16 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly CreationRequestComponent creationRequestComponent = new CreationRequestComponent();
+    static readonly RoundRestartComponent roundRestartCopmonpentComponent = new RoundRestartComponent();
 
-    public bool isCreationRequest {
-        get { return HasComponent(GameComponentsLookup.CreationRequest); }
+    public bool isRoundRestart {
+        get { return HasComponent(GameComponentsLookup.RoundRestartCopmonpent); }
         set {
-            if (value != isCreationRequest) {
+            if (value != isRoundRestart) {
                 if (value) {
-                    AddComponent(GameComponentsLookup.CreationRequest, creationRequestComponent);
+                    AddComponent(GameComponentsLookup.RoundRestartCopmonpent, roundRestartCopmonpentComponent);
                 } else {
-                    RemoveComponent(GameComponentsLookup.CreationRequest);
+                    RemoveComponent(GameComponentsLookup.RoundRestartCopmonpent);
                 }
             }
         }
@@ -34,17 +34,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherCreationRequest;
+    static Entitas.IMatcher<GameEntity> _matcherRoundRestartCopmonpent;
 
-    public static Entitas.IMatcher<GameEntity> CreationRequest {
+    public static Entitas.IMatcher<GameEntity> RoundRestartCopmonpent {
         get {
-            if (_matcherCreationRequest == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.CreationRequest);
+            if (_matcherRoundRestartCopmonpent == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.RoundRestartCopmonpent);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherCreationRequest = matcher;
+                _matcherRoundRestartCopmonpent = matcher;
             }
 
-            return _matcherCreationRequest;
+            return _matcherRoundRestartCopmonpent;
         }
     }
 }

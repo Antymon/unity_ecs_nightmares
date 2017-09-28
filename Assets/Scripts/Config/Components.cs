@@ -21,12 +21,13 @@ public class PositionComponent : IComponent
 public class PositionChangedComponent : IComponent
 {
     public ulong lastChangeTick;
-    public ulong ticksStationary;
+    public ulong ticksStationary; //how many ticks in 'same' position
     public bool isStationary;
     public Vector3 lastPositon;
 }
 
-public class MovementDirectionComponent : IComponent
+//describes movement by direction
+public class MovementDirectionComponent : IComponent 
 {
     public Vector3 direction;
     public bool onlyRotationAffected;
@@ -43,6 +44,7 @@ public class MovementDirectionChangedListenerComponent : IComponent
     public IMovementDirectionChangedListener listener;
 }
 
+//describes movement by desired destination
 public class MovementDestinationComponent : IComponent
 {
     public Vector3 destination;
@@ -69,6 +71,7 @@ public class AgentComponent : IComponent
 {
     public int id;
     public string name;
+    public int score;
     public List<IEffect> effects;
     public GameEntity target;
 }
@@ -144,12 +147,6 @@ public class DamageComponent : IComponent
     public int healthPointsDamaged;
 }
 
-public class SpawnerComponent : IComponent
-{
-    public int roundCap;
-    public float chanceOfSpawning; //normalized
-}
-
 public class GunComponent : IComponent
 {
     public int cooldownTicks;
@@ -180,18 +177,18 @@ public class LevelComponent : IComponent
     public int seed;
 }
 
+[Unique]
+public class ScoresComponent : IComponent
+{
+    public Dictionary<int, int> agentIdToScoreMapping;
+}
 
 public class GameOverComponent : IComponent{}
 public class GameStartComponent : IComponent{}
-public class GamePausedComponent : IComponent{}
+public class GameRestartComponent : IComponent {}
 public class RoundStartedComponent : IComponent{}
 public class RoundFinishedComponent : IComponent{}
-
-[Unique]
-public class ScoreComponent : IComponent
-{
-    public int currentScore;
-}
+public class RoundRestartComponent : IComponent {}
 
 [Unique]
 [Input]
@@ -217,36 +214,14 @@ public interface IJoypadMovedListener
     void OnJoypadMoved(Vector2 direction);
 }
 
-
-
-
-[Unique]
 public class PauseScreenComponent : IComponent 
 { 
 
 }
 
-[Unique]
 public class RoundCounterComponent : IComponent
 {
     public int round;
-}
-
-[Unique]
-public class ScoreCounterComponent : IComponent
-{
-    public int score;
-}
-
-[Unique]
-public class HealthDecreaseOverlayComponent : IComponent
-{
-
-}
-
-public class CreationRequestComponent : IComponent
-{
-
 }
 
 public class HealthBarComponent : IComponent
@@ -259,6 +234,7 @@ public interface IHealthBarListener
 {
     void OnHealthChanged(float value);
     void OnNameChanged(string name);
+    void OnScoreChanged(int value);
 }
 
 public class GameOverScreenComponent : IComponent
@@ -268,5 +244,5 @@ public class GameOverScreenComponent : IComponent
 
 public interface IGameOverScreenListener
 {
-    void OnShow();
+    void OnShow(string message);
 }

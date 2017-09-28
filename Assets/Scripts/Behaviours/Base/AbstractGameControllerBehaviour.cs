@@ -42,6 +42,7 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
 
     void Update()
     {
+        if (Time.timeScale == 0f) return;
         systems.Execute();
         systems.Cleanup();
     }

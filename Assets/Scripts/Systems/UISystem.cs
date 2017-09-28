@@ -9,6 +9,7 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
     private GameEntity gameOverScreen;
     private GameEntity healthBarLeft;
     private GameEntity healthBarRight;
+    private GameEntity pauseScreen;
 
     private IGroup<GameEntity> agentGroup;
     private ICollector<GameEntity> healthCollector;
@@ -26,6 +27,7 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
         gameOverScreen = CreateUIEntity(EntityPrefabNameBinding.GAME_OVER_SCREEN_BINDING);
         healthBarLeft = CreateUIEntity(EntityPrefabNameBinding.HEALTH_BAR_BINDING);
         healthBarRight = CreateUIEntity(EntityPrefabNameBinding.HEALTH_BAR_BINDING);
+        pauseScreen = CreateUIEntity(EntityPrefabNameBinding.PAUSE_SCREEN_BINDING);
 
         agentGroup = context.GetGroup(GameMatcher.Agent);
     }
@@ -35,11 +37,14 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
     {
         if (healthBar.agentId.Equals(agentEntity.agent.id))
         {
-            float normalizedHealth = HealthHelpers.GetNormalizedHealth(agentEntity.health);
+            var normalizedHealth = HealthHelpers.GetNormalizedHealth(agentEntity.health);
             healthBar.listener.OnHealthChanged(normalizedHealth*100);
 
             var name = agentEntity.agent.name;
             healthBar.listener.OnNameChanged(name);
+
+            var score = context.scores.agentIdToScoreMapping[agentEntity.agent.id];
+            healthBar.listener.OnScoreChanged(score);
         }
     }
 
@@ -53,7 +58,8 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
 
     private void OnGameOver(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        gameOverScreen.gameOverScreen.listener.OnShow();
+        //ToDo: put proper message on outcome
+        gameOverScreen.gameOverScreen.listener.OnShow("YOU");
     }
 
     public void Execute()

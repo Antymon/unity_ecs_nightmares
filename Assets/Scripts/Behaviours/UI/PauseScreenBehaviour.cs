@@ -4,9 +4,10 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 #if UNITY_EDITOR
 using UnityEditor;
+using DG.Tweening;
 #endif
 
-public class PauseManager : MonoBehaviour {
+public class PauseScreenBehaviour : BindingEntitasBehaviour {
 	
 	public AudioMixerSnapshot paused;
 	public AudioMixerSnapshot unpaused;
@@ -30,11 +31,14 @@ public class PauseManager : MonoBehaviour {
 	public void Pause()
 	{
 		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
-		Lowpass ();
+
+        DOTween.TogglePauseAll();
+
+		Lowpass();
 		
 	}
 	
-	void Lowpass()
+	private void Lowpass()
 	{
 		if (Time.timeScale == 0)
 		{
@@ -56,4 +60,18 @@ public class PauseManager : MonoBehaviour {
 		Application.Quit();
 		#endif
 	}
+
+    public void ResetRound()
+    {
+        var messageEntity = Contexts.sharedInstance.game.CreateEntity();
+        messageEntity.isRoundRestart = true;
+        messageEntity.isMarkedToPostponedDestroy = true;
+    }
+
+    public void ResetGame()
+    {
+        var messageEntity = Contexts.sharedInstance.game.CreateEntity();
+        messageEntity.isGameRestart = true;
+        messageEntity.isMarkedToPostponedDestroy = true;
+    }
 }
