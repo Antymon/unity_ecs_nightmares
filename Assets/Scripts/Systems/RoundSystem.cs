@@ -25,13 +25,17 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         this.gameContext = context;
         this.inputContext = inputContext;
 
-        //ToDo: should be soft-configurable
+        //ToDo: deserialize from outside like rest
         context.SetLevel(
             newNumberRounds: 2, 
             newEffectsAtTimeCap: 4, 
             newCurrentRound: 0, 
             newRoundTime: 180, 
-            newRoundScoreReward: 1);
+            newRoundScoreReward: 1,
+            newSeed: 0);
+
+        //ToDo: unitys random is not portable, replace
+        Random.InitState(context.level.seed);
 
         context.SetScore(0);
 
@@ -42,12 +46,16 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     public void Initialize()
     {
         gameContext.GetGroup(GameMatcher.GameStart).OnEntityAdded += OnGameStart;
-        gameContext.CreateEntity().isGameStart = true;
+        var gameStartEntity = gameContext.CreateEntity();
+        gameStartEntity.isGameStart = true;
+        gameStartEntity.isMarkedToPostponedDestroy = true;
+        
     }
 
     private void OnGameStart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        entity.Destroy();
+        entity.isGameStart = false;
+
         scoreComponent.currentScore = 0;
         levelComponent.currentRound = 0;
         StartNextRound();

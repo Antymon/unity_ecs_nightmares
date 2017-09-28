@@ -8,15 +8,15 @@
 //------------------------------------------------------------------------------
 public partial class GameContext {
 
-    public GameEntity pauseEntity { get { return GetGroup(GameMatcher.Pause).GetSingleEntity(); } }
+    public GameEntity pauseScreenEntity { get { return GetGroup(GameMatcher.PauseScreen).GetSingleEntity(); } }
 
-    public bool isPause {
-        get { return pauseEntity != null; }
+    public bool isPauseScreen {
+        get { return pauseScreenEntity != null; }
         set {
-            var entity = pauseEntity;
+            var entity = pauseScreenEntity;
             if (value != (entity != null)) {
                 if (value) {
-                    CreateEntity().isPause = true;
+                    CreateEntity().isPauseScreen = true;
                 } else {
                     entity.Destroy();
                 }
@@ -35,16 +35,16 @@ public partial class GameContext {
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly PauseComponent pauseComponent = new PauseComponent();
+    static readonly PauseScreenComponent pauseScreenComponent = new PauseScreenComponent();
 
-    public bool isPause {
-        get { return HasComponent(GameComponentsLookup.Pause); }
+    public bool isPauseScreen {
+        get { return HasComponent(GameComponentsLookup.PauseScreen); }
         set {
-            if (value != isPause) {
+            if (value != isPauseScreen) {
                 if (value) {
-                    AddComponent(GameComponentsLookup.Pause, pauseComponent);
+                    AddComponent(GameComponentsLookup.PauseScreen, pauseScreenComponent);
                 } else {
-                    RemoveComponent(GameComponentsLookup.Pause);
+                    RemoveComponent(GameComponentsLookup.PauseScreen);
                 }
             }
         }
@@ -61,17 +61,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherPause;
+    static Entitas.IMatcher<GameEntity> _matcherPauseScreen;
 
-    public static Entitas.IMatcher<GameEntity> Pause {
+    public static Entitas.IMatcher<GameEntity> PauseScreen {
         get {
-            if (_matcherPause == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.Pause);
+            if (_matcherPauseScreen == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.PauseScreen);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherPause = matcher;
+                _matcherPauseScreen = matcher;
             }
 
-            return _matcherPause;
+            return _matcherPauseScreen;
         }
     }
 }

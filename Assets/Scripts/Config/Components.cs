@@ -223,8 +223,16 @@ public interface IJoypadMovedListener
     void OnJoypadMoved(Vector2 direction);
 }
 
+public interface IUIListener
+{
+    void OnShow();
+    void OnHide();
+    void OnUpdate(float value);
+}
+
+
 [Unique]
-public class PauseComponent : IComponent 
+public class PauseScreenComponent : IComponent 
 { 
 
 }
@@ -250,4 +258,9 @@ public class HealthDecreaseOverlayComponent : IComponent
 public class CreationRequestComponent : IComponent
 {
 
+}
+
+public class GameOverScreenComponent : IComponent
+{
+    public IUIListener listener;
 }
