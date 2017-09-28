@@ -177,6 +177,7 @@ public class LevelComponent : IComponent
     public int currentRound;
     public int roundTime; //sec
     public int roundScoreReward;
+    public int seed;
 }
 
 

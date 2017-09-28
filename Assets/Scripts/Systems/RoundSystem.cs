@@ -52,19 +52,13 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         levelComponent.currentRound = 0;
         StartNextRound();
 
-        RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));
-    }
-
-    private void RequestCreation(EntityPrefabNameBinding binding, Vector3 position)
-    {
-        var requestEnity = gameContext.CreateEntity();
-        requestEnity.AddEntityBinding(binding);
-        requestEnity.AddPosition(position);
-        requestEnity.isCreationRequest = true;
+        //RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));
     }
 
     private void StartNextRound()
     {
+        gameContext.CreateEntity().isRoundStarted = true;
+
         levelComponent.currentRound++;
 
         roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, FinishRound);
@@ -147,6 +141,8 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private void FinishRound()
     {
+        gameContext.CreateEntity().isRoundFinished = true;
+
         roundTimer.Kill();
 
         if(player.isEnabled)

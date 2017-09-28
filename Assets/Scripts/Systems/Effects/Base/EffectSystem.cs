@@ -1,5 +1,7 @@
-﻿using Entitas;
+﻿using DG.Tweening;
+using Entitas;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EffectSystem : IInitializeSystem, IExecuteSystem
 {
@@ -7,12 +9,22 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
     private InputContext inputContext;
     private IEntityDeserializer entityDeserializer;
 
-    private IGroup<GameEntity> creationRequestGroup;
+    //private IGroup<GameEntity> creationRequestGroup;
     private IGroup<GameEntity> agentsGroup;
+    private IGroup<GameEntity> roundStartedGroup;
+    private IGroup<GameEntity> roundFinishedGroup;
+    private IGroup<GameEntity> effectsGroup;
 
     private IEffectsFactory effectsFactory;
 
     private List<IEffect> effectsToRemove;
+    private List<Tween> spawnDelayedCalls;
+
+    private EntityPrefabNameBinding[] spawnableEffects = new EntityPrefabNameBinding[] 
+    {
+        EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING,
+        EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING
+    };
 
     public EffectSystem(GameContext gameContext,InputContext inputContext, IEntityDeserializer entityDeserializer)
     {
@@ -23,43 +35,90 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         effectsFactory = new EffectsFactory();
 
         effectsToRemove = new List<IEffect>();
+        spawnDelayedCalls = new List<Tween>();
     }
 
     public void Initialize()
     {
-        creationRequestGroup = gameContext.GetGroup(GameMatcher.CreationRequest);
-        creationRequestGroup.OnEntityAdded += OnCreationRequest;
+        //creationRequestGroup = gameContext.GetGroup(GameMatcher.CreationRequest);
+        //creationRequestGroup.OnEntityAdded += OnCreationRequest;
 
         agentsGroup = gameContext.GetGroup(GameMatcher.Agent);
+        roundStartedGroup = gameContext.GetGroup(GameMatcher.RoundStarted);
+        roundFinishedGroup = gameContext.GetGroup(GameMatcher.RoundFinished);
+        effectsGroup = gameContext.GetGroup(GameMatcher.Effect);
+
+        roundStartedGroup.OnEntityAdded += OnRoundStarted;
+        roundFinishedGroup.OnEntityAdded += OnRoundFinished;
     }
 
-    //request will be promoted to actual entity if binding is correct
-    private void OnCreationRequest(IGroup<GameEntity> group, GameEntity requestEntity, int index, IComponent component)
+    private void OnEffectCollected(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        var perfabBinding = requestEntity.entityBinding.entitasBinding;
+        spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * Random.value, CreateEffect));
+    }
+
+    private void OnRoundFinished(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        effectsGroup.OnEntityRemoved -= OnEffectCollected;
+
+        foreach (var effectEntity in effectsGroup.GetEntities())
+        {
+            //only collectible effects are respawned
+            if(effectEntity.effect.effect.IsCollectible())
+            {
+                effectEntity.Destroy();
+            }
+        }
+
+        foreach(var delayedCall in spawnDelayedCalls)
+        {
+            delayedCall.Kill();
+        }
+        spawnDelayedCalls.Clear();
+
+        entity.isMarkedToPostponedDestroy = true;
+    }
+
+    private void OnRoundStarted(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        effectsGroup.OnEntityRemoved += OnEffectCollected;
+
+        int requiredEffects = gameContext.level.effectsAtTimeCap;
+
+        for(int i = 0; i<requiredEffects; i++)
+        {
+            spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * Random.value, CreateEffect));
+        }
+
+        entity.isMarkedToPostponedDestroy = true;
+    }
+
+    private void CreateEffect()
+    {
+        var randomPosition = Random.insideUnitCircle * 10;
+        var randomIndex = Mathf.FloorToInt(Random.value*spawnableEffects.Length)%spawnableEffects.Length;
+        
+        var prefabBinding = spawnableEffects[randomIndex];
+
+        var effectEntity = gameContext.CreateEntity();
+        effectEntity.AddEntityBinding(prefabBinding);
+        effectEntity.AddPosition(new Vector3(randomPosition.x,1,randomPosition.y)); //transforming 2d to 3d random position
 
         //could be folded nicely with reflaction and mapping
-        if(perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING))
+        if(prefabBinding.Equals(EntityPrefabNameBinding.EFFECT_ADD_HEALTH_BINDING))
         {
-            requestEntity.AddEffect(effectsFactory.Create<AddHealthEffect>());
+            effectEntity.AddEffect(effectsFactory.Create<AddHealthEffect>());
         }
-        else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING))
+        else if (prefabBinding.Equals(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING))
         {
-            requestEntity.AddEffect(effectsFactory.Create<MovementInverterEffect>());
-        }
-        else if (perfabBinding.Equals(EntityPrefabNameBinding.EFFECT_PERSISTANT_ADD_HEALTH_BINDING))
-        {
-            requestEntity.AddEffect(effectsFactory.Create<PersistantAddHealthEffect>());
+            effectEntity.AddEffect(effectsFactory.Create<MovementInverterEffect>());
         }
         else //not supported request
         {
             return;
         }
 
-        //request is being promoted to actual object
-        requestEntity.isCreationRequest = false;
-
-        entityDeserializer.DeserializeEnitity(requestEntity);
+        entityDeserializer.DeserializeEnitity(effectEntity);
     }
 
     public void Execute()
