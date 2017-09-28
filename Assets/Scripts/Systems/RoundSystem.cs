@@ -10,15 +10,17 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private Tween roundTimer;
 
     private GameContext gameContext;
+    private InputContext inputContext;
 
     private LevelComponent levelComponent;
     private ScoreComponent scoreComponent;
 
-    public RoundSystem(GameContext context, IEntityDeserializer deserializer)
+    public RoundSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
     {
         this.entityDeserializer = deserializer;
         this.gameContext = context;
+        this.inputContext = inputContext;
 
         //ToDo: should be soft-configurable
         context.SetLevel(
@@ -47,7 +49,19 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         levelComponent.currentRound = 0;
         StartNextRound();
 
-        RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));        
+        RequestCreation(EntityPrefabNameBinding.EFFECT_MOVEMENT_INVERTER_BINDING, new Vector3(-6,1,4));
+
+        //ToDo: opponent as null is not desirable
+
+        var player = RequestActorCreation(player: true, target: null);
+        var enemy = RequestActorCreation(player: false, target: player);
+
+        player.agent.target = enemy;
+
+        //setting following flags will make them picked up synchronously
+        //so they are set when everything is ready
+        player.isPlayer = true;
+        enemy.isEnemy = true;
     }
 
     private void RequestCreation(EntityPrefabNameBinding binding, Vector3 position)
@@ -56,6 +70,22 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         requestEnity.AddEntityBinding(binding);
         requestEnity.AddPosition(position);
         requestEnity.isCreationRequest = true;
+    }
+
+    private GameEntity RequestActorCreation(bool player, GameEntity target)
+    {
+        var binding = player ? EntityPrefabNameBinding.PLAYER_BINDING : EntityPrefabNameBinding.ENEMY_BINDING;
+        var requestEntity = gameContext.CreateEntity();
+        requestEntity.AddEntityBinding(binding);
+
+        //agent placeholder values
+        requestEntity.AddAgent(0, string.Empty, new List<IEffect>(), target);
+
+        entityDeserializer.DeserializeEnitity(requestEntity);
+
+        requestEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, requestEntity.position.position);
+
+        return requestEntity;
     }
 
     private void StartNextRound()

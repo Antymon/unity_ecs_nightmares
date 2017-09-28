@@ -7,6 +7,8 @@ public class PlayerInitSystem  : IInitializeSystem
     private InputContext inputContext;
     private IEntityDeserializer entityDeserializer;
 
+    private IGroup<GameEntity> creationRequestGroup;
+
     public PlayerInitSystem(GameContext gameContext, InputContext inputContext, IEntityDeserializer entityDeserializer)
     {
         this.gameContext = gameContext;
@@ -16,17 +18,14 @@ public class PlayerInitSystem  : IInitializeSystem
 
     public void Initialize()
     {
-        var entity = gameContext.CreateEntity();
-        entity.isPlayer = true;
-        entity.AddEntityBinding(EntityPrefabNameBinding.PLAYER_BINDING);
-        //ToDo: opponent as null is not desirable
-        entity.AddAgent(0, string.Empty, new List<IEffect>(),null);
-        
-
-        entityDeserializer.DeserializeEnitity(entity);
-
-        entity.AddPositionChanged(inputContext.tick.currentTick, 0, false, entity.position.position);
+        creationRequestGroup = gameContext.GetGroup(GameMatcher.CreationRequest);
+        creationRequestGroup.OnEntityAdded += OnCreationRequest;
     }
 
+    //request will be promoted to actual entity if binding is correct
+    private void OnCreationRequest(IGroup<GameEntity> group, GameEntity requestEntity, int index, IComponent component)
+    {
+
+    }
 }
 

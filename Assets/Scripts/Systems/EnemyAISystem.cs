@@ -26,6 +26,8 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
     private float attackRecoverHealthThreshold;
     private float attackDistanceSqr;
 
+    private IGroup<GameEntity> enemyGroup;
+
     //ToDo: shortcut; not quite entitas way, but ultimately non-determinisic input has to be recorded in some way, anyway
     //calling into relevant behaviour
     private Func<Vector3, bool> isPositionSafeCallback;
@@ -37,27 +39,33 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
     public void Initialize()
     {
-        var enemyGroup = context.GetGroup(GameMatcher.Enemy);
-        selfGameEntity = enemyGroup.GetSingleEntity();
-        otherGameEntity = selfGameEntity.agent.target;
-
-        shelterPoints = selfGameEntity.aIPerception.stationaryPositions;
-
-        attackRecoverHealthThreshold = selfGameEntity.aIPerception.attackRecoverHealthThreshold;
-        attackDistanceSqr = selfGameEntity.aIPerception.attackDistance * selfGameEntity.aIPerception.attackDistance;
-        isPositionSafeCallback = selfGameEntity.aIPerception.callback.IsPositionSafe;
+        enemyGroup = context.GetGroup(GameMatcher.Enemy);
+        enemyGroup.OnEntityAdded += OnEnemyCreated;
 
         stateController = new StateController<AIState>(AIState.CHOOSE);
 
         stateController.AddState(AIState.CHOOSE, Choose);
         stateController.AddState(AIState.ATTACK, Attack);
         stateController.AddState(AIState.HIDE, Hide);
+    }
 
+    private void OnEnemyCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        selfGameEntity = entity;
+        otherGameEntity = selfGameEntity.agent.target;
+
+        //parameters extraction
+        shelterPoints = selfGameEntity.aIPerception.stationaryPositions;
+        attackRecoverHealthThreshold = selfGameEntity.aIPerception.attackRecoverHealthThreshold;
+        attackDistanceSqr = selfGameEntity.aIPerception.attackDistance * selfGameEntity.aIPerception.attackDistance;
+        isPositionSafeCallback = selfGameEntity.aIPerception.callback.IsPositionSafe;
+
+        stateController.EnterState(AIState.CHOOSE);
     }
 
     public void Execute()
     {
-        if (!selfGameEntity.isEnabled)
+        if (selfGameEntity==null || !selfGameEntity.isEnabled)
         {
             return;
         }

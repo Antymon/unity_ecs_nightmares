@@ -31,12 +31,18 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
         entityDeserializer.DeserializeEnitity(joypadEntity);
 
         var playerGroup = gameContext.GetGroup(GameMatcher.Player);
-        playerEnity = playerGroup.GetSingleEntity();
+        playerGroup.OnEntityAdded += OnPlayerCreated;
+    }
+
+    private void OnPlayerCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        playerEnity = entity;
         playerEnity.OnDestroyEntity += OnPlayerDestroyed;
     }
 
     private void OnPlayerDestroyed(IEntity entity)
     {
+        playerEnity.OnDestroyEntity -= OnPlayerDestroyed;
         HideJoypad();
     }
 
@@ -45,7 +51,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     {
         foreach (var entity in entities)
         {
-            if(!playerEnity.isEnabled)
+            if(playerEnity==null || !playerEnity.isEnabled)
             {
                 entity.Destroy();
                 continue;

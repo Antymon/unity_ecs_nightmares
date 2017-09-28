@@ -23,7 +23,14 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     public void Initialize()
     {
         joypadEntity = gameContext.GetGroup(GameMatcher.Joystick).GetSingleEntity();
-        playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+
+        var playerGroup = gameContext.GetGroup(GameMatcher.Player);
+        playerGroup.OnEntityAdded += OnPlayerCreated;
+    }
+
+    private void OnPlayerCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        playerEntity = entity;
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
@@ -35,10 +42,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         //so if navigation is disabled, nothing to consider
         if(!joypadEntity.joystick.enabled)
         {
-            if (playerEntity.gun.triggerDown)
-            {
-                ReleaseTrigger();
-            }
+            ReleaseTrigger();
             return;
         }
 
@@ -98,14 +102,17 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     private void ReleaseTrigger()
     {
-        playerEntity.gun.triggerDown = false;
-        triggerTouchId = -1;
-        Debug.Log("trigger up");
+        if (playerEntity.gun.triggerDown)
+        {
+            playerEntity.gun.triggerDown = false;
+            triggerTouchId = -1;
+            Debug.Log("trigger up");
+        }
     }
 
     protected override bool Filter(InputEntity entity)
     {
-        return playerEntity.isEnabled;
+        return playerEntity!=null && playerEntity.isEnabled;
     }
 
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
