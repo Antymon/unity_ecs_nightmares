@@ -42,6 +42,18 @@ public class TriggerSystem : ReactiveSystem<InputEntity>
         {
             if (entityEffect.IsApplicable(agentEntity))
             {
+                //this effect is exclusive, cannot add it twice
+                if (entityEffect.IsExclusive())
+                {
+                    foreach (var effect in aggentsEffects)
+                    {
+                        if (effect.GetType().Equals(entityEffect.GetType()))
+                        {
+                            return;
+                        }
+                    }
+                }
+
                 aggentsEffects.Add(entityEffect);
                 if(entityEffect.IsCollectible())
                 {

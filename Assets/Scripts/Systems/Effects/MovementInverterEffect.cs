@@ -67,8 +67,9 @@ public class MovementInverterEffect : IEffect, IMovementDestinationChangedListen
         return canApply && IsApplicable(entity);
     }
 
+    
     public bool IsApplicable(GameEntity entity)
-    {
+    {        
         var target = entity.agent.target;
 
         return target.isEnabled && //opponent has to be alive
@@ -117,6 +118,11 @@ public class MovementInverterEffect : IEffect, IMovementDestinationChangedListen
 
 
     public bool IsCollectible()
+    {
+        return true;
+    }
+
+    public bool IsExclusive()
     {
         return true;
     }

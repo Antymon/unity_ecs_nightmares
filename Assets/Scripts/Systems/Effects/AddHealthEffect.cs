@@ -39,5 +39,11 @@ public class AddHealthEffect : IEffect
     {
         return true;
     }
+
+
+    public bool IsExclusive()
+    {
+        return false;
+    }
 }
 

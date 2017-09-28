@@ -5,4 +5,5 @@
     bool IsApplicable(GameEntity entity);
     void Update(ulong tick);
     bool IsCollectible();
+    bool IsExclusive();
 }

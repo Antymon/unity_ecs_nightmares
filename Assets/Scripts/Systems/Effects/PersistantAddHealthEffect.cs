@@ -66,5 +66,10 @@ public class PersistantAddHealthEffect : IEffect
 
         return currentTick - userIdsToApplicationTick[agentComponent.id];
     }
+
+    public bool IsExclusive()
+    {
+        return false;
+    }
 }
 
