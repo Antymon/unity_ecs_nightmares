@@ -1,57 +1,59 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-using UnityEngine.Audio;
 #if UNITY_EDITOR
 using UnityEditor;
-using DG.Tweening;
 #endif
+using DG.Tweening;
 
-public class PauseScreenBehaviour : BindingEntitasBehaviour {
-	
-	public AudioMixerSnapshot paused;
-	public AudioMixerSnapshot unpaused;
-
+public class PauseScreenBehaviour : FadingUIBehaviour 
+{
     public GameObject screen;
+
+    private bool pauseAllowed = true;
+
+    public override void Awake()
+    {
+        screen.SetActive(true); //just to not show screen in editor mode
+        RegisterFadingElements(screen);
+        OnAlphaUpdate(scaleValue:0);
+    }
 	
-	void Start()
+	override public void Update()
 	{
-	}
-	
-	void Update()
-	{
+        base.Update();
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-            
-			TogglePause();
+            PauseOn();
 		}
 	}
 	
-	public void TogglePause()
-	{
-        screen.SetActive(!screen.activeSelf);
 
-		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+    public void PauseOn()
+    {
+        if (pauseAllowed)
+        {
+            pauseAllowed = false;
 
-        DOTween.TogglePauseAll();
+            Time.timeScale = 0;
+            DOTween.TogglePauseAll();
 
-		Lowpass();
-		
-	}
-	
-	private void Lowpass()
-	{
-		if (Time.timeScale == 0)
-		{
-			paused.TransitionTo(.01f);
-		}
-		
-		else
-			
-		{
-			unpaused.TransitionTo(.01f);
-		}
-	}
+            OnShow(ignoreTimeScale: true);
+        }
+    }
+
+    public void PauseOff()
+    {
+        if (!pauseAllowed)
+        {
+            pauseAllowed = true;
+
+            Time.timeScale = 1;
+            DOTween.TogglePauseAll();
+
+            OnHide();
+        }
+    }
 	
 	public void Quit()
 	{
@@ -64,13 +66,13 @@ public class PauseScreenBehaviour : BindingEntitasBehaviour {
 
     public void ResetRound()
     {
-        TogglePause();
+        PauseOff();
         CreateEntity().isRoundRestart = true;
     }
 
     public void ResetGame()
     {
-        TogglePause();
+        PauseOff();
         CreateEntity().isGameRestart = true;
     }
 

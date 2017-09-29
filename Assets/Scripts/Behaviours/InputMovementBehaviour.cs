@@ -58,7 +58,7 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
     {
         Vector3 playerToMouse = Vector3.zero;
         playerToMouse.x = direction.x;
-        playerToMouse.z = direction.y; //translation 2d vector to XZ plane in 3d
+        playerToMouse.z = direction.y; //conversion of 2d vector to XZ plane in 3d
 
         //avoiding precison problems
         //sqr is faster

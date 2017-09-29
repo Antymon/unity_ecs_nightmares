@@ -17,32 +17,33 @@ public static class GameComponentsLookup {
     public const int EntityBinding = 6;
     public const int GameOver = 7;
     public const int GameOverScreen = 8;
-    public const int GameRestart = 9;
-    public const int GameStart = 10;
-    public const int Gun = 11;
-    public const int HealthBar = 12;
-    public const int HealthChangedListener = 13;
-    public const int Health = 14;
-    public const int JoypadBinding = 15;
-    public const int Joypad = 16;
-    public const int Level = 17;
-    public const int MarkedToPostponedDestroy = 18;
-    public const int MovementDestinationChangedListener = 19;
-    public const int MovementDestination = 20;
-    public const int MovementDirectionChangedListener = 21;
-    public const int MovementDirection = 22;
-    public const int PauseScreen = 23;
-    public const int Player = 24;
-    public const int PositionChanged = 25;
-    public const int Position = 26;
-    public const int Projectile = 27;
-    public const int RoundCounter = 28;
-    public const int RoundFinished = 29;
-    public const int RoundRestartCopmonpent = 30;
-    public const int RoundStarted = 31;
-    public const int Scores = 32;
+    public const int GamePaused = 9;
+    public const int GameRestart = 10;
+    public const int GameStart = 11;
+    public const int Gun = 12;
+    public const int HealthBar = 13;
+    public const int HealthChangedListener = 14;
+    public const int Health = 15;
+    public const int JoypadBinding = 16;
+    public const int Joypad = 17;
+    public const int Level = 18;
+    public const int MarkedToPostponedDestroy = 19;
+    public const int MovementDestinationChangedListener = 20;
+    public const int MovementDestination = 21;
+    public const int MovementDirectionChangedListener = 22;
+    public const int MovementDirection = 23;
+    public const int PauseScreen = 24;
+    public const int Player = 25;
+    public const int PositionChanged = 26;
+    public const int Position = 27;
+    public const int Projectile = 28;
+    public const int RoundCounter = 29;
+    public const int RoundFinished = 30;
+    public const int RoundRestart = 31;
+    public const int RoundStarted = 32;
+    public const int Scores = 33;
 
-    public const int TotalComponents = 33;
+    public const int TotalComponents = 34;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -54,6 +55,7 @@ public static class GameComponentsLookup {
         "EntityBinding",
         "GameOver",
         "GameOverScreen",
+        "GamePaused",
         "GameRestart",
         "GameStart",
         "Gun",
@@ -75,7 +77,7 @@ public static class GameComponentsLookup {
         "Projectile",
         "RoundCounter",
         "RoundFinished",
-        "RoundRestartCopmonpent",
+        "RoundRestart",
         "RoundStarted",
         "Scores"
     };
@@ -90,6 +92,7 @@ public static class GameComponentsLookup {
         typeof(EntityBinding),
         typeof(GameOverComponent),
         typeof(GameOverScreenComponent),
+        typeof(GamePausedComponent),
         typeof(GameRestartComponent),
         typeof(GameStartComponent),
         typeof(GunComponent),

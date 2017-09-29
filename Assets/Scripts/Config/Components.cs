@@ -186,6 +186,7 @@ public class ScoresComponent : IComponent
 public class GameOverComponent : IComponent{}
 public class GameStartComponent : IComponent{}
 public class GameRestartComponent : IComponent {}
+public class GamePausedComponent : IComponent { }
 public class RoundStartedComponent : IComponent{}
 public class RoundFinishedComponent : IComponent{}
 public class RoundRestartComponent : IComponent {}

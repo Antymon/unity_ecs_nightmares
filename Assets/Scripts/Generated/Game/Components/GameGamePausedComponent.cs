@@ -8,16 +8,16 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly RoundRestartComponent roundRestartCopmonpentComponent = new RoundRestartComponent();
+    static readonly GamePausedComponent gamePausedComponent = new GamePausedComponent();
 
-    public bool isRoundRestart {
-        get { return HasComponent(GameComponentsLookup.RoundRestartCopmonpent); }
+    public bool isGamePaused {
+        get { return HasComponent(GameComponentsLookup.GamePaused); }
         set {
-            if (value != isRoundRestart) {
+            if (value != isGamePaused) {
                 if (value) {
-                    AddComponent(GameComponentsLookup.RoundRestartCopmonpent, roundRestartCopmonpentComponent);
+                    AddComponent(GameComponentsLookup.GamePaused, gamePausedComponent);
                 } else {
-                    RemoveComponent(GameComponentsLookup.RoundRestartCopmonpent);
+                    RemoveComponent(GameComponentsLookup.GamePaused);
                 }
             }
         }
@@ -34,17 +34,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherRoundRestartCopmonpent;
+    static Entitas.IMatcher<GameEntity> _matcherGamePaused;
 
-    public static Entitas.IMatcher<GameEntity> RoundRestartCopmonpent {
+    public static Entitas.IMatcher<GameEntity> GamePaused {
         get {
-            if (_matcherRoundRestartCopmonpent == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.RoundRestartCopmonpent);
+            if (_matcherGamePaused == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.GamePaused);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherRoundRestartCopmonpent = matcher;
+                _matcherGamePaused = matcher;
             }
 
-            return _matcherRoundRestartCopmonpent;
+            return _matcherGamePaused;
         }
     }
 }
