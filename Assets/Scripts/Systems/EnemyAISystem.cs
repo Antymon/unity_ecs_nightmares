@@ -4,7 +4,7 @@ using UnityEngine;
 
 /* Todo: FSM here feels bit forced
  * Behavior Tree would be preferred future-wise
- *
+ * or split up states with their helpers into serparte classes
  */
 
 public class EnemyAISystem : IInitializeSystem, IExecuteSystem
@@ -115,7 +115,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
             SetTrigger(isDesiredDistance); //shoot or not shoot
 
-            if (isDesiredDistance) //stop, aim
+            if (isDesiredDistance) //stop, but rotate to aim
             {
                 selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, otherGameEntity.position.position);
             }

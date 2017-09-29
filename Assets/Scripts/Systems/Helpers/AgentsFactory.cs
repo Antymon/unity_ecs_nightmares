@@ -45,7 +45,7 @@ public class AgentsFactory
 
         InitializeScoreForAgent(agentEntity);
 
-        agentEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, agentEntity.position.position);
+        agentEntity.AddPositionChanged(inputContext.tick.currentTick, 0, agentEntity.position.position);
 
         return agentEntity;
     }

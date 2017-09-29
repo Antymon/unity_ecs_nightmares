@@ -76,7 +76,7 @@ public class MovementSystem : IInitializeSystem, IExecuteSystem
             }
             else
             {
-                entity.ReplacePositionChanged(inputContext.tick.currentTick, 0, false, entity.position.position);
+                entity.ReplacePositionChanged(inputContext.tick.currentTick, newTicksStationary: 0, newLastPositon: entity.position.position);
             }
         }
     }

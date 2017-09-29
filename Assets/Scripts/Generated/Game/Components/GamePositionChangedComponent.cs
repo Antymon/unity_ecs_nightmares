@@ -11,7 +11,7 @@ public partial class GameEntity {
     public PositionChangedComponent positionChanged { get { return (PositionChangedComponent)GetComponent(GameComponentsLookup.PositionChanged); } }
     public bool hasPositionChanged { get { return HasComponent(GameComponentsLookup.PositionChanged); } }
 
-    public void AddPositionChanged(ulong newLastChangeTick, ulong newTicksStationary, bool newIsStationary, UnityEngine.Vector3 newLastPositon) {
+    public void AddPositionChanged(ulong newLastChangeTick, ulong newTicksStationary, UnityEngine.Vector3 newLastPositon) {
         var index = GameComponentsLookup.PositionChanged;
         var component = CreateComponent<PositionChangedComponent>(index);
         component.lastChangeTick = newLastChangeTick;
@@ -20,7 +20,7 @@ public partial class GameEntity {
         AddComponent(index, component);
     }
 
-    public void ReplacePositionChanged(ulong newLastChangeTick, ulong newTicksStationary, bool newIsStationary, UnityEngine.Vector3 newLastPositon) {
+    public void ReplacePositionChanged(ulong newLastChangeTick, ulong newTicksStationary, UnityEngine.Vector3 newLastPositon) {
         var index = GameComponentsLookup.PositionChanged;
         var component = CreateComponent<PositionChangedComponent>(index);
         component.lastChangeTick = newLastChangeTick;
