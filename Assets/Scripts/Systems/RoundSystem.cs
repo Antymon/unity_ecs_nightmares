@@ -14,8 +14,11 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private LevelComponent levelComponent;
 
+    private AgentsFactory agentsFactory;
+    
     private GameEntity player;
     private GameEntity enemy;
+
 
     public RoundSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
@@ -37,89 +40,60 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         Random.InitState(context.level.seed);
 
         levelComponent = context.level;
+
+        agentsFactory = new AgentsFactory(context, inputContext, deserializer);
     }
 
     public void Initialize()
     {
         gameContext.GetGroup(GameMatcher.GameStart).OnEntityAdded += OnGameStart;
-        var gameStartEntity = gameContext.CreateEntity();
-        gameStartEntity.isGameStart = true;
-        gameStartEntity.isMarkedToPostponedDestroy = true;
-        
+        gameContext.GetGroup(GameMatcher.GameRestart).OnEntityAdded += OnGameRestart;
+        gameContext.GetGroup(GameMatcher.RoundRestart).OnEntityAdded += OnRoundRestart;
+
+        StartGame();
+    }
+
+    private void OnRoundRestart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        FinishRound();
+        StartRound(levelComponent.currentRound);
+    }
+
+    private void OnGameRestart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        FinishRound();
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        gameContext.ReplaceScores(new Dictionary<int, int>());
+        levelComponent.currentRound = 0;
+        StartRound(levelComponent.currentRound+1);
     }
 
     private void OnGameStart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         entity.isGameStart = false;
-
-
-        gameContext.ReplaceScores(new Dictionary<int, int>());
-
-
-        levelComponent.currentRound = 0;
-        StartNextRound();
+        StartGame();
     }
 
-    private void StartNextRound()
+    private void StartRound(int roundNumber)
     {
         gameContext.CreateEntity().isRoundStarted = true;
 
-        levelComponent.currentRound++;
+        levelComponent.currentRound=roundNumber;
 
-        roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, FinishRound);
+        roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, OnTimeOut);
         roundTimer.Play();
 
-        CreateAgents();
+        agentsFactory.CreateAgents(out player, out enemy);
     }
 
-    private void CreateAgents()
+    private void OnTimeOut()
     {
-        player = RequestActorCreation(player: true, target: null);
-        enemy = RequestActorCreation(player: false, target: player);
-
-        player.agent.target = enemy;
-
-        
-
-        //setting following flags will make them picked up synchronously
-        //so they are set when everything is ready
-        player.isPlayer = true;
-        enemy.isEnemy = true;
-    }
-
-    private GameEntity RequestActorCreation(bool player, GameEntity target)
-    {
-        var binding = player ? EntityPrefabNameBinding.PLAYER_BINDING : EntityPrefabNameBinding.ENEMY_BINDING;
-        var agentEntity = gameContext.CreateEntity();
-        agentEntity.AddEntityBinding(binding);
-
-        //agent placeholder values
-        agentEntity.AddAgent(
-            newId: 0, 
-            newName: string.Empty, 
-            newScore: 0, 
-            newEffects: new List<IEffect>(), 
-            newTarget: target
-            );
-
-        entityDeserializer.DeserializeEnitity(agentEntity);
-
-        InitializeScoreForAgent(agentEntity);
-
-        agentEntity.AddPositionChanged(inputContext.tick.currentTick, 0, false, agentEntity.position.position);
-
-        return agentEntity;
-    }
-
-    private void InitializeScoreForAgent(GameEntity agentEntity)
-    {
-        var scores = gameContext.scores.agentIdToScoreMapping;
-        var agentId = agentEntity.agent.id;
-
-        if (!scores.ContainsKey(agentId))
-        {
-            scores[agentId] = 0;
-        }
+        FinishRound();
+        ConsiderNextRound();
     }
 
     protected override void Execute(List<GameEntity> entities)
@@ -157,7 +131,9 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private void OnAgentWon(GameEntity agentEntity)
     {
         gameContext.scores.agentIdToScoreMapping[agentEntity.agent.id]+=levelComponent.roundScoreReward;
+        
         FinishRound();
+        ConsiderNextRound();
     }
 
     private void FinishRound()
@@ -166,15 +142,22 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
         roundTimer.Kill();
 
-        if(player.isEnabled)
+        if (player.isEnabled)
+        {
             player.Destroy();
+        }
 
-        if(enemy.isEnabled)
+        if (enemy.isEnabled)
+        {
             enemy.Destroy();
+        }
+    }
 
+    private void ConsiderNextRound()
+    {
         if (levelComponent.currentRound < levelComponent.numberRounds)
         {
-            StartNextRound();
+            StartRound(levelComponent.currentRound+1);
         }
         else
         {
