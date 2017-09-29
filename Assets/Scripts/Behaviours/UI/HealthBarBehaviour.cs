@@ -19,7 +19,7 @@ public class HealthBarBehaviour : BindingEntitasBehaviour, IHealthBarListener
 
     public void OnHealthChanged(float value)
     {
-        healthSlider.value = value;
+        healthSlider.DOValue(value, .2f);
     }
 
     public void OnNameChanged(string name)
