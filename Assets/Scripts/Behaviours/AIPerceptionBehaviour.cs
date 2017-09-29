@@ -32,11 +32,7 @@ public class AIPerceptionBehaviour : MonoBehaviour, IEntityDeserializer, IPositi
         shootRay = new Ray();
     }
 
-    public bool IsPositionSafe(Vector3 position)
-    {
-        return IsPositionSafe(position, selfGameEntity);
-    }
-
+    //ToDo: add position of barrel as the origin of ray (rather than agents position) for better accuracy of fact
     public bool IsPositionSafe(Vector3 position, GameEntity forAgent)
     {
         var self = forAgent;

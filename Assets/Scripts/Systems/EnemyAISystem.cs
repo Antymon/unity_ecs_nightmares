@@ -33,7 +33,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
     //ToDo: shortcut; not quite entitas way, but ultimately non-determinisic input has to be recorded in some way, anyway
     //calling into relevant behaviour
-    private Func<Vector3, bool> isPositionSafeCallback;
+    private Func<Vector3, GameEntity, bool> isPositionSafeCallback;
 
     public EnemyAISystem(GameContext context)
     {
@@ -111,16 +111,27 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
         {
             var distance = otherGameEntity.position.position - selfGameEntity.position.position;
 
+            //if your shooting has an error
+            //it's easier to shoot enemy when closer
+            //so keeping distance small makes sense
             bool isDesiredDistance = distance.sqrMagnitude <= attackDistanceSqr; //sqr is cheaper
 
-            SetTrigger(isDesiredDistance); //shoot or not shoot
+            
+            //if desired distance is reached
+            //and enemy is not hidden by anything
+            //try your chance at shooting
+            bool goodChanceOfSuccessfulShot = isDesiredDistance && !IsEnemySafeAtHisPosition();
 
-            if (isDesiredDistance) //stop, but rotate to aim
+            SetTrigger(goodChanceOfSuccessfulShot); //shoot or not shoot
+
+            if (goodChanceOfSuccessfulShot) 
             {
+                //stop, but rotate to aim
                 selfGameEntity.ReplaceMovementDestination(selfGameEntity.position.position, otherGameEntity.position.position);
             }
-            else //chase
+            else 
             {
+                //chase to get better spot
                 selfGameEntity.ReplaceMovementDestination(otherGameEntity.position.position, otherGameEntity.position.position);
             }
 
@@ -149,7 +160,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
             }
             else
             {
-                if (!isPositionSafeCallback(currentSafePoint))
+                if (!isPositionSafeCallback(currentSafePoint,selfGameEntity))
                 {
                     //stop
                     StopMovement();
@@ -161,7 +172,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
                     if(IsStationary())
                     {
                         //if my current position is not safe
-                        if(!isPositionSafeCallback(selfGameEntity.position.position))
+                        if(!isPositionSafeCallback(selfGameEntity.position.position,selfGameEntity))
                         {
                             //find a new safe position (and head there)
                             safePositionFound = false;
@@ -172,6 +183,11 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
             stateController.SetNextState(AIState.CHOOSE);
         }
+    }
+
+    private bool IsEnemySafeAtHisPosition()
+    {
+        return isPositionSafeCallback(otherGameEntity.position.position, otherGameEntity);
     }
 
     private bool IsStationary()
@@ -199,7 +215,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
         foreach (var shelter in shelterPoints)
         {
-            if (isPositionSafeCallback(shelter))
+            if (isPositionSafeCallback(shelter,selfGameEntity))
             {
                 float safetyValue = AssessChanceOfReachingSafely(shelter);
 

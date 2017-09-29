@@ -100,7 +100,7 @@ public class AIPerceptionComponent : IComponent
 
 public interface IPositionVerificationCallback
 {
-    bool IsPositionSafe(Vector3 position);
+    bool IsPositionSafe(Vector3 position, GameEntity forAgent);
 }
 
 //for pickups
