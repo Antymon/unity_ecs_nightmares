@@ -23,6 +23,10 @@ public class GameOverScreenBehaviour : BindingEntitasBehaviour, IGameOverScreenL
 
     public void Awake()
     {
+        //this is to get rid of screent in editor 
+        //but still initialize correctly in runtime
+        this.GetComponentInParent<Canvas>().enabled = true;
+
         originalImageColors = new Dictionary<Image, Color>();
         originalTextColors = new Dictionary<Text, Color>();
 

@@ -11,25 +11,26 @@ public class PauseScreenBehaviour : BindingEntitasBehaviour {
 	
 	public AudioMixerSnapshot paused;
 	public AudioMixerSnapshot unpaused;
-	
-	Canvas canvas;
+
+    public GameObject screen;
 	
 	void Start()
 	{
-		canvas = GetComponent<Canvas>();
 	}
 	
 	void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			canvas.enabled = !canvas.enabled;
-			Pause();
+            
+			TogglePause();
 		}
 	}
 	
-	public void Pause()
+	public void TogglePause()
 	{
+        screen.SetActive(!screen.activeSelf);
+
 		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
 
         DOTween.TogglePauseAll();
@@ -63,15 +64,20 @@ public class PauseScreenBehaviour : BindingEntitasBehaviour {
 
     public void ResetRound()
     {
-        var messageEntity = Contexts.sharedInstance.game.CreateEntity();
-        messageEntity.isRoundRestart = true;
-        messageEntity.isMarkedToPostponedDestroy = true;
+        TogglePause();
+        CreateEntity().isRoundRestart = true;
     }
 
     public void ResetGame()
     {
+        TogglePause();
+        CreateEntity().isGameRestart = true;
+    }
+
+    private GameEntity CreateEntity()
+    {
         var messageEntity = Contexts.sharedInstance.game.CreateEntity();
-        messageEntity.isGameRestart = true;
         messageEntity.isMarkedToPostponedDestroy = true;
+        return messageEntity;
     }
 }
