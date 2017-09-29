@@ -1,7 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnitySampleAssets.CrossPlatformInput;
-
 
 public class ShootingVisualEffects : MonoBehaviour
 {
