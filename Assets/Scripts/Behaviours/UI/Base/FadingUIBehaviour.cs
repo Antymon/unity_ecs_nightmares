@@ -59,7 +59,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
         from = 0;
         to = 1;
         time = 0;
-        duration = .5f;
+        duration = .25f;
     }
 
     public virtual void Update()
@@ -109,7 +109,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
         from = value;
         to = 0;
         time = 0;
-        duration = .25f * value;
+        duration = .1f * value;
     }
 
 
