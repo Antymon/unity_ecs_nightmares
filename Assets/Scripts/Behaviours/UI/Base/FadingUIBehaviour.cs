@@ -7,7 +7,7 @@ using System.Collections.Generic;
  * general UI Fading implemented
  * fetches all images and text within
  * and then tweens alpha values on their colors
- * altering enabled status as fit
+ * altering 'enabled' values as fit
  * 
  * ToDo:
  * more proper would be to use tweens
@@ -23,7 +23,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
     private Dictionary<Image, Color> originalImageColors;
     private Dictionary<Text, Color> originalTextColors;
 
-    bool tween, ignoreTimeScale;
+    bool tween, ignorePause;
     float from, to, time, duration, value;
 
     public virtual void Awake()
@@ -51,9 +51,9 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
         }
     }
 
-    public virtual void OnShow(bool ignoreTimeScale = false)
+    public virtual void OnShow(bool ignorePause = false)
     {
-        this.ignoreTimeScale = ignoreTimeScale;
+        this.ignorePause = ignorePause;
 
         tween = true;
         from = 0;
@@ -64,7 +64,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
 
     public virtual void Update()
     {
-        if (tween && (Time.timeScale==1f || ignoreTimeScale))
+        if (tween && (!PauseUtil.IsPaused() || ignorePause))
         {
             if (time<duration)
             {
@@ -101,9 +101,9 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
         }
     }
 
-    public void OnHide(bool ignoreTimeScale = false)
+    public void OnHide(bool ignorePause = false)
     {
-        this.ignoreTimeScale = ignoreTimeScale;
+        this.ignorePause = ignorePause;
 
         tween = true;
         from = value;

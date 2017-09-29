@@ -43,7 +43,7 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
     {
         //ToDo: bit ugly pausing mechanics
         //nofication based pausing would be more future-proof
-        if (Time.timeScale == 0f) return;
+        if (PauseUtil.IsPaused()) return;
 
         systems.Execute();
         systems.Cleanup();
