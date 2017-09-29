@@ -16,7 +16,6 @@ public partial class GameEntity {
         var component = CreateComponent<PositionChangedComponent>(index);
         component.lastChangeTick = newLastChangeTick;
         component.ticksStationary = newTicksStationary;
-        component.isStationary = newIsStationary;
         component.lastPositon = newLastPositon;
         AddComponent(index, component);
     }
@@ -26,7 +25,6 @@ public partial class GameEntity {
         var component = CreateComponent<PositionChangedComponent>(index);
         component.lastChangeTick = newLastChangeTick;
         component.ticksStationary = newTicksStationary;
-        component.isStationary = newIsStationary;
         component.lastPositon = newLastPositon;
         ReplaceComponent(index, component);
     }

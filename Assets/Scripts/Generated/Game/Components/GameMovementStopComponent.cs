@@ -8,16 +8,16 @@
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    static readonly PauseScreenComponent pauseScreenComponent = new PauseScreenComponent();
+    static readonly MovementStopComponent movementStopComponent = new MovementStopComponent();
 
-    public bool isPauseScreen {
-        get { return HasComponent(GameComponentsLookup.PauseScreen); }
+    public bool isMovementStop {
+        get { return HasComponent(GameComponentsLookup.MovementStop); }
         set {
-            if (value != isPauseScreen) {
+            if (value != isMovementStop) {
                 if (value) {
-                    AddComponent(GameComponentsLookup.PauseScreen, pauseScreenComponent);
+                    AddComponent(GameComponentsLookup.MovementStop, movementStopComponent);
                 } else {
-                    RemoveComponent(GameComponentsLookup.PauseScreen);
+                    RemoveComponent(GameComponentsLookup.MovementStop);
                 }
             }
         }
@@ -34,17 +34,17 @@ public partial class GameEntity {
 //------------------------------------------------------------------------------
 public sealed partial class GameMatcher {
 
-    static Entitas.IMatcher<GameEntity> _matcherPauseScreen;
+    static Entitas.IMatcher<GameEntity> _matcherMovementStop;
 
-    public static Entitas.IMatcher<GameEntity> PauseScreen {
+    public static Entitas.IMatcher<GameEntity> MovementStop {
         get {
-            if (_matcherPauseScreen == null) {
-                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.PauseScreen);
+            if (_matcherMovementStop == null) {
+                var matcher = (Entitas.Matcher<GameEntity>)Entitas.Matcher<GameEntity>.AllOf(GameComponentsLookup.MovementStop);
                 matcher.componentNames = GameComponentsLookup.componentNames;
-                _matcherPauseScreen = matcher;
+                _matcherMovementStop = matcher;
             }
 
-            return _matcherPauseScreen;
+            return _matcherMovementStop;
         }
     }
 }

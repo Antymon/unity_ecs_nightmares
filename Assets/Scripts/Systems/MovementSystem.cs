@@ -73,7 +73,6 @@ public class MovementSystem : IInitializeSystem, IExecuteSystem
             if ((entity.position.position - positionChangedComponent.lastPositon).sqrMagnitude < .01f)
             {
                 positionChangedComponent.ticksStationary++;
-                positionChangedComponent.isStationary = true;
             }
             else
             {

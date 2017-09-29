@@ -42,7 +42,7 @@ public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovement
 
     void Update()
     {
-        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, !selfGameEntity.positionChanged.isStationary);
+        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, selfGameEntity.positionChanged.ticksStationary==0);
     }
 
     void LateUpdate()

@@ -40,7 +40,7 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     void Update()
     {
-        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, !selfGameEntity.positionChanged.isStationary);
+        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, selfGameEntity.positionChanged.ticksStationary == 0);
     }
 
     void Move(float x, float z)

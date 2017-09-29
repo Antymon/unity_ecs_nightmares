@@ -32,7 +32,7 @@ public static class GameComponentsLookup {
     public const int MovementDestination = 21;
     public const int MovementDirectionChangedListener = 22;
     public const int MovementDirection = 23;
-    public const int PauseScreen = 24;
+    public const int MovementStop = 24;
     public const int Player = 25;
     public const int PositionChanged = 26;
     public const int Position = 27;
@@ -71,7 +71,7 @@ public static class GameComponentsLookup {
         "MovementDestination",
         "MovementDirectionChangedListener",
         "MovementDirection",
-        "PauseScreen",
+        "MovementStop",
         "Player",
         "PositionChanged",
         "Position",
@@ -109,7 +109,7 @@ public static class GameComponentsLookup {
         typeof(MovementDestinationComponent),
         typeof(MovementDirectionChangedListenerComponent),
         typeof(MovementDirectionComponent),
-        typeof(PauseScreenComponent),
+        typeof(MovementStopComponent),
         typeof(Player),
         typeof(PositionChangedComponent),
         typeof(PositionComponent),

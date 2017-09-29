@@ -37,7 +37,6 @@ public class AgentsFactory
         agentEntity.AddAgent(
             newId: 0,
             newName: string.Empty,
-            newScore: 0,
             newEffects: new List<IEffect>(),
             newTarget: target
             );

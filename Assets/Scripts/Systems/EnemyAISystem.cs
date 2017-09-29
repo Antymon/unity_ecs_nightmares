@@ -176,7 +176,7 @@ public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 
     private bool IsStationary()
     {
-        return selfGameEntity.positionChanged.isStationary && selfGameEntity.positionChanged.ticksStationary > 5;
+        return selfGameEntity.positionChanged.ticksStationary > 5;
     }
 
     private void StopMovement() //by setting destination to current position

@@ -22,8 +22,12 @@ public class PositionChangedComponent : IComponent
 {
     public ulong lastChangeTick;
     public ulong ticksStationary; //how many ticks in 'same' position
-    public bool isStationary;
     public Vector3 lastPositon;
+}
+
+public class MovementStopComponent : IComponent
+{
+
 }
 
 //describes movement by direction
@@ -71,7 +75,6 @@ public class AgentComponent : IComponent
 {
     public int id;
     public string name;
-    public int score;
     public List<IEffect> effects;
     public GameEntity target;
 }
@@ -89,7 +92,9 @@ public class AIPerceptionComponent : IComponent
 {
     public Vector3[] stationaryPositions;
     public int attackDistance;
-    public float attackRecoverHealthThreshold;
+    //below normalized value of health enemy will seek to recover
+    //above will attack
+    public float attackRecoverHealthThreshold; 
     public IPositionVerificationCallback callback;
 }
 
@@ -98,7 +103,7 @@ public interface IPositionVerificationCallback
     bool IsPositionSafe(Vector3 position);
 }
 
-//for boosters
+//for pickups
 public class EffectComponent : IComponent
 {
     public IEffect effect;
@@ -218,11 +223,6 @@ public class JoypadBindingComponent : IComponent
 public interface IJoypadMovedListener
 {
     void OnJoypadMoved(Vector2 direction);
-}
-
-public class PauseScreenComponent : IComponent 
-{ 
-
 }
 
 public class RoundCounterComponent : IComponent
