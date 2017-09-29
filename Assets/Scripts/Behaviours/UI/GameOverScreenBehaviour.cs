@@ -12,7 +12,7 @@ public class GameOverScreenBehaviour : FadingUIBehaviour, IGameOverScreenListene
 
     override public void Awake()
     {
-        //this is to get rid of screent in editor 
+        //this is to get rid of screen in editor (declutter)
         //but still initialize correctly in runtime
         this.GetComponentInParent<Canvas>().enabled = true;
 
@@ -40,7 +40,7 @@ public class GameOverScreenBehaviour : FadingUIBehaviour, IGameOverScreenListene
         if (!buttonPressed)
         {
             buttonPressed = true;
-            entity.isGameStart = true;
+            entity.isGameStart = true; //ToDo: unify notifications to entity creation
             OnHide();
         }
     }

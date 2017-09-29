@@ -64,18 +64,18 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         FinishRound();
         StartGame();
     }
+    
+    private void OnGameStart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        entity.isGameStart = false;
+        StartGame();
+    }
 
     private void StartGame()
     {
         gameContext.ReplaceScores(new Dictionary<int, int>());
         levelComponent.currentRound = 0;
         StartRound(levelComponent.currentRound+1);
-    }
-
-    private void OnGameStart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
-    {
-        entity.isGameStart = false;
-        StartGame();
     }
 
     private void StartRound(int roundNumber)
