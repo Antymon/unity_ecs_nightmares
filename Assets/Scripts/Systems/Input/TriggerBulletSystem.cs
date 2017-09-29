@@ -103,7 +103,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     {
         triggerTouchId = touch.fingerId;
         playerEntity.gun.triggerDown = true;
-        Debug.Log("trigger down");
+        //Debug.Log("trigger down");
     }
 
     private void ReleaseTrigger()
@@ -112,7 +112,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         {
             playerEntity.gun.triggerDown = false;
             triggerTouchId = -1;
-            Debug.Log("trigger up");
+            //Debug.Log("trigger up");
         }
     }
 

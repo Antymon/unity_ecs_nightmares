@@ -37,7 +37,7 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
     {
         if(!self.hasHealth || !other.hasDamage)
         {
-            Debug.LogWarning("Objects in collision are missing expected components");
+            //Debug.LogWarning("Objects in collision are missing expected components");
             return;
         }
 

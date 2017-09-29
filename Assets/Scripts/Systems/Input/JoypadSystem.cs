@@ -74,7 +74,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
                         if(touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                         {
-                            Debug.Log("Hide joypad " + touch);
+                            //Debug.Log("Hide joypad " + touch);
                             HideJoypad();
                         }
                         else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
@@ -88,7 +88,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 
                 if(!touchFound)
                 {
-                    Debug.Log("Touch not found ");
+                    //Debug.Log("Touch not found ");
                     HideJoypad();
                 }
             }
@@ -99,7 +99,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
                     if(touch.phase == TouchPhase.Began)
                     {
                         ShowJoypad(touch);
-                        Debug.Log("Show joypad " + touch.fingerId + " "+joypadEntity.joypad.enabled);
+                        //Debug.Log("Show joypad " + touch.fingerId + " "+joypadEntity.joypad.enabled);
                         break;
                     }
                 }
