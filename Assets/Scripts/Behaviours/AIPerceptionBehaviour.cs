@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using System.Linq;
 
 
-public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVerificationCallback
+public class AIPerceptionBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVerificationCallback
 {
     public int attackDistance = 10;
     public float attackRecoverHealthThreshold = .5f;
@@ -15,15 +15,15 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVer
     private RaycastHit shootHit;
     private int shootableMask;
 
-    private GameEntity otherGameEntity;
+    private GameEntity selfGameEntity;
 
     public void DeserializeEnitity(GameEntity selfGameEntity)
     {
-        this.otherGameEntity = selfGameEntity.agent.target;
+        this.selfGameEntity = selfGameEntity;
 
         var shelterPositions = shelters.Select(s => s.position).ToArray();
 
-        selfGameEntity.AddAIPerception(shelterPositions, attackDistance, attackRecoverHealthThreshold, this);
+        this.selfGameEntity.AddAIPerception(shelterPositions, attackDistance, attackRecoverHealthThreshold, this);
     }
 
     public void Start()
@@ -34,15 +34,23 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVer
 
     public bool IsPositionSafe(Vector3 position)
     {
-        shootRay.origin = otherGameEntity.position.position;
-        Vector3 direction = position - otherGameEntity.position.position;
+        return IsPositionSafe(position, selfGameEntity);
+    }
+
+    public bool IsPositionSafe(Vector3 position, GameEntity forAgent)
+    {
+        var self = forAgent;
+        var other = forAgent.agent.target;
+
+        shootRay.origin = other.position.position;
+        Vector3 direction = position - other.position.position;
         direction.y = 0f; //we are considering  floor XZ surface only
         shootRay.direction = direction;
 
         float distance = direction.magnitude;
 
         //spot is out of range at the moment thus safe
-        if (distance > otherGameEntity.gun.range)
+        if (distance > other.gun.range)
         {
             return true;
         }
@@ -50,15 +58,19 @@ public class EnemyAIBehaviour : MonoBehaviour, IEntityDeserializer, IPositionVer
         // Perform the raycast against gameobjects on the shootable layer and if it hits something...
         if (Physics.Raycast(shootRay, out shootHit, distance, shootableMask))
         {
+            var agentBehaviour = shootHit.collider.gameObject.GetComponent<AgentBehaviour>();
+
             //some obstacle would be hit, but not me, thus making it safe
-            return shootHit.collider.transform != this.transform;
+            if (agentBehaviour == null)
+                return true;
+
+            //if someone would be hit but not self, then safe
+            return agentBehaviour.agentId != self.agent.id;
         }
 
         //spot is within clean shot
         return false;
     }
-
-
 
 
 }
