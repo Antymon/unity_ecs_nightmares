@@ -30,7 +30,7 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
         systems.Add(new TriggerBulletSystem(inputContext, gameContext));
 
         //entry point system, generally would depend on everything except for unrelated inputs
-        systems.Add(new RoundSystem(gameContext, inputContext, entityDeserializer));
+        systems.Add(new GameFlowSystem(gameContext, inputContext, entityDeserializer));
     }
 }
 

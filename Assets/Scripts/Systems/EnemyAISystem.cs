@@ -2,11 +2,14 @@
 using System;
 using UnityEngine;
 
+/* Todo: FSM here feels bit forced
+ * Behavior Tree would be preferred future-wise
+ *
+ */
+
 public class EnemyAISystem : IInitializeSystem, IExecuteSystem
 {
     private StateController<AIState> stateController;
-
-    //EnemySpawningModel enemySpawningModel = new EnemySpawningModel();
 
     public enum AIState
     {

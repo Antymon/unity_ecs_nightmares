@@ -29,7 +29,6 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
     //template method just to separate config from general bootstrapping
     protected abstract void AddSystems(Contexts contexts, Systems systems);
 
-
     private void ReclaimInstatiatedPrefabs(Transform root, IGameObjectPool pool)
     {
         var poolableObjects = root.GetComponentsInChildren<IPooledGameObject>();
@@ -42,7 +41,10 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
 
     void Update()
     {
+        //ToDo: bit ugly pausing mechanics
+        //nofication based pausing would be more future-proof
         if (Time.timeScale == 0f) return;
+
         systems.Execute();
         systems.Cleanup();
     }

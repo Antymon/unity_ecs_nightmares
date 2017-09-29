@@ -3,7 +3,7 @@ using Entitas;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
+public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 {
     private IEntityDeserializer entityDeserializer;
 
@@ -20,14 +20,14 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private GameEntity enemy;
 
 
-    public RoundSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
+    public GameFlowSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
     {
         this.entityDeserializer = deserializer;
         this.gameContext = context;
         this.inputContext = inputContext;
 
-        //ToDo: deserialize from outside like rest
+        //ToDo: deserialize from outside like the rest
         context.SetLevel(
             newNumberRounds: 5, 
             newEffectsAtTimeCap: 4, 
@@ -36,7 +36,7 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
             newRoundScoreReward: 1,
             newSeed: 0);
 
-        //ToDo: unitys random is not portable, replace
+        //ToDo: unitys random is not portable (makes "ECall" into editor), replace
         Random.InitState(context.level.seed);
 
         levelComponent = context.level;
@@ -96,6 +96,9 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         ConsiderNextRound();
     }
 
+    //ToDo: reactive system is bit noisy in this case readability-wise
+    //this class should demonstrate logic flow within specifics of the domain
+    //change to group
     protected override void Execute(List<GameEntity> entities)
     {
         bool playerIsDead = false;
@@ -126,6 +129,16 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         {
             OnAgentWon(player);
         }
+    }
+
+    protected override bool Filter(GameEntity entity)
+    {
+        return true;
+    }
+
+    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
+    {
+        return context.CreateCollector<GameEntity>(GameMatcher.AgentDead.Added());
     }
 
     private void OnAgentWon(GameEntity agentEntity)
@@ -163,15 +176,5 @@ public class RoundSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         {
             gameContext.CreateEntity().isGameOver = true;
         }
-    }
-
-    protected override bool Filter(GameEntity entity)
-    {
-        return true;
-    }
-
-    protected override ICollector<GameEntity> GetTrigger(IContext<GameEntity> context)
-    {
-        return context.CreateCollector<GameEntity>(GameMatcher.AgentDead.Added());
     }
 }
