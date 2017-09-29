@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerSystem : ReactiveSystem<InputEntity>
+public class EffectTriggerSystem : ReactiveSystem<InputEntity>
 {
-    public TriggerSystem(InputContext context)
+    public EffectTriggerSystem(InputContext context)
         : base(context)
     {
 

@@ -18,7 +18,7 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
 
         systems.Add(new UISystem(gameContext, entityDeserializer));
 
-        systems.Add(new TriggerSystem(inputContext));
+        systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
         systems.Add(new JoypadSystem(inputContext, gameContext, entityDeserializer));
 

@@ -29,6 +29,7 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
         healthBarRight = CreateUIEntity(EntityPrefabNameBinding.HEALTH_BAR_BINDING);
         pauseScreen = CreateUIEntity(EntityPrefabNameBinding.PAUSE_SCREEN_BINDING);
 
+
         agentGroup = context.GetGroup(GameMatcher.Agent);
     }
 
