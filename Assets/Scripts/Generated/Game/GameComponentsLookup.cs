@@ -26,8 +26,8 @@ public static class GameComponentsLookup {
     public const int Health = 15;
     public const int JoypadBinding = 16;
     public const int Joypad = 17;
-    public const int Level = 18;
-    public const int MarkedToPostponedDestroy = 19;
+    public const int MarkedToPostponedDestroy = 18;
+    public const int Match = 19;
     public const int MovementDestinationChangedListener = 20;
     public const int MovementDestination = 21;
     public const int MovementDirectionChangedListener = 22;
@@ -37,13 +37,14 @@ public static class GameComponentsLookup {
     public const int PositionChanged = 26;
     public const int Position = 27;
     public const int Projectile = 28;
-    public const int RoundCounter = 29;
-    public const int RoundFinished = 30;
-    public const int RoundRestart = 31;
-    public const int RoundStarted = 32;
-    public const int Scores = 33;
+    public const int Round = 29;
+    public const int RoundCounter = 30;
+    public const int RoundFinished = 31;
+    public const int RoundRestart = 32;
+    public const int RoundStarted = 33;
+    public const int Scores = 34;
 
-    public const int TotalComponents = 34;
+    public const int TotalComponents = 35;
 
     public static readonly string[] componentNames = {
         "Agent",
@@ -64,8 +65,8 @@ public static class GameComponentsLookup {
         "Health",
         "JoypadBinding",
         "Joypad",
-        "Level",
         "MarkedToPostponedDestroy",
+        "Match",
         "MovementDestinationChangedListener",
         "MovementDestination",
         "MovementDirectionChangedListener",
@@ -75,6 +76,7 @@ public static class GameComponentsLookup {
         "PositionChanged",
         "Position",
         "Projectile",
+        "Round",
         "RoundCounter",
         "RoundFinished",
         "RoundRestart",
@@ -101,8 +103,8 @@ public static class GameComponentsLookup {
         typeof(HealthComponent),
         typeof(JoypadBindingComponent),
         typeof(JoypadComponent),
-        typeof(LevelComponent),
         typeof(MarkedToPostponedDestroyComponent),
+        typeof(MatchComponent),
         typeof(MovementDestinationChangedListenerComponent),
         typeof(MovementDestinationComponent),
         typeof(MovementDirectionChangedListenerComponent),
@@ -112,6 +114,7 @@ public static class GameComponentsLookup {
         typeof(PositionChangedComponent),
         typeof(PositionComponent),
         typeof(ProjectileComponent),
+        typeof(RoundComponent),
         typeof(RoundCounterComponent),
         typeof(RoundFinishedComponent),
         typeof(RoundRestartComponent),

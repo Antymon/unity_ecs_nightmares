@@ -9,7 +9,7 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
     private GameEntity gameOverScreen;
     private GameEntity healthBarLeft;
     private GameEntity healthBarRight;
-    private GameEntity pauseScreen;
+    private GameEntity roundCounter;
 
     private IGroup<GameEntity> agentGroup;
     private ICollector<GameEntity> healthCollector;
@@ -27,10 +27,29 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
         gameOverScreen = CreateUIEntity(EntityPrefabNameBinding.GAME_OVER_SCREEN_BINDING);
         healthBarLeft = CreateUIEntity(EntityPrefabNameBinding.HEALTH_BAR_BINDING);
         healthBarRight = CreateUIEntity(EntityPrefabNameBinding.HEALTH_BAR_BINDING);
-        pauseScreen = CreateUIEntity(EntityPrefabNameBinding.PAUSE_SCREEN_BINDING);
+        
+        //just binding, no calling into required
+        CreateUIEntity(EntityPrefabNameBinding.PAUSE_SCREEN_BINDING);
 
 
         agentGroup = context.GetGroup(GameMatcher.Agent);
+
+        context.GetGroup(GameMatcher.Round).OnEntityUpdated += OnRoundUpdated;
+    }
+
+    //recreating round counter entity on each value change, which is not that frequent
+    //both entities and game objects are pooled so shouldn't be heavy at all
+    private void OnRoundUpdated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent previousComponent, IComponent newComponent)
+    {
+        if (roundCounter != null)
+        {
+            roundCounter.Destroy();
+        }
+
+        roundCounter=context.CreateEntity();
+        roundCounter.AddRoundCounter(context.round.currentRound);
+        roundCounter.AddEntityBinding(EntityPrefabNameBinding.ROUND_COUNTER_BINDING);
+        entityDeserializer.DeserializeEnitity(roundCounter);
     }
 
     //syncing health points and names on the health bars with actors data, could be optimized in the latter case
@@ -60,7 +79,7 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
     private void OnGameOver(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         //ToDo: put proper message on outcome
-        gameOverScreen.gameOverScreen.listener.OnShow("YOU");
+        gameOverScreen.gameOverScreen.listener.OnShow("Match Finished");
     }
 
     public void Execute()

@@ -167,14 +167,19 @@ public class ProjectileComponent : IComponent
 }
 
 [Unique]
-public class LevelComponent : IComponent
+public class MatchComponent : IComponent
 {
     public int numberRounds;
     public int effectsAtTimeCap;
-    public int currentRound;
     public int roundTime; //sec
     public int roundScoreReward;
     public int seed;
+}
+
+[Unique]
+public class RoundComponent : IComponent
+{
+    public int currentRound;
 }
 
 [Unique]

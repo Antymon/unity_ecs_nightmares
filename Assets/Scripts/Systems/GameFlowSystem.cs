@@ -5,14 +5,11 @@ using UnityEngine;
 
 public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 {
-    private IEntityDeserializer entityDeserializer;
-
     private Tween roundTimer;
 
     private GameContext gameContext;
-    private InputContext inputContext;
 
-    private LevelComponent levelComponent;
+    private MatchComponent matchComponent;
 
     private AgentsFactory agentsFactory;
     
@@ -23,23 +20,20 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     public GameFlowSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
     {
-        this.entityDeserializer = deserializer;
         this.gameContext = context;
-        this.inputContext = inputContext;
-
         //ToDo: deserialize from outside like the rest
-        context.SetLevel(
+
+        context.SetMatch(
             newNumberRounds: 5, 
             newEffectsAtTimeCap: 4, 
-            newCurrentRound: 0, 
             newRoundTime: 180, 
             newRoundScoreReward: 1,
             newSeed: 0);
 
         //ToDo: unitys random is not portable (makes "ECall" into editor), replace
-        Random.InitState(context.level.seed);
+        Random.InitState(context.match.seed);
 
-        levelComponent = context.level;
+        matchComponent = context.match;
 
         agentsFactory = new AgentsFactory(context, inputContext, deserializer);
     }
@@ -56,7 +50,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private void OnRoundRestart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         FinishRound();
-        StartRound(levelComponent.currentRound);
+        StartRound(gameContext.round.currentRound);
     }
 
     private void OnGameRestart(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
@@ -74,17 +68,17 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     private void StartGame()
     {
         gameContext.ReplaceScores(new Dictionary<int, int>());
-        levelComponent.currentRound = 0;
-        StartRound(levelComponent.currentRound+1);
+        gameContext.ReplaceRound(0);
+        StartRound(gameContext.round.currentRound+1);
     }
 
     private void StartRound(int roundNumber)
     {
         gameContext.CreateEntity().isRoundStarted = true;
 
-        levelComponent.currentRound=roundNumber;
+        gameContext.ReplaceRound(roundNumber);
 
-        roundTimer = DOVirtual.DelayedCall(levelComponent.roundTime, OnTimeOut);
+        roundTimer = DOVirtual.DelayedCall(matchComponent.roundTime, OnTimeOut);
         roundTimer.Play();
 
         agentsFactory.CreateAgents(out player, out enemy);
@@ -143,7 +137,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private void OnAgentWon(GameEntity agentEntity)
     {
-        gameContext.scores.agentIdToScoreMapping[agentEntity.agent.id]+=levelComponent.roundScoreReward;
+        gameContext.scores.agentIdToScoreMapping[agentEntity.agent.id]+=matchComponent.roundScoreReward;
         
         FinishRound();
         ConsiderNextRound();
@@ -168,9 +162,9 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private void ConsiderNextRound()
     {
-        if (levelComponent.currentRound < levelComponent.numberRounds)
+        if (gameContext.round.currentRound < matchComponent.numberRounds)
         {
-            StartRound(levelComponent.currentRound+1);
+            StartRound(gameContext.round.currentRound+1);
         }
         else
         {

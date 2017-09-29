@@ -108,7 +108,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
     {
         effectsGroup.OnEntityRemoved += OnEffectCollectedDuringRound;
 
-        int requiredEffects = gameContext.level.effectsAtTimeCap;
+        int requiredEffects = gameContext.match.effectsAtTimeCap;
 
         for(int i = 0; i<requiredEffects; i++)
         {
