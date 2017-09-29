@@ -14,7 +14,8 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
         base.DeserializeEnitity(entity);
         entity.ReplacePosition(transform.position);
 
-        //ToDo: radius verification is meant as improvement: to separate rotation from actual movement
+        //radius verification was meant to give ability to rotate without changing position
+        //if red dot is whitin joypad rotation is possible but changing position is not
         var rectTransform = GetComponent<RectTransform>();
         outerRadius = rectTransform.rect.width / 2f;
 

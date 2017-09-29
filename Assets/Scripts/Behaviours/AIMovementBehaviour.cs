@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDestinationChangedListener
 {
-    //ToDo extract class
+    //ToDo: extract class
     const string WALKING_ANIMATION_LABEL = "IsWalking";
 
     private Animator playerAnimation;
