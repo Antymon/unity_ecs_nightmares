@@ -12,9 +12,9 @@ public class AddHealthEffect : IEffect
         {
             return false;
         }
+        
+        HealthHelpers.AddHealth(entity.health, healthPoints);
 
-        //ToDo: health points capping logic shouldn't be here
-        entity.health.healthPoints = System.Math.Min(entity.health.healthPoints+healthPoints, entity.health.healthPointsCap);
         used = true;
 
         return true;

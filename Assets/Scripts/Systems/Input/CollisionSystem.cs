@@ -41,9 +41,10 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
             return;
         }
 
-        self.health.healthPoints -= other.damage.healthPointsDamaged;
-        self.health.healthPoints = Math.Min(self.health.healthPoints, self.health.healthPointsCap);
-        self.health.healthPoints = Math.Max(self.health.healthPoints, 0);
+        HealthHelpers.AddHealth(self.health, -other.damage.healthPointsDamaged);
+
+        //to get update event triggered
+        self.ReplaceHealth(self.health.healthPoints, self.health.healthPointsCap);
 
         if(self.hasHealthChangedListener)
         {

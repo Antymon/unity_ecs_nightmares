@@ -23,8 +23,7 @@ public class PersistantAddHealthEffect : IEffect
             return false;
         }
 
-        //ToDo: health points capping logic shouldn't be here
-        entity.health.healthPoints = System.Math.Min(entity.health.healthPoints+healthPoints, entity.health.healthPointsCap);
+        HealthHelpers.AddHealth(entity.health, healthPoints);
 
         userIdsToApplicationTick[entity.agent.id] = currentTick;
 
