@@ -13,6 +13,7 @@ public class EntitasTestSuite {
         var inputContext = Contexts.sharedInstance.input;
 
         systems.Add(new DestroySystem(gameContext));
+        systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
         systems.Initialize();
     }

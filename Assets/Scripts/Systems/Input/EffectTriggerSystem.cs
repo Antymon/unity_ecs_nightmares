@@ -38,7 +38,7 @@ public class EffectTriggerSystem : ReactiveSystem<InputEntity>
         IEffect entityEffect = effectEntity.effect.effect;
         var aggentsEffects = agentEntity.agent.effects;
 
-        if(onEnter)
+        if(onEnter) //trigger's volume was entered
         {
             if (entityEffect.IsApplicable(agentEntity))
             {
@@ -61,7 +61,7 @@ public class EffectTriggerSystem : ReactiveSystem<InputEntity>
                 }
             }
         }
-        else
+        else //trigger volume was left
         {
             if (aggentsEffects.Contains(entityEffect))
             {
