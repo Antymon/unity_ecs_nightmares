@@ -54,7 +54,7 @@ public class CollisionSystem : ReactiveSystem<InputEntity>
 
     private void ActionIfDead(GameEntity gameEntity)
     {
-        if (gameEntity.health.healthPoints == 0)
+        if (gameEntity.hasHealth && gameEntity.health.healthPoints == 0)
         {
             if (gameEntity.hasAgent) //enemy or player
             {
