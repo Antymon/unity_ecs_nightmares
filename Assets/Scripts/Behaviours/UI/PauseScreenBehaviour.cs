@@ -6,15 +6,6 @@ using UnityEditor;
 #endif
 using DG.Tweening;
 
-//ToDo notification-based approach would be better and not too hard to implement
-public class PauseUtil
-{   
-    //encapsulating timeScale referencing
-    public static bool IsPaused()
-    {
-        return Time.timeScale == 0f;
-    }
-}
 
 public class PauseScreenBehaviour : FadingUIBehaviour 
 {
@@ -43,6 +34,8 @@ public class PauseScreenBehaviour : FadingUIBehaviour
     {
         if (pauseAllowed)
         {
+            Contexts.sharedInstance.game.ReplacePause(pauseAllowed);
+
             pauseAllowed = false;
 
             Time.timeScale = 0;
@@ -56,6 +49,8 @@ public class PauseScreenBehaviour : FadingUIBehaviour
     {
         if (!pauseAllowed)
         {
+            Contexts.sharedInstance.game.ReplacePause(pauseAllowed);
+
             pauseAllowed = true;
 
             Time.timeScale = 1;

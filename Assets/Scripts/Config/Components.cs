@@ -182,6 +182,12 @@ public class MatchComponent : IComponent
 }
 
 [Unique]
+public class PauseComponent : IComponent
+{
+    public bool paused;
+}
+
+[Unique]
 public class RoundComponent : IComponent
 {
     public int currentRound;
@@ -196,7 +202,6 @@ public class ScoresComponent : IComponent
 public class GameOverComponent : IComponent{}
 public class GameStartComponent : IComponent{}
 public class GameRestartComponent : IComponent {}
-public class GamePausedComponent : IComponent { }
 public class RoundStartedComponent : IComponent{}
 public class RoundFinishedComponent : IComponent{}
 public class RoundRestartComponent : IComponent {}

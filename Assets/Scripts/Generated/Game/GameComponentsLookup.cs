@@ -17,22 +17,22 @@ public static class GameComponentsLookup {
     public const int EntityBinding = 6;
     public const int GameOver = 7;
     public const int GameOverScreen = 8;
-    public const int GamePaused = 9;
-    public const int GameRestart = 10;
-    public const int GameStart = 11;
-    public const int Gun = 12;
-    public const int HealthBar = 13;
-    public const int HealthChangedListener = 14;
-    public const int Health = 15;
-    public const int JoypadBinding = 16;
-    public const int Joypad = 17;
-    public const int MarkedToPostponedDestroy = 18;
-    public const int Match = 19;
-    public const int MovementDestinationChangedListener = 20;
-    public const int MovementDestination = 21;
-    public const int MovementDirectionChangedListener = 22;
-    public const int MovementDirection = 23;
-    public const int MovementStop = 24;
+    public const int GameRestart = 9;
+    public const int GameStart = 10;
+    public const int Gun = 11;
+    public const int HealthBar = 12;
+    public const int HealthChangedListener = 13;
+    public const int Health = 14;
+    public const int JoypadBinding = 15;
+    public const int Joypad = 16;
+    public const int MarkedToPostponedDestroy = 17;
+    public const int Match = 18;
+    public const int MovementDestinationChangedListener = 19;
+    public const int MovementDestination = 20;
+    public const int MovementDirectionChangedListener = 21;
+    public const int MovementDirection = 22;
+    public const int MovementStop = 23;
+    public const int Pause = 24;
     public const int Player = 25;
     public const int PositionChanged = 26;
     public const int Position = 27;
@@ -56,7 +56,6 @@ public static class GameComponentsLookup {
         "EntityBinding",
         "GameOver",
         "GameOverScreen",
-        "GamePaused",
         "GameRestart",
         "GameStart",
         "Gun",
@@ -72,6 +71,7 @@ public static class GameComponentsLookup {
         "MovementDirectionChangedListener",
         "MovementDirection",
         "MovementStop",
+        "Pause",
         "Player",
         "PositionChanged",
         "Position",
@@ -94,7 +94,6 @@ public static class GameComponentsLookup {
         typeof(EntityBinding),
         typeof(GameOverComponent),
         typeof(GameOverScreenComponent),
-        typeof(GamePausedComponent),
         typeof(GameRestartComponent),
         typeof(GameStartComponent),
         typeof(GunComponent),
@@ -110,6 +109,7 @@ public static class GameComponentsLookup {
         typeof(MovementDirectionChangedListenerComponent),
         typeof(MovementDirectionComponent),
         typeof(MovementStopComponent),
+        typeof(PauseComponent),
         typeof(Player),
         typeof(PositionChangedComponent),
         typeof(PositionComponent),

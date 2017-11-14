@@ -64,7 +64,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
 
     public virtual void Update()
     {
-        if (tween && (!PauseUtil.IsPaused() || ignorePause))
+        if (tween && (!Contexts.sharedInstance.game.pause.paused || ignorePause))
         {
             if (time<duration)
             {
