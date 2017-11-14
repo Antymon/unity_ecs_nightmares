@@ -20,9 +20,8 @@ public class PauseScreenBehaviour : FadingUIBehaviour
         OnAlphaUpdate(scaleValue:0);
     }
 	
-	override public void Update()
+	public void Update()
 	{
-        base.Update();
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
             PauseOn();
