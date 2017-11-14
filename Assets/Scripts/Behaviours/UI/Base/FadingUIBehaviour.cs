@@ -45,6 +45,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
         {
             DOTween.defaultTimeScaleIndependent = ignorePause;
             DOVirtual.Float(0, 1, duration, OnAlphaUpdate);
+            DOTween.defaultTimeScaleIndependent = false;
         }
     }
 
@@ -67,8 +68,6 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
 
     public void OnHide()
     {
-        DOTween.defaultTimeScaleIndependent = false;
-
         float duration = .1f * value;
         DOVirtual.Float(value, 0, duration, OnAlphaUpdate);
     }
