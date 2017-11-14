@@ -4,8 +4,6 @@ using Entitas;
 
 public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDirectionChangedListener
 {
-    const string WALKING_ANIMATION_LABEL = "IsWalking";
-
     public float speed = 6f;            // The speed that the player will move at.
 
     Vector3 movement;                   // The vector to store the direction of the player's movement.
@@ -40,7 +38,7 @@ public class InputMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovem
 
     void Update()
     {
-        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, selfGameEntity.positionChanged.ticksStationary == 0);
+        playerAnimation.SetBool(Label.ANIMATION_WALKING, selfGameEntity.positionChanged.ticksStationary == 0);
     }
 
     void Move(float x, float z)

@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovementDestinationChangedListener
 {
-    //ToDo: extract class
-    const string WALKING_ANIMATION_LABEL = "IsWalking";
 
     private Animator playerAnimation;
     private NavMeshAgent navAgent;
@@ -42,7 +40,7 @@ public class AIMovementBehaviour : MonoBehaviour, IEntityDeserializer, IMovement
 
     void Update()
     {
-        playerAnimation.SetBool(WALKING_ANIMATION_LABEL, selfGameEntity.positionChanged.ticksStationary==0);
+        playerAnimation.SetBool(Label.ANIMATION_WALKING, selfGameEntity.positionChanged.ticksStationary==0);
     }
 
     void LateUpdate()
