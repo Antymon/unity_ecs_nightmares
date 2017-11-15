@@ -12,22 +12,22 @@ public partial class GameContext {
     public MatchComponent match { get { return matchEntity.match; } }
     public bool hasMatch { get { return matchEntity != null; } }
 
-    public GameEntity SetMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, int newSeed) {
+    public GameEntity SetMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, IRandom newRandom) {
         if (hasMatch) {
             throw new Entitas.EntitasException("Could not set Match!\n" + this + " already has an entity with MatchComponent!",
                 "You should check if the context already has a matchEntity before setting it or use context.ReplaceMatch().");
         }
         var entity = CreateEntity();
-        entity.AddMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newSeed);
+        entity.AddMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newRandom);
         return entity;
     }
 
-    public void ReplaceMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, int newSeed) {
+    public void ReplaceMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, IRandom newRandom) {
         var entity = matchEntity;
         if (entity == null) {
-            entity = SetMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newSeed);
+            entity = SetMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newRandom);
         } else {
-            entity.ReplaceMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newSeed);
+            entity.ReplaceMatch(newNumberRounds, newEffectsAtTimeCap, newRoundTime, newRoundScoreReward, newRandom);
         }
     }
 
@@ -49,25 +49,25 @@ public partial class GameEntity {
     public MatchComponent match { get { return (MatchComponent)GetComponent(GameComponentsLookup.Match); } }
     public bool hasMatch { get { return HasComponent(GameComponentsLookup.Match); } }
 
-    public void AddMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, int newSeed) {
+    public void AddMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, IRandom newRandom) {
         var index = GameComponentsLookup.Match;
         var component = CreateComponent<MatchComponent>(index);
         component.numberRounds = newNumberRounds;
         component.effectsAtTimeCap = newEffectsAtTimeCap;
         component.roundTime = newRoundTime;
         component.roundScoreReward = newRoundScoreReward;
-        component.seed = newSeed;
+        component.random = newRandom;
         AddComponent(index, component);
     }
 
-    public void ReplaceMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, int newSeed) {
+    public void ReplaceMatch(int newNumberRounds, int newEffectsAtTimeCap, int newRoundTime, int newRoundScoreReward, IRandom newRandom) {
         var index = GameComponentsLookup.Match;
         var component = CreateComponent<MatchComponent>(index);
         component.numberRounds = newNumberRounds;
         component.effectsAtTimeCap = newEffectsAtTimeCap;
         component.roundTime = newRoundTime;
         component.roundScoreReward = newRoundScoreReward;
-        component.seed = newSeed;
+        component.random = newRandom;
         ReplaceComponent(index, component);
     }
 

@@ -43,6 +43,7 @@ public class ShootingBehaviour : MonoBehaviour, IEntityDeserializer, IShootListe
         shootRay.origin = barrelEnd.position;
 
         //adding some randomness in order to avoid perfect shooting 
+        //Unity random can be used here; only Entitas' randomness is controlled
         var direction = barrelEnd.forward;
         direction.x += (Random.value - .5f) * missError;
         direction.z += (Random.value - .5f) * missError;

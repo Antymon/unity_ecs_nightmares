@@ -178,7 +178,7 @@ public class MatchComponent : IComponent
     public int effectsAtTimeCap;
     public int roundTime; //sec
     public int roundScoreReward;
-    public int seed;
+    public IRandom random;
 }
 
 [Unique]

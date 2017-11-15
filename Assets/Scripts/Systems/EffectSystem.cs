@@ -73,7 +73,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     private void OnEffectCollectedDuringRound(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * Random.value, CreateEffect));
+        spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * gameContext.match.random.value, CreateEffect));
     }
 
     private void OnRoundFinished(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
@@ -106,7 +106,7 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
         for(int i = 0; i<requiredEffects; i++)
         {
-            spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * Random.value, CreateEffect));
+            spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * gameContext.match.random.value, CreateEffect));
         }
 
         entity.isMarkedToPostponedDestroy = true;
@@ -114,11 +114,11 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
 
     private void CreateEffect()
     {
-        var randomIndex = Mathf.FloorToInt(Random.value * spawnableEffects.Length) % spawnableEffects.Length;
+        var randomIndex = Mathf.FloorToInt(gameContext.match.random.value * spawnableEffects.Length) % spawnableEffects.Length;
 
         var prefabBinding = spawnableEffects[randomIndex];
 
-        var randomPosition = Random.insideUnitCircle * 10;
+        var randomPosition = gameContext.match.random.insideUnitCircle * 10;
 
         var position = new Vector3(randomPosition.x, 1, randomPosition.y); //transforming 2d to 3d random position
 

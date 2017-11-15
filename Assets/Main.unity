@@ -318,7 +318,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numberOfRounds: 5
   effectsAtTimeCap: 4
-  roundTime: 10
+  roundTime: 30
   roundScoreReward: 1
   seed: 0
 --- !u!114 &386217219

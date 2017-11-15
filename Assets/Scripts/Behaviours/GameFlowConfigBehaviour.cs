@@ -17,7 +17,8 @@ public class GameFlowConfigBehaviour : MonoBehaviour, IEntityDeserializer
             effectsAtTimeCap,
             roundTime,
             roundScoreReward,
-            seed);
+            new SystemRandomAdapter(seed)); //unitys random is not portable (makes "ECall" into editor)
+
     }
 }
 

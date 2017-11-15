@@ -22,12 +22,9 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     {
         this.gameContext = context;
 
-        gameContext.SetMatch(0, 0, 0, 0, 0); //only way to create match entity
+        gameContext.SetMatch(0, 0, 0, 0, null); //only way to create match entity
         gameContext.matchEntity.AddEntityBinding(EntityPrefabNameBinding.GAME_FLOW_CONFIG_BINDING);
         deserializer.DeserializeEnitity(gameContext.matchEntity);
-
-        //ToDo: unitys random is not portable (makes "ECall" into editor), replace
-        Random.InitState(context.match.seed);
 
         matchComponent = context.match;
 
