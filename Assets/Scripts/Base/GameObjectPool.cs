@@ -44,7 +44,7 @@ public class BindableGameObjectPool : IGameObjectPool
             }
             else
             {
-                Debug.Log("Requested object is not in pool and doesn't have prefab linked");
+                Debug.Log("Requested object is not in bindable pool and doesn't have prefab linked.");
                 return null;
             }
         }
