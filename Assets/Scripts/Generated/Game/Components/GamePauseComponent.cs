@@ -9,30 +9,19 @@
 public partial class GameContext {
 
     public GameEntity pauseEntity { get { return GetGroup(GameMatcher.Pause).GetSingleEntity(); } }
-    public PauseComponent pause { get { return pauseEntity.pause; } }
-    public bool hasPause { get { return pauseEntity != null; } }
 
-    public GameEntity SetPause(bool newPaused) {
-        if (hasPause) {
-            throw new Entitas.EntitasException("Could not set Pause!\n" + this + " already has an entity with PauseComponent!",
-                "You should check if the context already has a pauseEntity before setting it or use context.ReplacePause().");
+    public bool isPause {
+        get { return pauseEntity != null; }
+        set {
+            var entity = pauseEntity;
+            if (value != (entity != null)) {
+                if (value) {
+                    CreateEntity().isPause = true;
+                } else {
+                    entity.Destroy();
+                }
+            }
         }
-        var entity = CreateEntity();
-        entity.AddPause(newPaused);
-        return entity;
-    }
-
-    public void ReplacePause(bool newPaused) {
-        var entity = pauseEntity;
-        if (entity == null) {
-            entity = SetPause(newPaused);
-        } else {
-            entity.ReplacePause(newPaused);
-        }
-    }
-
-    public void RemovePause() {
-        pauseEntity.Destroy();
     }
 }
 
@@ -46,25 +35,19 @@ public partial class GameContext {
 //------------------------------------------------------------------------------
 public partial class GameEntity {
 
-    public PauseComponent pause { get { return (PauseComponent)GetComponent(GameComponentsLookup.Pause); } }
-    public bool hasPause { get { return HasComponent(GameComponentsLookup.Pause); } }
+    static readonly PauseComponent pauseComponent = new PauseComponent();
 
-    public void AddPause(bool newPaused) {
-        var index = GameComponentsLookup.Pause;
-        var component = CreateComponent<PauseComponent>(index);
-        component.paused = newPaused;
-        AddComponent(index, component);
-    }
-
-    public void ReplacePause(bool newPaused) {
-        var index = GameComponentsLookup.Pause;
-        var component = CreateComponent<PauseComponent>(index);
-        component.paused = newPaused;
-        ReplaceComponent(index, component);
-    }
-
-    public void RemovePause() {
-        RemoveComponent(GameComponentsLookup.Pause);
+    public bool isPause {
+        get { return HasComponent(GameComponentsLookup.Pause); }
+        set {
+            if (value != isPause) {
+                if (value) {
+                    AddComponent(GameComponentsLookup.Pause, pauseComponent);
+                } else {
+                    RemoveComponent(GameComponentsLookup.Pause);
+                }
+            }
+        }
     }
 }
 

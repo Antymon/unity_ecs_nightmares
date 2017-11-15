@@ -41,7 +41,7 @@ public class FadingUIBehaviour : BindingEntitasBehaviour
     {
         float duration = .25f;
 
-        if (!Contexts.sharedInstance.game.pause.paused || ignorePause)
+        if (!Contexts.sharedInstance.game.isPause || ignorePause)
         {
             DOTween.defaultTimeScaleIndependent = ignorePause;
             DOVirtual.Float(0, 1, duration, OnAlphaUpdate);

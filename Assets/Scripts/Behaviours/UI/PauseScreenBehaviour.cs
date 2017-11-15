@@ -33,7 +33,7 @@ public class PauseScreenBehaviour : FadingUIBehaviour
     {
         if (pauseAllowed)
         {
-            Contexts.sharedInstance.game.ReplacePause(pauseAllowed);
+            Contexts.sharedInstance.game.isPause = pauseAllowed;
 
             pauseAllowed = false;
 
@@ -48,7 +48,7 @@ public class PauseScreenBehaviour : FadingUIBehaviour
     {
         if (!pauseAllowed)
         {
-            Contexts.sharedInstance.game.ReplacePause(pauseAllowed);
+            Contexts.sharedInstance.game.isPause = pauseAllowed;
 
             pauseAllowed = true;
 

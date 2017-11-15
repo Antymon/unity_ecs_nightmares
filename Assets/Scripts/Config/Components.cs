@@ -182,10 +182,7 @@ public class MatchComponent : IComponent
 }
 
 [Unique]
-public class PauseComponent : IComponent
-{
-    public bool paused;
-}
+public class PauseComponent : IComponent{}
 
 [Unique]
 public class RoundComponent : IComponent

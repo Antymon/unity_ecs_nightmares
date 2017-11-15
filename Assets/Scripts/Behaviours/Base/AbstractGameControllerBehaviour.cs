@@ -25,7 +25,7 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
         AddSystems(Contexts.sharedInstance, systems);
         systems.Initialize();
 
-        Contexts.sharedInstance.game.SetPause(false);
+        Contexts.sharedInstance.game.isPause = false;
 	}
 
     //template method just to separate config from general bootstrapping
@@ -43,7 +43,7 @@ public abstract class AbstractGameControllerBehaviour : MonoBehaviour {
 
     void Update()
     {
-        if (Contexts.sharedInstance.game.pause.paused)
+        if (Contexts.sharedInstance.game.isPause)
         {
             return;
         }
