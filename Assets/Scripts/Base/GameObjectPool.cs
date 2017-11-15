@@ -28,17 +28,25 @@ public class BindableGameObjectPool : IGameObjectPool
         pools = new Dictionary<string, Stack<GameObject>>();
     }
 
-    public GameObject Get(string prefabName)
+    public GameObject Get(string id)
     {
         GameObject result;
 
-        if (pools.ContainsKey(prefabName) && pools[prefabName].Count > 0)
+        if (pools.ContainsKey(id) && pools[id].Count > 0)
         {
-            result = pools[prefabName].Pop();
+            result = pools[id].Pop();
         }
-        else
+        else 
         {
-            result = factory.Create(prefabName);
+            if (EntityPrefabNameBinding.idToBinding.ContainsKey(id) && EntityPrefabNameBinding.idToBinding[id].idIsPrefabName)
+            {
+                result = factory.Create(prefabName:id);
+            }
+            else
+            {
+                Debug.Log("Requested object is not in pool and doesn't have prefab linked");
+                return null;
+            }
         }
 
         var pooledObject = result.GetComponent<IPooledGameObject>();
@@ -57,9 +65,9 @@ public class BindableGameObjectPool : IGameObjectPool
         return result;
     }
 
-    public void Return(GameObject poolItem)
+    public void Return(GameObject poolGameObject)
     {
-        var prefabIdentifier = poolItem.GetComponent<IPrefabIdentifier>();
+        var prefabIdentifier = poolGameObject.GetComponent<IPrefabIdentifier>();
 
         if (prefabIdentifier == null)
         {
@@ -67,27 +75,32 @@ public class BindableGameObjectPool : IGameObjectPool
             return;
         }
 
-        var pooledObject = poolItem.GetComponent<IPooledGameObject>();
+        var pooledObjectsComponent = poolGameObject.GetComponent<IPooledGameObject>();
 
-        if (pooledObject == null)
+        if (pooledObjectsComponent == null)
         {
             Debug.LogError("Attempt to return not poolable GameObject failed.");
             return;
         }
 
-        pooledObject.Reset();
+        pooledObjectsComponent.Reset();
 
-        poolItem.SetActive(false);
+        var prefabBinding = prefabIdentifier.GetPrefabBinding();
 
-        var prefabName = prefabIdentifier.GetPrefabBinding().prefabName;
-
-        if (!pools.ContainsKey(prefabName))
+        if (prefabBinding.canBeDisabled)
         {
-            pools[prefabName] = new Stack<GameObject>();
+            poolGameObject.SetActive(false);
         }
 
-        var pool = pools[prefabName];
+        var id = prefabBinding.id;
 
-        pool.Push(poolItem);
+        if (!pools.ContainsKey(id))
+        {
+            pools[id] = new Stack<GameObject>();
+        }
+
+        var pool = pools[id];
+
+        pool.Push(poolGameObject);
     }
 }

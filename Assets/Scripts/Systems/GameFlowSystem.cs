@@ -21,14 +21,10 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         : base(context)
     {
         this.gameContext = context;
-        //ToDo: deserialize from outside like the rest
 
-        context.SetMatch(
-            newNumberRounds: 5, 
-            newEffectsAtTimeCap: 4, 
-            newRoundTime: 180, 
-            newRoundScoreReward: 1,
-            newSeed: 0);
+        gameContext.SetMatch(0, 0, 0, 0, 0); //only way to create match entity
+        gameContext.matchEntity.AddEntityBinding(EntityPrefabNameBinding.GAME_FLOW_CONFIG_BINDING);
+        deserializer.DeserializeEnitity(gameContext.matchEntity);
 
         //ToDo: unitys random is not portable (makes "ECall" into editor), replace
         Random.InitState(context.match.seed);

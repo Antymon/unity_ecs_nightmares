@@ -25,9 +25,9 @@ public class EntityDeserializerViaBinding : IEntityDeserializer
     {
         var entityType = entity.entityBinding.entitasBinding.entityType;
 
-        var prefabName = EntityPrefabNameBinding.entityTypeToPrefabName[entityType].prefabName;
+        var id = EntityPrefabNameBinding.entityTypeToBinding[entityType].id;
 
-        var relatedGO = pool.Get(prefabName);
+        var relatedGO = pool.Get(id);
 
         var deserializers = relatedGO.GetComponents<IEntityDeserializer>();
 

@@ -30,10 +30,14 @@ public class EntityPrefabNameBinding
         PAUSE_SCREEN = 8,
         HEALTH_BAR = 9,
         SCORE_COUNTER = 10,
-        ROUND_COUNTER = 11
+        ROUND_COUNTER = 11,
+
+        GAME_FLOW_CONFIG = 12,
     }
 
-    public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToPrefabName = new Dictionary<Type, EntityPrefabNameBinding>();
+    public static Dictionary<Type, EntityPrefabNameBinding> entityTypeToBinding = new Dictionary<Type, EntityPrefabNameBinding>();
+    public static Dictionary<string, EntityPrefabNameBinding> idToBinding = new Dictionary<string, EntityPrefabNameBinding>();
+
 
     public static readonly EntityPrefabNameBinding PLAYER_BINDING = new EntityPrefabNameBinding(Type.PLAYER, "Player");
     public static readonly EntityPrefabNameBinding JOYPAD_BINDING = new EntityPrefabNameBinding(Type.JOYPAD, "Joypad");
@@ -49,17 +53,23 @@ public class EntityPrefabNameBinding
     public static readonly EntityPrefabNameBinding SCORE_COUNTER_BINDING = new EntityPrefabNameBinding(Type.SCORE_COUNTER, "ScoreCounter");
     public static readonly EntityPrefabNameBinding ROUND_COUNTER_BINDING = new EntityPrefabNameBinding(Type.ROUND_COUNTER, "RoundCounter");
 
+    public static readonly EntityPrefabNameBinding GAME_FLOW_CONFIG_BINDING = new EntityPrefabNameBinding(Type.GAME_FLOW_CONFIG, "GameFlowConfig", false, false);
+
+
     public Type entityType;
-    public string prefabName;
+    public bool idIsPrefabName;
+    public string id;
+    public bool canBeDisabled;
 
-
-    private EntityPrefabNameBinding(Type entityType, string prefabName)
+    private EntityPrefabNameBinding(Type entityType, string id, bool idIsPrefabName = true, bool canBeDisabled = true)
     {
-
-        entityTypeToPrefabName.Add(entityType, this);
+        idToBinding.Add(id, this);
+        entityTypeToBinding.Add(entityType, this);
 
         this.entityType = entityType;
-        this.prefabName = prefabName;
+        this.idIsPrefabName = idIsPrefabName;
+        this.id = id;
+        this.canBeDisabled = canBeDisabled;
     }
 
 

@@ -23,7 +23,7 @@ public class BindingEntitasBehaviour : MonoBehaviour, IEntitasBinding
 
     public EntityPrefabNameBinding GetPrefabBinding()
     {
-        return EntityPrefabNameBinding.entityTypeToPrefabName[entityPrefabNameBinding];
+        return EntityPrefabNameBinding.entityTypeToBinding[entityPrefabNameBinding];
     }
 
     public void SetPool(IGameObjectPool pool)
