@@ -85,9 +85,8 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         ConsiderNextRound();
     }
 
-    //ToDo: reactive system is bit noisy in this case readability-wise
-    //this class should demonstrate logic flow within specifics of the domain
-    //change to group
+    //reactive system is bit noisy in this case readability-wise
+    //but per-entity group wouldn't consider if agents die at the same time
     protected override void Execute(List<GameEntity> entities)
     {
         bool playerIsDead = false;
@@ -110,7 +109,12 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
             entity.Destroy();
         }
 
-        if (playerIsDead)
+        if (playerIsDead && enemyIsDead)
+        {
+            FinishRound();
+            ConsiderNextRound();
+        }
+        else if (playerIsDead)
         {
             OnAgentWon(enemy);
         }
