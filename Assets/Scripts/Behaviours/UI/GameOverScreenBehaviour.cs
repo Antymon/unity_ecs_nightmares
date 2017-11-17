@@ -9,12 +9,15 @@ public class GameOverScreenBehaviour : FadingUIBehaviour, IGameOverScreenListene
     public Text messageTextField;
 
     private bool buttonPressed;
+    private SignalEntityFactory signalFactory;
 
     override public void Awake()
     {
         //this is to get rid of screen in editor (declutter)
         //but still initialize correctly in runtime
         this.GetComponentInParent<Canvas>().enabled = true;
+
+        signalFactory = new SignalEntityFactory();
 
         base.Awake();
     }
@@ -40,7 +43,7 @@ public class GameOverScreenBehaviour : FadingUIBehaviour, IGameOverScreenListene
         if (!buttonPressed)
         {
             buttonPressed = true;
-            entity.isGameStart = true; //ToDo: unify notifications to entity creation
+            signalFactory.Create().isGameStart = true;
             OnHide();
         }
     }

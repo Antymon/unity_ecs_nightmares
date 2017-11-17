@@ -94,8 +94,6 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
             delayedCall.Kill();
         }
         spawnDelayedCalls.Clear();
-
-        entity.isMarkedToPostponedDestroy = true;
     }
 
     private void OnRoundStarted(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
@@ -108,8 +106,6 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
         {
             spawnDelayedCalls.Add(DOVirtual.DelayedCall(60 * gameContext.match.random.value, CreateEffect));
         }
-
-        entity.isMarkedToPostponedDestroy = true;
     }
 
     private void CreateEffect()

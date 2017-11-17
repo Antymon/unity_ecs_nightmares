@@ -13,11 +13,15 @@ public class PauseScreenBehaviour : FadingUIBehaviour
 
     private bool pauseAllowed = true;
 
+    private ISignalEntityFactory signalFactory;
+
     public override void Awake()
     {
         screen.SetActive(true); //just to not show screen in editor mode
         RegisterFadingElements(screen);
         OnAlphaUpdate(scaleValue:0);
+
+        signalFactory = new SignalEntityFactory();
     }
 	
 	public void Update()
@@ -71,19 +75,12 @@ public class PauseScreenBehaviour : FadingUIBehaviour
     public void ResetRound()
     {
         PauseOff();
-        CreateEntity().isRoundRestart = true;
+        signalFactory.Create().isRoundRestart = true;
     }
 
     public void ResetGame()
     {
         PauseOff();
-        CreateEntity().isGameRestart = true;
-    }
-
-    private GameEntity CreateEntity()
-    {
-        var messageEntity = Contexts.sharedInstance.game.CreateEntity();
-        messageEntity.isMarkedToPostponedDestroy = true;
-        return messageEntity;
+        signalFactory.Create().isGameRestart = true;
     }
 }

@@ -15,7 +15,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
     
     private GameEntity player;
     private GameEntity enemy;
-
+    private SignalEntityFactory signalFactory;
 
     public GameFlowSystem(GameContext context, InputContext inputContext, IEntityDeserializer deserializer)
         : base(context)
@@ -27,6 +27,8 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         deserializer.DeserializeEnitity(gameContext.matchEntity);
 
         matchComponent = context.match;
+
+        signalFactory = new SignalEntityFactory();
 
         agentsFactory = new AgentsFactory(context, inputContext, deserializer);
     }
@@ -67,7 +69,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private void StartRound(int roundNumber)
     {
-        gameContext.CreateEntity().isRoundStarted = true;
+        signalFactory.Create().isRoundStarted = true;
 
         gameContext.ReplaceRound(roundNumber);
 
@@ -138,7 +140,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
 
     private void FinishRound()
     {
-        gameContext.CreateEntity().isRoundFinished = true;
+        signalFactory.Create().isRoundFinished = true;
 
         roundTimer.Kill();
 
@@ -161,7 +163,7 @@ public class GameFlowSystem : ReactiveSystem<GameEntity>, IInitializeSystem
         }
         else
         {
-            gameContext.CreateEntity().isGameOver = true;
+            signalFactory.Create().isGameOver = true;
         }
     }
 }
