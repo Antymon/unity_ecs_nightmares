@@ -1,5 +1,4 @@
-﻿
-using Entitas;
+﻿using Entitas;
 using System.Collections.Generic;
 
 public class PersistantAddHealthEffect : IEffect

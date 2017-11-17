@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 public class DestroySystem : ReactiveSystem<GameEntity>, ICleanupSystem
 {
-    private IEntityDeserializer entityDeserializer;
-
     private HashSet<GameEntity> entitiesToDestroy;
 
     public DestroySystem(GameContext context)
