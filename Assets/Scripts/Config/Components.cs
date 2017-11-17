@@ -198,10 +198,10 @@ public class ScoresComponent : IComponent
 
 public class GameOverComponent : IComponent{}
 public class GameStartComponent : IComponent{}
-public class GameRestartComponent : IComponent {}
+public class GameRestartComponent : IComponent{}
 public class RoundStartedComponent : IComponent{}
 public class RoundFinishedComponent : IComponent{}
-public class RoundRestartComponent : IComponent {}
+public class RoundRestartComponent : IComponent{}
 
 [Unique]
 [Input]

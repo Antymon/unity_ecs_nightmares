@@ -1,5 +1,5 @@
 ﻿using Entitas;
-using UnityEngine;
+using System.Linq;
 
 public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
 {
@@ -12,7 +12,9 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
     private GameEntity roundCounter;
 
     private IGroup<GameEntity> agentGroup;
-    private ICollector<GameEntity> healthCollector;
+    private IGroup<GameEntity> playerGroup;
+
+    private int playerId;
 
     public UISystem(GameContext context, IEntityDeserializer entityDeserializer) //: base(context)
     {
@@ -33,8 +35,16 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
 
 
         agentGroup = context.GetGroup(GameMatcher.Agent);
+        playerGroup = context.GetGroup(GameMatcher.Player);
+        playerGroup.OnEntityAdded += OnPlayerAdded;
 
         context.GetGroup(GameMatcher.Round).OnEntityUpdated += OnRoundUpdated;
+    }
+
+    private void OnPlayerAdded(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
+    {
+        playerGroup.OnEntityAdded -= OnPlayerAdded;
+        playerId = entity.agent.id;
     }
 
     //recreating round counter entity on each value change, which is not that frequent
@@ -78,8 +88,11 @@ public class UISystem : IInitializeSystem, IExecuteSystem//, IReactiveSystem
 
     private void OnGameOver(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        //ToDo: put proper message on outcome
-        gameOverScreen.gameOverScreen.listener.OnShow("Match Finished");
+        var scoreMapping = context.scores.agentIdToScoreMapping;
+
+        var msg = GameEndMessageHelper.CreateGameEndMessage(scoreMapping, playerId);
+        
+        gameOverScreen.gameOverScreen.listener.OnShow(msg);
     }
 
     public void Execute()
