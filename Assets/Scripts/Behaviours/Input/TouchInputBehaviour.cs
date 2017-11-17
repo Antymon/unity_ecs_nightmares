@@ -68,7 +68,10 @@ public class TouchInputBehaviour : MonoBehaviour
 
     private void NotifyTouches(Touch[] touches)
     {
-        Contexts.sharedInstance.input.CreateEntity().AddTouches(touches);
+        if (!Contexts.sharedInstance.game.isPause)
+        {
+            Contexts.sharedInstance.input.CreateEntity().AddTouches(touches);
+        }
     }
 }
 
