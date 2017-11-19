@@ -37,9 +37,15 @@ public class JoypadBehaviour : BindingEntitasBehaviour, IEntityDeserializer, IJo
         }
     }
 
+    //stateless utility
+    private float GetAngleFromDirection(Vector2 direction)
+    {
+        return Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
+    }
+
     public void OnJoypadMoved(Vector2 joypadDirection)
     {
-        float joypadAngle = JoypadSystem.GetAngleFromDirection(joypadDirection);
+        float joypadAngle = GetAngleFromDirection(joypadDirection);
 
         UpdateShape(joypadAngle, joypadDirection);
     }
