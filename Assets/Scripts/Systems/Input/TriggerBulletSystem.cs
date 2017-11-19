@@ -8,8 +8,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     private GameEntity joypadEntity;
     private GameEntity playerEntity;
 
-    private int triggerTouchId = -1;
-
+    private PlayerGunTriggerManager triggerManager;
     //other systems are operating on overlapping subsets of entities
     //so cleanup has to be posponed after all executions have been made
     private List<InputEntity> entitiesCleanupRegister = new List<InputEntity>();
@@ -27,16 +26,20 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         var playerGroup = gameContext.GetGroup(GameMatcher.Player);
         playerGroup.OnEntityAdded += OnPlayerCreated;
         playerGroup.OnEntityRemoved += OnPlayerDestroyed;
+
+        triggerManager = new PlayerGunTriggerManager(joypadEntity);
     }
 
     private void OnPlayerDestroyed(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         playerEntity = null;
+        triggerManager.playerEntity = null;
     }
 
     private void OnPlayerCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         playerEntity = entity;
+        triggerManager.playerEntity = playerEntity;
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
@@ -48,72 +51,11 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         //so if navigation is disabled, nothing to consider
         if(!joypadEntity.joypad.enabled)
         {
-            ReleaseTrigger();
+            triggerManager.Disable();
             return;
         }
 
-        int joypadTakenTouchId = joypadEntity.joypad.touchId;
-
-        foreach (var entity in entities)
-        {
-            var touches = entity.touches.touches;
-
-            bool touchFound = false;
-
-            if (playerEntity.gun.triggerDown)
-            {
-                foreach (var touch in touches)
-                {
-                    if (touch.fingerId == triggerTouchId)
-                    {
-                        touchFound = true;
-
-                        if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-                        {
-                            ReleaseTrigger();
-                        }
-
-                        break;
-                    }
-                }
-                
-                if (!touchFound)
-                {
-                    ReleaseTrigger();
-                }
-            }
-            else
-            {
-                foreach (var touch in touches)
-                {
-                    if (touch.fingerId != joypadTakenTouchId)
-                    {
-                        if (touch.phase == TouchPhase.Began)
-                        {
-                            PullTrigger(touch);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void PullTrigger(Touch touch)
-    {
-        triggerTouchId = touch.fingerId;
-        playerEntity.gun.triggerDown = true;
-        //Debug.Log("trigger down");
-    }
-
-    private void ReleaseTrigger()
-    {
-        if (playerEntity.gun.triggerDown)
-        {
-            playerEntity.gun.triggerDown = false;
-            triggerTouchId = -1;
-            //Debug.Log("trigger up");
-        }
+        triggerManager.ManageState(entities);
     }
 
     protected override bool Filter(InputEntity entity)
