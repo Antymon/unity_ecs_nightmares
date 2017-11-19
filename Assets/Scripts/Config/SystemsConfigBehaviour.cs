@@ -20,7 +20,7 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
 
         systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
-        systems.Add(new TriggerBulletSystem(inputContext, gameContext, entityDeserializer));
+        systems.Add(new PlayerControlsSystem(inputContext, gameContext, entityDeserializer));
 
         //tick dependant
         systems.Add(new MovementSystem(gameContext, inputContext));

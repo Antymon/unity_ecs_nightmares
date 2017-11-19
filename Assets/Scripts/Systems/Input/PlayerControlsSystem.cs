@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSystem
+public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 {
     private IEntityDeserializer entityDeserializer;
 
@@ -10,10 +10,10 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     private GameEntity playerEntity;
 
-    private PlayerGunTriggerManager triggerManager;
-    private JoypadManager joypadProcessor;
+    private PlayerGunTriggerManager gunTriggerManager;
+    private JoypadManager joypadManager;
 
-    public TriggerBulletSystem(InputContext context, GameContext gameContext, IEntityDeserializer deserializer)
+    public PlayerControlsSystem(InputContext context, GameContext gameContext, IEntityDeserializer deserializer)
         : base(context)
     {
         this.entityDeserializer = deserializer;
@@ -32,42 +32,42 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
         playerGroup.OnEntityAdded += OnPlayerCreated;
         playerGroup.OnEntityRemoved += OnPlayerDestroyed;
 
-        triggerManager = new PlayerGunTriggerManager(joypadEntity);
-        joypadProcessor = new JoypadManager(joypadEntity);
+        gunTriggerManager = new PlayerGunTriggerManager(joypadEntity);
+        joypadManager = new JoypadManager(joypadEntity);
     }
 
     private void OnPlayerDestroyed(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
-        joypadProcessor.Disable();
+        joypadManager.Disable();
 
         playerEntity = null;
-        triggerManager.playerEntity = null;
-        joypadProcessor.playerEnity = null;
+        gunTriggerManager.playerEntity = null;
+        joypadManager.playerEnity = null;
     }
 
     private void OnPlayerCreated(IGroup<GameEntity> group, GameEntity entity, int index, IComponent component)
     {
         playerEntity = entity;
-        triggerManager.playerEntity = playerEntity;
-        joypadProcessor.playerEnity = playerEntity;
+        gunTriggerManager.playerEntity = playerEntity;
+        joypadManager.playerEnity = playerEntity;
     }
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
     {
         if (playerEntity != null && playerEntity.isEnabled)
         {
-            joypadProcessor.ManageState(entities);
+            joypadManager.ManageState(entities);
 
             //assumption: shooting is complementing navigation
             //specificically shooting is triggered by second touch point wheras navigation by first
             //so if navigation is disabled, nothing to consider
-            if (joypadProcessor.IsEnabled())
+            if (joypadManager.IsEnabled())
             {
-                triggerManager.ManageState(entities);
+                gunTriggerManager.ManageState(entities);
             }
             else
             {
-                triggerManager.Disable();
+                gunTriggerManager.Disable();
             }
         }
 
