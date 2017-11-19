@@ -52,18 +52,18 @@ public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSyst
         joypadManager.playerEnity = playerEntity;
     }
 
-    protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
+    protected override void Execute(System.Collections.Generic.List<InputEntity> touchEntities)
     {
         if (playerEntity != null && playerEntity.isEnabled)
         {
-            joypadManager.ManageState(entities);
+            joypadManager.ManageState(touchEntities);
 
             //assumption: shooting is complementing navigation
             //specificically shooting is triggered by second touch point wheras navigation by first
             //so if navigation is disabled, nothing to consider
             if (joypadManager.IsEnabled())
             {
-                gunTriggerManager.ManageState(entities);
+                gunTriggerManager.ManageState(touchEntities);
             }
             else
             {
@@ -71,7 +71,7 @@ public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSyst
             }
         }
 
-        foreach (var entity in entities)
+        foreach (var entity in touchEntities)
         {
             entity.Destroy();
         }
