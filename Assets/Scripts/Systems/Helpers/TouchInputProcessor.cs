@@ -6,6 +6,7 @@ public interface ITouchDrivenStateManager
 {
     void ManageState(List<InputEntity> entities);
     void Disable();
+    bool IsEnabled();
 }
 
 //template method manager that enables or disables injected item based on:
@@ -61,7 +62,7 @@ public abstract class TouchDrivenStateManager : ITouchDrivenStateManager
 
     protected abstract void Enable(Touch touch);
 
-    protected abstract bool IsEnabled();
+    public abstract bool IsEnabled();
 
     protected abstract bool ShouldEnable(Touch touch);
 
@@ -94,7 +95,7 @@ public class JoypadManager : TouchDrivenStateManager
         return joypadEntity.joypad.touchId;
     }
 
-    protected override bool IsEnabled()
+    public override bool IsEnabled()
     {
         //joypad is visible so valid actions are move or disable
         return joypadEntity.joypad.enabled;
@@ -163,7 +164,7 @@ public class PlayerGunTriggerManager : TouchDrivenStateManager
         playerEntity.gun.triggerDown = true;
     }
 
-    protected override bool IsEnabled()
+    public override bool IsEnabled()
     {
         return playerEntity.gun.triggerDown;
     }

@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSystem, ICleanupSystem
+public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSystem
 {
     private IEntityDeserializer entityDeserializer;
 
     private GameContext gameContext;
 
-    private GameEntity joypadEntity;
     private GameEntity playerEntity;
 
     private PlayerGunTriggerManager triggerManager;
     private JoypadManager joypadProcessor;
-
-    //other systems are operating on overlapping subsets of entities
-    //so cleanup has to be posponed after all executions have been made
-    private List<InputEntity> entitiesCleanupRegister = new List<InputEntity>();
 
     public TriggerBulletSystem(InputContext context, GameContext gameContext, IEntityDeserializer deserializer)
         : base(context)
@@ -28,7 +23,7 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     //create joypad binding, fetch player entity
     public void Initialize()
     {
-        joypadEntity = gameContext.CreateEntity();
+        var joypadEntity = gameContext.CreateEntity();
         joypadEntity.AddEntityBinding(EntityPrefabNameBinding.JOYPAD_BINDING);
         joypadEntity.AddJoypad(newEnabled: false, newTouchId: -1);
         entityDeserializer.DeserializeEnitity(joypadEntity);
@@ -59,30 +54,27 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
 
     protected override void Execute(System.Collections.Generic.List<InputEntity> entities)
     {
-        if (playerEntity == null || !playerEntity.isEnabled)
+        if (playerEntity != null && playerEntity.isEnabled)
         {
-            foreach (var entity in entities)
+            joypadProcessor.ManageState(entities);
+
+            //assumption: shooting is complementing navigation
+            //specificically shooting is triggered by second touch point wheras navigation by first
+            //so if navigation is disabled, nothing to consider
+            if (joypadProcessor.IsEnabled())
             {
-                entity.Destroy();
+                triggerManager.ManageState(entities);
             }
-
-            return;
+            else
+            {
+                triggerManager.Disable();
+            }
         }
 
-        joypadProcessor.ManageState(entities);
-
-        entitiesCleanupRegister.AddRange(entities);
-
-        //assumption: shooting is complementing navigation
-        //specificically shooting is triggered by second touch point wheras navigation by first
-        //so if navigation is disabled, nothing to consider
-        if(!joypadEntity.joypad.enabled)
+        foreach (var entity in entities)
         {
-            triggerManager.Disable();
-            return;
+            entity.Destroy();
         }
-
-        triggerManager.ManageState(entities);
     }
 
     protected override bool Filter(InputEntity entity)
@@ -93,17 +85,6 @@ public class TriggerBulletSystem : ReactiveSystem<InputEntity>, IInitializeSyste
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
     {
         return context.CreateCollector<InputEntity>(InputMatcher.Touches.Added());
-    }
-
-    //due to volume of input entities this system deals with his own garbage, rather than marking it for cleanup
-    public void Cleanup()
-    {
-        foreach (var entity in entitiesCleanupRegister)
-        {
-            entity.Destroy();
-        }
-
-        entitiesCleanupRegister.Clear();
     }
 }
 
