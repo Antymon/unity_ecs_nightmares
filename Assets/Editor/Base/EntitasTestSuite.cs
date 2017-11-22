@@ -4,8 +4,8 @@ using NUnit.Framework;
 public class EntitasTestSuite : IEntityDeserializer {
 
     private Feature systems;
-    private GameContext gameContext;
-    private InputContext inputContext;
+    protected GameContext gameContext;
+    protected InputContext inputContext;
 
 	[SetUp]
 	public void CollisionSystemTestSuiteSetup() 
