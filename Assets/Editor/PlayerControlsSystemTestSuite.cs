@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using UnityEngine;
 
-public class JoypadSystemTestSuite : EntitasTestSuite, IJoypadMovedListener
+public class PlayerControlsSystemTestSuite : EntitasTestSuite, IJoypadMovedListener
 {
     Vector2 joypadDirection;
 
