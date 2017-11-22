@@ -124,12 +124,84 @@ public class JoypadSystemTestSuite : EntitasTestSuite, IJoypadMovedListener
         UpdateSystems();
 
         Assert.IsFalse(joypadEntity.joypad.enabled);
-
     }
 
     public void OnJoypadMoved(Vector2 direction)
     {
         joypadDirection = direction;
+    }
+
+    [Test]
+    public void JoypadEnabled_MoreThan1Touch_TriggerEnabled()
+    {
+        SimulateJoypadConditions(true, true);
+        var playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+
+        var touch1 = CreateFakeTouch(TouchPhase.Moved, 1, Vector2.one);
+        var touch2 = CreateFakeTouch(TouchPhase.Began, 2, Vector2.one);
+
+        NotifyTouches(new Touch[] { touch2, touch1 });
+
+        UpdateSystems();
+
+        Assert.IsTrue(playerEntity.gun.triggerDown);
+    }
+
+    [Test]
+    public void JoypadDisabled_TriggerDisabled()
+    {
+        SimulateJoypadConditions(true, true);
+        var playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+
+        var touch1 = CreateFakeTouch(TouchPhase.Moved, 1, Vector2.one);
+        var touch2 = CreateFakeTouch(TouchPhase.Began, 2, Vector2.one);
+
+        NotifyTouches(new Touch[] { touch2, touch1 });
+
+        UpdateSystems();
+
+        Assert.IsTrue(playerEntity.gun.triggerDown);
+
+        //joypad touch is gone, and no begin touches so joypad will disable
+        var touch3 = CreateFakeTouch(TouchPhase.Moved, 3, Vector2.one);
+        touch2.phase = TouchPhase.Moved;
+        NotifyTouches(new Touch[] { touch2, touch3 });
+
+        UpdateSystems();
+
+        Assert.IsFalse(playerEntity.gun.triggerDown);
+    }
+
+    [Test]
+    public void OneTouch_TriggerDisabled()
+    {
+        var joypadEntity = SimulateJoypadConditions(true, true);
+        var playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+
+        Assert.IsTrue(joypadEntity.joypad.enabled);
+        Assert.IsFalse(playerEntity.gun.triggerDown);
+    }
+
+    [Test]
+    public void TouchFallsToOne_TriggerDisables()
+    {
+        SimulateJoypadConditions(true, true);
+        var playerEntity = gameContext.GetGroup(GameMatcher.Player).GetSingleEntity();
+
+        var touch1 = CreateFakeTouch(TouchPhase.Moved, 1, Vector2.one);
+        var touch2 = CreateFakeTouch(TouchPhase.Began, 2, Vector2.one);
+
+        NotifyTouches(new Touch[] { touch2, touch1 });
+
+        UpdateSystems();
+
+        Assert.IsTrue(playerEntity.gun.triggerDown);
+
+        NotifyTouches(new Touch[] { touch1 });
+
+        UpdateSystems();
+
+        Assert.IsFalse(playerEntity.gun.triggerDown);
     }
 }
 
