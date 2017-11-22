@@ -15,12 +15,12 @@ public class EntitasTestSuite : IEntityDeserializer {
         gameContext = new GameContext();
         inputContext = new InputContext();
 
-        var entityDeserializer = this;
+        var dummyEntityDeserializer = this;
 
         systems.Add(new DestroySystem(gameContext));
         systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
-        systems.Add(new JoypadSystem(inputContext, gameContext, entityDeserializer));
+        systems.Add(new JoypadSystem(inputContext, gameContext, dummyEntityDeserializer));
         systems.Add(new TriggerBulletSystem(inputContext, gameContext));
 
         systems.Initialize();
