@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSystem
+public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSystem, ITearDownSystem
 {
     private IEntityDeserializer entityDeserializer;
 
@@ -85,6 +85,11 @@ public class PlayerControlsSystem : ReactiveSystem<InputEntity>, IInitializeSyst
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
     {
         return context.CreateCollector<InputEntity>(InputMatcher.Touches.Added());
+    }
+
+    public void TearDown()
+    {
+        gameContext.GetGroup(GameMatcher.Player).RemoveAllEventHandlers();
     }
 }
 
