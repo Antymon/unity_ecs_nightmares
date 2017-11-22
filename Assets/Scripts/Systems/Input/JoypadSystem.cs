@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
+public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem, ITearDownSystem
 {
     //stateless utility
     public static float GetAngleFromDirection(Vector2 direction)
@@ -44,6 +44,7 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     {
         playerEnity.OnDestroyEntity -= OnPlayerDestroyed;
         HideJoypad();
+        playerEnity = null;
     }
 
     //ToDo: consider generalization of Trigger and Joypad systems
@@ -138,6 +139,17 @@ public class JoypadSystem : ReactiveSystem<InputEntity>, IInitializeSystem
     protected override ICollector<InputEntity> GetTrigger(IContext<InputEntity> context)
     {
         return context.CreateCollector<InputEntity>(InputMatcher.Touches.Added());
+    }
+
+
+    public void TearDown()
+    {
+        joypadEntity.Destroy();
+
+        if (playerEnity != null)
+        {
+            playerEnity.OnDestroyEntity -= OnPlayerDestroyed;
+        }
     }
 }
 

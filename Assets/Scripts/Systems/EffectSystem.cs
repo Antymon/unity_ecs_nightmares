@@ -3,7 +3,7 @@ using Entitas;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EffectSystem : IInitializeSystem, IExecuteSystem
+public class EffectSystem : IInitializeSystem, IExecuteSystem, ITearDownSystem
 {
     private GameContext gameContext;
     private InputContext inputContext;
@@ -147,6 +147,17 @@ public class EffectSystem : IInitializeSystem, IExecuteSystem
             }
             effectsToRemove.Clear();
         }
+    }
+
+    public void TearDown()
+    {
+        enemyGroup.OnEntityAdded -= OnSafePointsInfoAvailable;
+
+        roundStartedGroup.OnEntityAdded -= OnRoundStarted;
+        roundFinishedGroup.OnEntityAdded -= OnRoundFinished;
+
+        effectsGroup.OnEntityRemoved -= OnEffectCollectedDuringRound;
+
     }
 }
 

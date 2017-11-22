@@ -1,20 +1,28 @@
-﻿using NUnit.Framework;
+﻿using DG.Tweening;
+using NUnit.Framework;
 
-public class EntitasTestSuite {
+public class EntitasTestSuite : IEntityDeserializer {
 
     private Feature systems;
+    private GameContext gameContext;
+    private InputContext inputContext;
 
 	[SetUp]
 	public void CollisionSystemTestSuiteSetup() 
     {
         systems = new Feature("Systems");
 
-        var gameContext = Contexts.sharedInstance.game;
-        var inputContext = Contexts.sharedInstance.input;
+        gameContext = new GameContext();
+        inputContext = new InputContext();
+
+        var entityDeserializer = this;
 
         systems.Add(new DestroySystem(gameContext));
         systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
+        systems.Add(new JoypadSystem(inputContext, gameContext, entityDeserializer));
+        systems.Add(new TriggerBulletSystem(inputContext, gameContext));
+
         systems.Initialize();
     }
 
@@ -24,13 +32,33 @@ public class EntitasTestSuite {
         systems.Cleanup();
     }
 
+    [TearDown]
+    public void TearDown()
+    {
+        DOTween.KillAll();
+
+        systems.TearDown();
+
+        systems.ClearReactiveSystems();
+
+        gameContext.DestroyAllEntities();
+        inputContext.DestroyAllEntities();
+
+        systems = null;
+    }
+
     protected GameEntity CreateGameEntity()
     {
-        return Contexts.sharedInstance.game.CreateEntity();
+        return gameContext.CreateEntity();
     }
 
     protected InputEntity CreateInputEntity()
     {
-        return Contexts.sharedInstance.input.CreateEntity();
+        return inputContext.CreateEntity();
+    }
+
+    public void DeserializeEnitity(GameEntity entity)
+    {
+        //just a dummy to satisfy the interface
     }
 }
