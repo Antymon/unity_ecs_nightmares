@@ -20,14 +20,11 @@ public class SystemsConfigBehaviour : AbstractGameControllerBehaviour
 
         systems.Add(new EffectTriggerSystem(inputContext));
         systems.Add(new CollisionSystem(inputContext, gameContext));
-        systems.Add(new JoypadSystem(inputContext, gameContext, entityDeserializer));
+        systems.Add(new PlayerControlsSystem(inputContext, gameContext, entityDeserializer));
 
         //tick dependant
         systems.Add(new MovementSystem(gameContext, inputContext));
         systems.Add(new EffectSystem(gameContext, inputContext, entityDeserializer));
-
-        //intialization joypad dependant
-        systems.Add(new TriggerBulletSystem(inputContext, gameContext));
 
         //entry point system, generally would depend on everything except for unrelated inputs
         systems.Add(new GameFlowSystem(gameContext, inputContext, entityDeserializer));
