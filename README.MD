@@ -142,7 +142,7 @@ if(self.hp low)
 ```
 Attack
 ```
-	if (in range)
+	if (enemy in range)
 		aim
 		shoot
 	else
